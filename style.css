@@ -60,14 +60,15 @@
 */
 
 :root {
-  --background-color: #1b422a; /* lighter green */
+  --background-color: #16321c; /* medium-dark green */
   --primary-color: #1c9963; /* brighter green */
   --secondary-color: #6bc47d; /* lighter green */
-  --text-color: #c8c8c8; /* slightly grey */
+  --text-color: #dcdcdc; /* lighter grey */
   --section-color: #1c3724; /* dark green */
   --link-color: #8be3a2; /* light green */
-  --button-text-color: #c8c8c8; /* slightly grey */
+  --button-text-color: #dcdcdc; /* lighter grey */
 }
+
 
 
 body {
