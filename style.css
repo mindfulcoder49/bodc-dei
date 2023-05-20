@@ -45,6 +45,7 @@
 
 } */
 
+/*
 :root {
   --background-color: #241C14;
   --primary-color: #db9860;
@@ -54,6 +55,18 @@
   --link-color: #54b3c2;
   --button-text-color: #241C0C;
 
+}
+
+*/
+
+:root {
+  --background-color: #0b0f08; /* dark green */
+  --primary-color: #1c9963; /* brighter green */
+  --secondary-color: #6bc47d; /* lighter green */
+  --text-color: #ffffff; /* white for high contrast on dark background */
+  --section-color: #1c3724; /* dark green */
+  --link-color: #8be3a2; /* light green */
+  --button-text-color: #ffffff; /* white */
 }
 
 body {
