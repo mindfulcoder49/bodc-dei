@@ -23,6 +23,7 @@
 </head>
 <body>
     <input type="text" id="search" placeholder="Search">
+    <h1 id="loading">Data Loading, Please Wait...</h1>
     <table id="results">
         <thead>
             <!-- Column headers will be added here by JavaScript -->
@@ -61,6 +62,7 @@
                     }
                     recordHtml += '</tr>';
                     $('#results tbody').append(recordHtml);
+                    $("#loading").remove();
                 });
             });
 
