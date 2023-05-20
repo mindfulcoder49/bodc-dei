@@ -60,14 +60,15 @@
 */
 
 :root {
-  --background-color: #0b0f08; /* dark green */
+  --background-color: #1b422a; /* lighter green */
   --primary-color: #1c9963; /* brighter green */
   --secondary-color: #6bc47d; /* lighter green */
-  --text-color: #ffffff; /* white for high contrast on dark background */
+  --text-color: #c8c8c8; /* slightly grey */
   --section-color: #1c3724; /* dark green */
   --link-color: #8be3a2; /* light green */
-  --button-text-color: #ffffff; /* white */
+  --button-text-color: #c8c8c8; /* slightly grey */
 }
+
 
 body {
   background-color: var(--background-color);
@@ -100,7 +101,7 @@ nav a {
   text-decoration: none;
 }
 
-p a {
+p a, a:any-link {
   color: var(--link-color)
 }
 
