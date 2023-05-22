@@ -28,7 +28,7 @@ if ($result->num_rows > 0) {
     $counter++;
     
     // Break the loop after 100 iterations
-    if ($counter >= 100) {
+    if ($counter >= $_GET['numrecords']) {
       break;
     }
   }

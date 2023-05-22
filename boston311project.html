@@ -35,7 +35,7 @@
 
     <script>
         $(document).ready(function(){
-            $.get('get311data.php', function(data) {
+            $.get('get311data.php?numrecords=10', function(data) {
                 let records = JSON.parse(data);
 
                 excluded_columns = ['survival_time_hours','survival_time', 'submittedphoto', 'closedphoto', 'closure_reason'];
