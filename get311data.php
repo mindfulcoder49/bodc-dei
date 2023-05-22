@@ -20,10 +20,19 @@ $data = array();
 
 if ($result->num_rows > 0) {
   // Output data of each row
-  while($row = $result->fetch_assoc()) {
+  $counter = 0;  // Initialize the counter variable
+  while ($row = $result->fetch_assoc()) {
     $data[] = $row;
+    
+    // Increment the counter
+    $counter++;
+    
+    // Break the loop after 100 iterations
+    if ($counter >= 100) {
+      break;
+    }
   }
-} 
+}
 
 echo json_encode($data);
 
