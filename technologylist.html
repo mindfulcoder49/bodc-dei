@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Technology Learning Tracker</title>
+    <style>
+
+
+    </style>
+
+    <link rel="stylesheet" href="style.css?v=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let techList = {};
+
+            $('#add-tech').click(function() {
+                let techName = $('#tech-name').val();
+                techList[techName] = {
+                    listenVideo: {completed: false, date: null},
+                    completeTutorial: {completed: false, date: null},
+                    skimDocumentation: {completed: false, date: null},
+                    onlineCource: {completed: false, date: null},
+                    readFullDocumentation: {completed: false, date: null},
+                    completeProject: {completed: false, date: null}
+                };
+                $('#tech-name').val('');
+                render();
+            });
+
+            function markDone(techName, taskName, checkbox) {
+                techList[techName][taskName].completed = checkbox.checked;
+                techList[techName][taskName].date = checkbox.checked ? new Date().toISOString() : null;
+                render();
+            }
+
+            $('#download-list').click(function() {
+                let a = $('<a>', {href: URL.createObjectURL(new Blob([JSON.stringify(techList)], {type: 'application/json'})), download: 'techList.json'})[0];
+                a.click();
+            });
+
+            $('#upload').change(function(event) {
+                let file = event.target.files[0];
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    techList = JSON.parse(e.target.result);
+                    $.each(techList, function(techName, tasks) {
+                        $.each(tasks, function(taskName, task) {
+                            if (task.date) {
+                                task.date = new Date(task.date);
+                            }
+                        });
+                    });
+                    render();
+                };
+                reader.readAsText(file);
+            });
+
+            function render() {
+                let container = $('#tech-list');
+                container.empty();
+
+                $.each(techList, function(techName, tasks) {
+                    let techDiv = $('<div>').addClass('tech-entry');
+
+                    let techNameElem = $('<h3>').text(techName);
+                    techDiv.append(techNameElem);
+
+                    $.each(tasks, function(taskName, task) {
+                        let taskDiv = $('<div>');
+                        let taskCheckbox = $('<input>', {type: 'checkbox', checked: task.completed}).change(function() {
+                            markDone(techName, taskName, this);
+                        });
+                        taskDiv.append(taskCheckbox);
+                        taskDiv.append(taskName + (task.date ? ` (completed on ${new Date(task.date).toLocaleDateString()})` : ''));
+                        techDiv.append(taskDiv);
+                    });
+
+                    container.append(techDiv);
+                });
+            }
+
+        });
+    </script>
+</head>
+<body>
+    <input type="text" id="tech-name" placeholder="Technology Name" />
+    <button id="add-tech">Add Technology</button>
+    <button id="download-list">Download JSON</button>
+    <input type="file" id="upload" />
+    <div id="tech-list"></div>
+</body>
+</html>
