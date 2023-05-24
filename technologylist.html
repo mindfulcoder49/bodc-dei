@@ -21,7 +21,8 @@
                     skimDocumentation: {completed: false, date: null},
                     onlineCourse: {completed: false, date: null},
                     readFullDocumentation: {completed: false, date: null},
-                    completeProject: {completed: false, date: null}
+                    completeProject: {completed: false, date: null},
+                    nextStep: ""
                 };
                 $('#tech-name').val('');
                 render();
@@ -31,6 +32,10 @@
                 techList[techName][taskName].completed = checkbox.checked;
                 techList[techName][taskName].date = checkbox.checked ? new Date().toISOString() : null;
                 render();
+            }
+
+            function updateNextStep(techName, input) {
+                techList[techName].nextStep = input.value;
             }
 
             $('#download-list').click(function() {
@@ -66,20 +71,29 @@
                     techDiv.append(techNameElem);
 
                     $.each(tasks, function(taskName, task) {
-                        let taskDiv = $('<div>');
-                        let taskCheckbox = $('<input>', {type: 'checkbox', checked: task.completed}).change(function() {
-                            markDone(techName, taskName, this);
-                        });
-                        taskDiv.append(taskCheckbox);
-                        taskDiv.append(taskName + (task.date ? ` (completed on ${new Date(task.date).toLocaleDateString()})` : ''));
-                        techDiv.append(taskDiv);
+                        if (taskName != 'nextStep') {
+                            let taskDiv = $('<div>');
+                            let taskCheckbox = $('<input>', {type: 'checkbox', checked: task.completed}).change(function() {
+                                markDone(techName, taskName, this);
+                            });
+                            taskDiv.append(taskCheckbox);
+                            taskDiv.append(taskName + (task.date ? ` (completed on ${new Date(task.date).toLocaleDateString()})` : ''));
+                            techDiv.append(taskDiv);
+                        }
                     });
+
+                    let nextStepDiv = $('<div>');
+                    let nextStepInput = $('<input>', {type: 'text', value: tasks.nextStep}).change(function() {
+                        updateNextStep(techName, this);
+                    });
+                    nextStepDiv.append('Next step: ', nextStepInput);
+                    techDiv.append(nextStepDiv);
 
                     container.append(techDiv);
                 });
             }
-
         });
+
     </script>
 </head>
 <body>
