@@ -58,7 +58,7 @@ nav li {
     }
 
     section {
-        margin:1rem;
+        margin: 1rem;
     }
 }
 
@@ -111,7 +111,7 @@ section {
     margin: 2%;
     overflow: hidden;
     position: relative;
-    width: 96%;
+    width: 94%;
     opacity: 100%;
     z-index:3;
 }
