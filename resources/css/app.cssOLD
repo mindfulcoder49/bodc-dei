@@ -1,0 +1,210 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+*/
+
+
+
+  
+  :root {
+    --background-color: #16321c; /* medium-dark green */
+    --primary-color: #1c9963; /* brighter green */
+    --secondary-color: #6bc47d; /* lighter green */
+    --text-color: #dcdcdc; /* lighter grey */
+    --section-color: #1c3724; /* dark green */
+    --link-color: #8be3a2; /* light green */
+    --button-text-color: #dcdcdc; /* lighter grey */
+  }
+  
+  
+  
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul a {
+    margin:10px;
+    font-weight:800;
+    clear: both;
+    background-color: var(--coffee);
+    padding:10px;
+    border-radius: 5px;
+    background: linear-gradient(
+    to right,
+    #8B4513 0%,
+    var(--coffee) 5%,
+    #8B4513 10%,
+    var(--coffee) 15%,
+    #8B4513 20%,
+    #8B4513 30%,
+    #8B4513 40%,
+    var(--coffee) 45%,
+    #8B4513 50%,
+    #A0522D 55%,
+    var(--coffee) 60%,
+    #8B4513 75%,
+    var(--coffee) 85%,
+    #8B4513 100%
+  ); 
+    display: inline-block;
+    padding: 10px 20px;
+    /* background-color: #4CAF50; Button background color */
+    color: white !important; /* Button text color */
+    font-size: large;
+    /* convert to uppercase */
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Box shadow effect */
+
+  }
+  
+  nav li {
+    margin: 0 1rem;
+  }
+  
+  nav a {
+    color: var(--text-color);
+    text-decoration: none;
+  }
+  
+  p a, a:any-link {
+    color: var(--link-color)
+  }
+  
+  main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 2rem;
+    flex-flow: column;
+  }
+  
+  section {
+    background-color: var(--section-color);
+    border-radius: 10px;
+    margin: 2rem;
+    overflow: hidden;
+    position: relative;
+    width: calc(100% - 4rem);
+  }
+  
+  section h2 {
+    font-size: 1.5rem;
+    margin: 1rem;
+    text-align: center;
+  }
+  
+  section p {
+    margin: 1rem;
+  }
+  
+  input[type='text'], input[type='file'] {
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    color: black;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 1rem;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+    width: calc(100% - 2rem);
+    max-width: 400px;
+  }
+  
+  
+  button {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 10px;
+    color: var(--button-text-color);
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 1rem;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+    width: calc(100% - 2rem);
+    max-width: 400px;
+  }
+  
+  button:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  footer {
+    background-color: var(--section-color);
+    color: var(--text-color);
+    font-size: 0.75rem;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  
+  /* styles for technologylist.html */
+  
+  .tech-entry {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-width: 500px;
+    align-items: center;
+  }
+  
+  .tech-entry div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-width: 400px;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    min-width: calc(100% - 100px);
+    font-weight: bold;
+  }
+  
+
+  /* table styling */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}

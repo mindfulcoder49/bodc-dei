@@ -24,7 +24,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -39,4 +39,7 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get('/cases', [ThreeOneOneCaseController::class, 'index'])->name('cases.index');
+Route::inertia('/about', "About")->name('about');
+Route::inertia('/contact', "Contact")->name('contact');
+Route::inertia('/projects', "Projects")->name('projects');
 

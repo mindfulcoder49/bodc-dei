@@ -64,4 +64,3 @@ return new class extends Migration
         Schema::dropIfExists('three_one_one_cases');
     }
 };
-
