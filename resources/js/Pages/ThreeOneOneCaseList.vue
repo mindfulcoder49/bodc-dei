@@ -1,7 +1,12 @@
 <script>
+
 import PageTemplate from '../Components/PageTemplate.vue';
 
 export default {
+
+  components: {
+    PageTemplate
+  },
   props: {
     cases: {
       type: Array,
@@ -13,17 +18,16 @@ export default {
 
 <template>
   <PageTemplate>
-    <div>
-      <h1>ThreeOneOneCase List</h1>
+    <main class="maintable">
       <table>
-        <tr><th v-for="(key, value) in cases[0]">{{ value }}</th></tr>
-        <tr v-for=" item in cases" :key='item["case_enquiry_id"]'>
-          
-          <td v-for="(key, value) in item">{{ key }}</td>
-          <!-- Add other fields you want to display -->
+        <tr v-if="cases.length">
+          <th v-for="(value, key) in cases[0]" :key="key">{{ key }}</th>
+        </tr>
+        <tr v-for="item in cases" :key='item["case_enquiry_id"]'>
+          <td v-for="(value, key) in item" :key="key">{{ value }}</td>
         </tr>
       </table>
-    </div>
+    </main>
   </PageTemplate>
 </template>
   

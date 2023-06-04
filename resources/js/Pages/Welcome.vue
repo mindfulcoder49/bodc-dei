@@ -24,9 +24,10 @@ defineProps({
 
 <PageTemplate>
     <main>
-      <h2>The Boston Open Data Collaborative for Diversity, Equity, and Inclusion</h2>
+    
       <section>
         <h2>Welcome to BODC-DEI</h2>
+        <h2>The Boston Open Data Collaborative for Diversity, Equity, and Inclusion</h2>
         <p>Welcome to the website of the Boston Open Data Collaborative for Diversity Equity and Inclusion (BODC-DEI). We are a group of tech enthusiasts, data analysts, UX designers, quality assurance professionals, and Linux systems administrators who are passionate about using open data to create tools that serve the public in a fair and responsible way.</p>
         <p>Our group was founded with the vision of collaborating on projects based on the <a href="https://data.boston.gov/">250 datasets available on data.boston.gov</a>. We aim to create individual projects and showcase them as part of a collaborative group. We believe that by combining our diverse skills and fresh perspectives, we can create tools that are useful to everyone in the community.</p>
         <p>At BODC-DEI, we strongly believe in the principles of diversity, equity, and inclusion. We recognize the importance of considering these factors when dealing with public data about the public. We are committed to creating tools that serve everyone and present data in a fair and responsible way.</p>

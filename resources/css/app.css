@@ -1,9 +1,12 @@
 :root {
-    --background-color: #F7F7F7; /* Light Gray */
+    --background-color: #f1f1f1; /* Light Gray */
     --primary-color: #2F343E; /* Dark Slate Gray */
     --accent-color1: #3f6e39; /* Bittersweet (red) */
     --accent-color2: #1B998B; /* Keppel (green) */
     --button-color: #b0c2f8; /* White */
+    --section-color: #F7F7F7;
+    --button-text-color: #F7F7F7;
+    --link-color: #116b61;
 }
 
 *, *::before, *::after {
@@ -20,7 +23,7 @@ body {
 
 nav {
     background-color: var(--background-color);
-    padding: 2rem;
+    padding: 0rem;
 }
 
 nav ul {
@@ -70,7 +73,7 @@ nav a:active {
     background-color: var(--accent-color2);
 }
 
-p a, a:any-link {
+p a {
     color: var(--link-color)
 }
 
@@ -82,6 +85,18 @@ main {
     flex-flow: column;
 }
 
+main.maintable {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 3rem;
+    flex-flow: column;
+    position:relative;
+    z-index:3;
+    opacity:100%;
+    background-color: var(--section-color);
+}
+
 section {
     background-color: var(--section-color);
     border-radius: 15px;
@@ -89,6 +104,8 @@ section {
     overflow: hidden;
     position: relative;
     width: calc(100% - 4rem);
+    opacity: 100%;
+    z-index:3;
 }
 
 section h2 {
@@ -138,7 +155,6 @@ button:hover {
 }
 
 footer {
-    background-color: var(--section-color);
     color: var(--text-color);
     font-size: 0.9rem;
     padding: 2rem;
@@ -173,7 +189,7 @@ footer {
 
 table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: collapse; 
 }
 
 th, td {

@@ -20,6 +20,7 @@ export default {
    </head>
    <body>
      <header>
+     <div class="smaller-square"><div class="larger-square"></div></div>
        <h1>BODC-DEI</h1>
        <nav>
          <ul>
@@ -34,7 +35,6 @@ export default {
   
      <footer>
         <div class="larger-square"><div class="smaller-square"></div></div>
-     <div class="smaller-square"><div class="larger-square"></div></div>
        <p>&copy; 2023 BODC-DEI</p>
      </footer>
    </body>

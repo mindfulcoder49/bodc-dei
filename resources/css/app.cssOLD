@@ -197,14 +197,23 @@
 table {
     width: 100%;
     border-collapse: collapse;
+    z-index:
+ 
 }
 
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
+
 }
 
 th {
     background-color: #4CAF50;
     color: white;
+}
+
+tr {
+  z-index:4; 
+  opacity: 1;
+  background-color: var(--section-color);
 }
