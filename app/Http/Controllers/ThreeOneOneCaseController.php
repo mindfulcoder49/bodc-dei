@@ -17,4 +17,7 @@ class ThreeOneOneCaseController extends Controller
             'cases' => $cases,
         ]);
     }
+
+    
+
 }

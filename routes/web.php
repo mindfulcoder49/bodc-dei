@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThreeOneOneCaseController;
 use Illuminate\Foundation\Application;
@@ -42,4 +43,8 @@ Route::get('/cases', [ThreeOneOneCaseController::class, 'index'])->name('cases.i
 Route::inertia('/about', "About")->name('about');
 Route::inertia('/contact', "Contact")->name('contact');
 Route::inertia('/projects', "Projects")->name('projects');
+
+Route::resource('chirps', ChirpController::class)
+    ->only(['index', 'store'])
+    ->middleware(['auth', 'verified']);
 

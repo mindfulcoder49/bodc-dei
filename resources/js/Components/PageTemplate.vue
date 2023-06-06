@@ -18,7 +18,7 @@ export default {
      <meta name="viewport" content="width=device-width, initial-scale=1" />
      <title>BODC-DEI</title>
    </head>
-   <body>
+   <body class="pageTemplate">
      <header>
      <div class="smaller-square"><div class="larger-square"></div></div>
        <h1>BODC-DEI</h1>
