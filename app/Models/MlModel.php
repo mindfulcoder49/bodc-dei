@@ -16,6 +16,6 @@ class MlModel extends Model
 
     public function predictions(): HasMany
     {
-        return $this->hasMany(Prediction::class);
+        return $this->hasMany(Prediction::class, 'ml_model_id', 'id');
     }
 }

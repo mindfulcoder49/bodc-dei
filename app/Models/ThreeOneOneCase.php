@@ -11,7 +11,7 @@ class ThreeOneOneCase extends Model
 
     public function predictions(): HasMany
     {
-        return $this->hasMany(Prediction::class);
+        return $this->hasMany(Prediction::class, 'case_enquiry_id', 'case_enquiry_id');
     }
     
 }

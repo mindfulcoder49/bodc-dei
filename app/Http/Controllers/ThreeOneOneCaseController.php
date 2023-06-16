@@ -9,7 +9,7 @@ class ThreeOneOneCaseController extends Controller
 {
     public function index()
     {
-        $allCases = ThreeOneOneCase::all();
+        $allCases = ThreeOneOneCase::with('predictions')->get();
 
         $cases = $allCases->take(400);
 

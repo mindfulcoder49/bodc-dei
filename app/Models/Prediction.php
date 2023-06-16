@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Chirp extends Model
+class Prediction extends Model
 {
     use HasFactory;
 
@@ -16,11 +16,11 @@ class Chirp extends Model
 
     public function threeoneonecase(): BelongsTo
     {
-        return $this->belongsTo(ThreeOneOneCase::class);
+        return $this->belongsTo(ThreeOneOneCase::class, 'case_enquiry_id', 'case_enquiry_id');
     }
 
     public function mlmodel(): BelongsTo
     {
-        return $this->belongsTo(MlModel::class);
+        return $this->belongsTo(MlModel::class, 'ml_model_id', 'id');
     }
 }

@@ -43,13 +43,11 @@ return new class extends Migration
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
             $table->text('source')->nullable();
-            $table->bigInteger('survival_time')->nullable();
+            $table->text('survival_time')->nullable();
             $table->bigInteger('event')->nullable();
             $table->text('ward_number')->nullable();
             $table->double('survival_time_hours')->nullable();
-            $table->bigInteger('event_prediction_x')->nullable();
-            $table->float('event_prediction_y')->nullable();
-            $table->text('survival_prediction')->nullable();
+            $table->timestamps();
         });
 
     }
