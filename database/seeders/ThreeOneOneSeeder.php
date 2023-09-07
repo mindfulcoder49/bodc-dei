@@ -16,7 +16,7 @@ class ThreeOneOneSeeder extends Seeder
     public function run(): void
     {
         //Read a csv file line by line
-        /*
+        
         $file = fopen(database_path('seeders/311.csv'), 'r');
         $header = fgetcsv($file);
         //replace any values sla_target_date values ith target_date
@@ -54,7 +54,7 @@ class ThreeOneOneSeeder extends Seeder
             }
         } 
 
-        */
+        
         $file = fopen(database_path('seeders/311_ml_models.csv'), 'r');
         $header = fgetcsv($file);
         while ($row = fgetcsv($file)) {

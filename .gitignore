@@ -31,6 +31,8 @@ Thumbs.db
 # Logs and databases
 *.log
 *.sqlite
+*.sql 
 
 # Vite
 .vite/
+
