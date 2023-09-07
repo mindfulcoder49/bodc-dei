@@ -8,7 +8,7 @@
           type="text"
           class="pageTemplate"
         />
-        
+        <button @click="fetchCases">Search</button>
         <table v-if="filteredCases.length">
           <thead>
             <tr>
@@ -53,7 +53,10 @@ export default {
   },
   methods: {
     updateSearchTerm(event) {
-      this.searchTerm = event.target.value;
+        this.searchTerm = event.target.value;
+    },
+    fetchCases() {
+        this.$inertia.get('/cases', { searchTerm: this.searchTerm });
     }
   }
 };

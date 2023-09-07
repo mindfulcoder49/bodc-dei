@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ThreeOneOneCase;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
+
 
 class ThreeOneOneCaseController extends Controller
 {
@@ -15,8 +17,8 @@ class ThreeOneOneCaseController extends Controller
      */
     public function index(Request $request)
     {
-        $searchTerm = $request->get('search', '');
-        
+        $searchTerm = $request->get('searchTerm', '');
+        Log::debug("doing a search for $searchTerm");
         $cases = ThreeOneOneCase::with(['predictions' => function($query) use ($searchTerm) {
                 $query->where('prediction', 'LIKE', "%{$searchTerm}%")
                       ->orWhere('prediction_date', 'LIKE', "%{$searchTerm}%");
@@ -27,7 +29,7 @@ class ThreeOneOneCaseController extends Controller
                 }
             })
             ->take(400)
-            ->get();
+            ->get(); 
 
         return Inertia::render('ThreeOneOneCaseList', [
             'cases' => $cases,

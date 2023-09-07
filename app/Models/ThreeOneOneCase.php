@@ -35,7 +35,12 @@ class ThreeOneOneCase extends Model
     }
 
     const SEARCHABLE_COLUMNS = [
-        'case_title', 'case_status', 'subject', 'reason', // ... and so on for other columns ...
+        'case_title', 
+        'case_status', 
+        'subject', 
+        'reason', 
+        'case_enquiry_id', 
+        'closure_reason', 
     ];
     
 }
