@@ -7,5 +7,7 @@
 			"path": "../BODC-DEI-siteOLD/OLD"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"workbench.colorTheme": "Tomorrow Night Blue"
+	}
 }
