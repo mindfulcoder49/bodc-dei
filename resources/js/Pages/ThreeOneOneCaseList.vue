@@ -17,6 +17,17 @@
           />
           <button @click="fetchCases">Search</button>
         </div>
+        <p v-if="cases.length">
+  Fields: <span v-for="(value, key, index) in cases[0]" :key="key">{{ key }}<span v-if="index < Object.keys(cases[0]).length - 1">, </span></span>
+</p>
+<p v-if="cases.length && cases[0].predictions.length">
+  Prediction Fields: 
+  <span v-for="(value, key, index) in cases[0].predictions[0]" :key="key">
+    {{ key }}<span v-if="index < Object.keys(cases[0].predictions[0]).length - 1">, </span>
+  </span>
+</p>
+<p>Total number of cases: {{ numberOfCases }}</p>
+
         <table v-if="filteredCases.length">
           <thead>
             <tr>
@@ -44,13 +55,17 @@ export default {
       type: Array,
       required: true,
     },
+    search: {
+      type: String,
+      required: false,
+    },
   },
   components: {
     PageTemplate, Head, Link
   },
   data() {
     return {
-      searchTerm: ''
+      searchTerm: this.search
     };
   },
   computed: {
@@ -63,6 +78,9 @@ export default {
           String(value).toLowerCase().includes(term)
         );
       });
+    },
+    numberOfCases() {
+      return this.filteredCases.length;
     }
   },
   methods: {

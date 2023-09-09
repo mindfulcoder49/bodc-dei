@@ -18,11 +18,8 @@ class ThreeOneOneCaseController extends Controller
     public function index(Request $request)
     {
         $searchTerm = $request->get('searchTerm', '');
-        Log::debug("doing a search for $searchTerm");
-        $cases = ThreeOneOneCase::with(['predictions' => function($query) use ($searchTerm) {
-                $query->where('prediction', 'LIKE', "%{$searchTerm}%")
-                      ->orWhere('prediction_date', 'LIKE', "%{$searchTerm}%");
-            }])
+       //Log::debug("doing a search for $searchTerm");
+        $cases = ThreeOneOneCase::with(['predictions'])
             ->where(function($query) use ($searchTerm) {
                 foreach (ThreeOneOneCase::SEARCHABLE_COLUMNS as $column) {
                     $query->orWhere($column, 'LIKE', "%{$searchTerm}%");

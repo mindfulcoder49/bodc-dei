@@ -83,14 +83,11 @@ class ThreeOneOneSeeder extends Seeder
             //Check if the prediction already exists for the MlModel
 
             $prediction = Prediction::where('case_enquiry_id', $data['case_enquiry_id'])->where('ml_model_id', $data['ml_model_id'])->first();
-            echo "checking predictions";
             if ($prediction) {
                 //update the prediction
-                echo "\rupdating prediction $data[case_enquiry_id]";
                 $prediction->update($data);
             } else {
                 //create the prediction
-                echo "\rcreating prediction $data[case_enquiry_id]";
                 $prediction = Prediction::create($data);
             }
         }
