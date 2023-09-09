@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ml_models', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->primary();
             $table->timestamps();
             $table->string('ml_model_name');
             $table->string('ml_model_type');
             $table->date('ml_model_date');
         });
+    
     }
-
     /**
      * Reverse the migrations.
      */

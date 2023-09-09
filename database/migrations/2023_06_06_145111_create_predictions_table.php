@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->bigInteger('case_enquiry_id');
-            $table->foreignId('ml_model_id')->constrained('ml_models');
+            $table->string('ml_model_id');
             $table->float('prediction');
             $table->date('prediction_date');
+
+
+            $table->foreign('ml_model_id')->references('id')->on('ml_models');
 
             $table->foreign('case_enquiry_id')->references('case_enquiry_id')->on('three_one_one_cases');
         });

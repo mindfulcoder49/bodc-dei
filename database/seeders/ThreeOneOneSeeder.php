@@ -15,9 +15,14 @@ class ThreeOneOneSeeder extends Seeder
      */
     public function run(): void
     {
+        //get todays datestring
+        $dateTime = new \DateTime('now', new \DateTimeZone('America/New_York'));
+        $today = $dateTime->format('Y-m-d');
+        
+        
         //Read a csv file line by line
         
-        $file = fopen(database_path('seeders/311.csv'), 'r');
+        $file = fopen(database_path("seeders/".$today."_311_cases.csv"), 'r');
         $header = fgetcsv($file);
         //replace any values sla_target_date values ith target_date
         $header = array_map(function ($value) {
@@ -55,7 +60,7 @@ class ThreeOneOneSeeder extends Seeder
         } 
 
         
-        $file = fopen(database_path('seeders/311_ml_models.csv'), 'r');
+        $file = fopen(database_path('seeders/'.$today.'_311_ml_models.csv'), 'r');
         $header = fgetcsv($file);
         while ($row = fgetcsv($file)) {
             $data = array_combine($header, $row);
@@ -71,7 +76,7 @@ class ThreeOneOneSeeder extends Seeder
             }
         }
         
-        $file = fopen(database_path('seeders/311_predictions.csv'), 'r');
+        $file = fopen(database_path('seeders/'.$today.'_311_predictions.csv'), 'r');
         $header = fgetcsv($file);
         while ($row = fgetcsv($file)) {
             $data = array_combine($header, $row);
