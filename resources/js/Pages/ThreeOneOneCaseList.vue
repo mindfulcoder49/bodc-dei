@@ -3,6 +3,9 @@
 
 <template>
   <PageTemplate>
+    <Head>
+      <title>311 Case List</title>
+    </Head>
     <main class="maintable">
         <div>
           <input 
@@ -33,6 +36,7 @@
 
 <script>
 import PageTemplate from '../Components/PageTemplate.vue';
+import { Head, Link } from '@inertiajs/vue3';
 
 export default {
   props: {
@@ -42,7 +46,7 @@ export default {
     },
   },
   components: {
-    PageTemplate
+    PageTemplate, Head, Link
   },
   data() {
     return {

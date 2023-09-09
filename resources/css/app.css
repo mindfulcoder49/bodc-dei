@@ -31,6 +31,9 @@ body.pageTemplate {
     text-align: center;
 }
 
+.pageTemplate header {
+    margin-bottom: 5rem;
+}
 .pageTemplate nav {
     background-color: var(--background-color);
     padding: 0rem;
