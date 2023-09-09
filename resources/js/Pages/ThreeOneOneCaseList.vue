@@ -1,14 +1,19 @@
+
+
+
 <template>
   <PageTemplate>
-    <main class="pageTemplate maintable">
-        <input 
-          :value="searchTerm" 
-          @input="updateSearchTerm" 
-          placeholder="Search..."
-          type="text"
-          class="pageTemplate"
-        />
-        <button @click="fetchCases">Search</button>
+    <main class="maintable">
+        <div>
+          <input 
+            :value="searchTerm" 
+            @input="updateSearchTerm" 
+            placeholder="Search..."
+            type="text"
+            class="pageTemplate"
+          />
+          <button @click="fetchCases">Search</button>
+        </div>
         <table v-if="filteredCases.length">
           <thead>
             <tr>
@@ -27,12 +32,17 @@
 </template>
 
 <script>
+import PageTemplate from '../Components/PageTemplate.vue';
+
 export default {
   props: {
     cases: {
       type: Array,
       required: true,
     },
+  },
+  components: {
+    PageTemplate
   },
   data() {
     return {

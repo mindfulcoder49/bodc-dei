@@ -13,11 +13,10 @@ export default {
 <template>
     <!DOCTYPE html>
  <html lang="en">
-   <head>
+   <Head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1" />
-     <title>BODC-DEI</title>
-   </head>
+   </Head>
    <body class="pageTemplate">
      <header>
      <div class="smaller-square"><div class="larger-square"></div></div>

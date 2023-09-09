@@ -22,6 +22,9 @@ defineProps({
 
 <template>
   <PageTemplate>
+    <Head>
+      <title>About</title>
+    </Head>
     <main>
       <section>
         <h2>About Page Coming Soon!</h2>

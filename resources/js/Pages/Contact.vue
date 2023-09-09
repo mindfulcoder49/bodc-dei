@@ -24,6 +24,9 @@ defineProps({
 
 
    <PageTemplate>
+        <Head>
+        <title>Contact</title>
+        </Head>
     <main>
       <section>
         <h2>Contact Page Coming Soon!</h2>
