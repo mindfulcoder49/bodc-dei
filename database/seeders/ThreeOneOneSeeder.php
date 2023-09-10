@@ -10,9 +10,59 @@ use App\Models\MlModel;
 
 class ThreeOneOneSeeder extends Seeder
 {
+
+    public function run(): void
+    {
+        $dateTime = new \DateTime('now', new \DateTimeZone('America/New_York'));
+        $today = $dateTime->format('Y-m-d');
+        
+        $this->processCSV("seeders/".$today."_311_cases.csv", 'ThreeOneOneCase', ['case_enquiry_id']);
+        $this->processCSV("seeders/".$today."_311_ml_models.csv", 'MlModel');
+        $this->processCSV("seeders/".$today."_311_predictions.csv", 'Prediction', ['case_enquiry_id', 'ml_model_id', 'prediction_date']);
+    }
+
+    private function processCSV($filePath, $modelClass, $uniqueKeys = ['id'])
+{
+    $file = fopen(database_path($filePath), 'r');
+    $header = fgetcsv($file);
+
+    // Processing headers with array_map
+    if ($modelClass == 'ThreeOneOneCase') {
+        $header = array_map(function ($value) {
+            return str_replace(['sla_target_dt', 'on_time', 'closed_photo', 'submitted_photo'], 
+                               ['target_dt', 'ontime', 'closedphoto', 'submittedphoto'], 
+                               $value);
+        }, $header);
+    }
+
+    $progress = 0;
+    while ($row = fgetcsv($file)) {
+        $progress++;
+        //if $progress is divisible by 1000, update with $progress
+        if ($progress % 20 == 0) {
+            echo "\r".$progress . " ". $modelClass ." records processed";
+        }
+        $data = array_combine($header, $row);
+        $data = array_filter($data, function($value) {
+            return !($value == '' || $value == ' ');
+        });
+
+        $conditions = [];
+        foreach ($uniqueKeys as $key) {
+            $conditions[$key] = $data[$key];
+        }
+
+        $model = '\\App\\Models\\' . $modelClass;
+        $model::updateOrCreate($conditions, $data);
+    }
+    echo "\nfinal progress: ".$progress . " ". $modelClass ." records processed\n";
+    fclose($file);
+}
+
+
     /**
      * Run the database seeds.
-     */
+    
     public function run(): void
     {
         //get todays datestring
@@ -92,6 +142,7 @@ class ThreeOneOneSeeder extends Seeder
             }
         }
     }
+    */
 }
 
 

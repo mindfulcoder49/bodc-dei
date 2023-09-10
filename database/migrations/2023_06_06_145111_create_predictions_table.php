@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->bigInteger('case_enquiry_id');
             $table->string('ml_model_id');
-            $table->float('prediction');
+            $table->string('prediction');
             $table->date('prediction_date');
 
 
