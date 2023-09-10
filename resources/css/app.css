@@ -4,7 +4,7 @@
 
 :root {
     --background-color: #f1f1f1; /* Light Gray */
-    --primary-color: #2F343E; /* Dark Slate Gray */
+    --primary-color: #1b273a; /* Dark Slate Gray */
     --accent-color1: #3f6e39; /* Bittersweet (red) */
     --accent-color2: #1B998B; /* Keppel (green) */
     --button-color: #b0c2f8; /* White */
@@ -147,7 +147,7 @@ body.pageTemplate {
     color: var(--primary-color);
     cursor: pointer;
     font-size: 1.2rem;
-    margin: 1.5rem 1.5rem 1.5rem 0 ;
+    margin: 1.5rem 1.5rem 1.5rem 1.5rem;
     padding: 1rem 1.5rem;
     text-align: center;
     text-decoration: none;
@@ -214,15 +214,40 @@ body.pageTemplate {
     width: 100%;
     border-collapse: collapse; 
 }
-
-.pageTemplate th, .pageTemplate td {
-    border: 2px solid #ddd;
-    padding: 1.2rem;
+.pageTemplate  .cases.table {
+    display: table;
+    width: 100%;
+  }
+  .pageTemplate  .thead, .pageTemplate .tbody {
+    display: table-row-group;
+  }
+.pageTemplate .tr {
+    display: table-row;
 }
 
-.pageTemplate th {
+.pageTemplate .th, .pageTemplate .td {
+    border: 2px solid #ddd;
+    padding: 1.2rem;
+    display: table-cell;
+}
+
+.pageTemplate .th {
     background-color: var(--primary-color);
     color: var(--button-text-color);
+}
+
+.prediction.table {
+    position:absolute;
+    display: table;
+    background-color: rgba(255, 255, 255, 0.9);
+    /*css to make the table look like a cool glassy overlay with a shadow and border */
+    border: 10px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    /* end of css to make the table look like a cool glassy overlay with a shadow and border */
+    margin-top:-10%;
+    margin-left:10%;
+
 }
 
 

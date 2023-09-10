@@ -17,29 +17,46 @@
           />
           <button @click="fetchCases">Search</button>
         </div>
-        <p v-if="cases.length">
-  Fields: <span v-for="(value, key, index) in cases[0]" :key="key">{{ key }}<span v-if="index < Object.keys(cases[0]).length - 1">, </span></span>
-</p>
-<p v-if="cases.length && cases[0].predictions.length">
-  Prediction Fields: 
-  <span v-for="(value, key, index) in cases[0].predictions[0]" :key="key">
-    {{ key }}<span v-if="index < Object.keys(cases[0].predictions[0]).length - 1">, </span>
-  </span>
-</p>
-<p>Total number of cases: {{ numberOfCases }}</p>
+        
+<section>Total number of cases: {{ numberOfCases }}</section>
 
-        <table v-if="filteredCases.length">
-          <thead>
-            <tr>
-              <th v-for="(value, key) in filteredCases[0]" :key="key">{{ key }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in filteredCases" :key='item["case_enquiry_id"]'>
-              <td v-for="(value, key) in item" :key="key">{{ value }}</td>
-            </tr>
-          </tbody>
-        </table>
+<div class="cases table" v-if="filteredCases.length">
+    <div class="thead">
+        <div class="tr">
+            <div class="th">Show Predictions</div>
+            <div class="th" v-for="key in filteredKeys" :key="key">{{ key }}</div>
+        </div>
+    </div>
+    <div class="tbody">
+        <template v-for="item in filteredCases" :key='item["case_enquiry_id"]'>
+            <!-- Main Data Row -->
+            <div class="tr">
+                <!-- Plus icon to toggle predictions -->
+                <div class="td">
+                    <button v-if="!item.predictions.showPredictions" @click="item.predictions.showPredictions = !item.predictions.showPredictions">+</button>
+                    <button v-if="item.predictions.showPredictions" @click="item.predictions.showPredictions = !item.predictions.showPredictions">-</button>
+                </div>
+                <div class="td" v-for="key in filteredKeys" :key="key">{{ item[key] }}</div>
+            </div>
+            
+            <!-- Predictions Row -->
+            <div class="table prediction" v-if="item.predictions.showPredictions">
+                <div class="thead">
+                  <div class="tr">
+                      <div class="th" v-for="key in filteredPredKeys" :key="key">{{ key }}</div>
+                  </div>
+                </div>
+                        <div v-for="prediction in item.predictions" :key="prediction.id" class="tr ">
+                            <div v-for="(predValue, predKey) in prediction" :key="predKey" class="td">
+                              {{ predValue }}
+                            </div>
+                        </div>
+            </div>
+        </template>
+    </div>
+</div>
+
+
         <div v-else>No cases found.</div>
     </main>
   </PageTemplate>
@@ -81,7 +98,14 @@ export default {
     },
     numberOfCases() {
       return this.filteredCases.length;
+    },
+    filteredKeys() {
+      return Object.keys(this.filteredCases[0]).filter(key => key !== 'predictions');
+    },
+    filteredPredKeys() {
+      return Object.keys(this.filteredCases[0].predictions[0]);
     }
+
   },
   methods: {
     updateSearchTerm(event) {
