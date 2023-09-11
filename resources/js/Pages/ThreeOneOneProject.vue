@@ -1,5 +1,11 @@
 <script>
 
+/*
+1) A list of models
+2) Their accuracy based on past performance
+3) Current predictions on open cases
+*/
+
 import PageTemplate from '../Components/PageTemplate.vue';
 
 export default {

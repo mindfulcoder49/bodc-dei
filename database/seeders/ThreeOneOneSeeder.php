@@ -13,17 +13,55 @@ class ThreeOneOneSeeder extends Seeder
 
     public function run(): void
     {
-        $dateTime = new \DateTime('now', new \DateTimeZone('America/New_York'));
-        $today = $dateTime->format('Y-m-d');
-        
-        $this->processCSV("seeders/".$today."_311_cases.csv", 'ThreeOneOneCase', ['case_enquiry_id']);
-        $this->processCSV("seeders/".$today."_311_ml_models.csv", 'MlModel');
-        $this->processCSV("seeders/".$today."_311_predictions.csv", 'Prediction', ['case_enquiry_id', 'ml_model_id', 'prediction_date']);
+        $seedersDir = database_path("seeders/");
+        $manifestFiles = glob($seedersDir . "*manifest*");
+        echo "\nmanifest files:\n".implode("\n", $manifestFiles)."\n";
+        $csvFilesToProcess = [];
+    
+        // Loop through each manifest file and collect the filenames of CSVs to process
+        foreach ($manifestFiles as $manifestFile) {
+            $lines = file($manifestFile, FILE_IGNORE_NEW_LINES);
+            foreach ($lines as $line) {
+                if (file_exists($seedersDir . $line )) {
+                    $csvFilesToProcess[] = $line;
+                }
+            }
+        }
+    
+        // Determine which model and unique parameters to use for each CSV
+        foreach ($csvFilesToProcess as $csvFile) {
+            $model = null;
+            $uniqueParams = [];
+    
+            if (strpos($csvFile, '311_cases') !== false) {
+                $model = 'ThreeOneOneCase';
+                $uniqueParams = ['case_enquiry_id'];
+            } elseif (strpos($csvFile, '311_ml_models') !== false) {
+                $model = 'MlModel';
+            } elseif (strpos($csvFile, '311_predictions') !== false) {
+                $model = 'Prediction';
+                $uniqueParams = ['case_enquiry_id', 'ml_model_id', 'prediction_date'];
+            }
+    
+            if ($model) {
+                $this->processCSV($seedersDir . $csvFile, $model, $uniqueParams);
+            }
+        }
+    
+        // Rename manifest files
+        foreach ($manifestFiles as $manifestFile) {
+            $newName = str_replace('manifest', 'm4n1f3st', $manifestFile);
+            rename($manifestFile, $newName);
+        } 
     }
+    
 
     private function processCSV($filePath, $modelClass, $uniqueKeys = ['id'])
 {
-    $file = fopen(database_path($filePath), 'r');
+    //echo file name
+    echo "\nProcessing ".$filePath."\n";
+
+    $file = fopen($filePath, 'r');
     $header = fgetcsv($file);
 
     // Processing headers with array_map
