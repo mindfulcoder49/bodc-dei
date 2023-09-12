@@ -23,6 +23,9 @@ defineProps({
 <template>
 
 <PageTemplate>
+  <Head>
+    <title>Home</title>
+  </Head>
     <main>
     
       <section>
