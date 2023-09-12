@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id(); // New auto-incrementing ID column
             $table->bigInteger('case_enquiry_id'); // Removed primary()
             $table->dateTime('open_dt')->nullable();
-            $table->text('target_dt')->nullable();
+            $table->text('sla_target_dt')->nullable();
             $table->dateTime('closed_dt')->nullable();
-            $table->text('ontime')->nullable();
+            $table->text('on_time')->nullable();
             $table->text('case_status')->nullable();
             $table->text('closure_reason')->nullable();
             $table->text('case_title')->nullable();
@@ -28,8 +28,8 @@ return new class extends Migration
             $table->text('type')->nullable();
             $table->text('queue')->nullable();
             $table->text('department')->nullable();
-            $table->text('submittedphoto')->nullable();
-            $table->text('closedphoto')->nullable();
+            $table->text('submitted_photo')->nullable();
+            $table->text('closed_photo')->nullable();
             $table->text('location')->nullable();
             $table->text('fire_district')->nullable();
             $table->text('pwd_district')->nullable();

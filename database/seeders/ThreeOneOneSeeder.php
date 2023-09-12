@@ -64,6 +64,7 @@ class ThreeOneOneSeeder extends Seeder
         $file = fopen($filePath, 'r');
         $header = fgetcsv($file);
 
+        /*
         if ($modelClass == 'ThreeOneOneCase') {
             $header = array_map(function ($value) {
                 return str_replace(
@@ -72,7 +73,7 @@ class ThreeOneOneSeeder extends Seeder
                     $value
                 );
             }, $header);
-        }
+        } */
 
         $progress = 0;
         while ($row = fgetcsv($file)) {
