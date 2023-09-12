@@ -11,7 +11,7 @@ class Prediction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'prediction', 'prediction_date',
+        'case_enquiry_id', 'ml_model_id', 'ml_model_name', 'prediction', 'prediction_date',
     ];
 
     public function threeoneonecase(): BelongsTo

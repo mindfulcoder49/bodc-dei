@@ -11,7 +11,7 @@ class MlModel extends Model
     use HasFactory;
 
     protected $fillable = [
-        'message',
+        'ml_model_name', 'ml_model_type', 'ml_model_date',
     ];
 
     public function predictions(): HasMany

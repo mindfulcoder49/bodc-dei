@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('predictions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->unsignedBigInteger('three_one_one_case_id');  // Foreign key to three_one_one_cases
             $table->bigInteger('case_enquiry_id');
-            $table->string('ml_model_id');
+            $table->unsignedBigInteger('ml_model_id');  // Foreign key to ml_models
+            $table->string('ml_model_name');  // Descriptive string for the model's name
             $table->string('prediction');
             $table->date('prediction_date');
 
-
-            $table->foreign('ml_model_id')->references('id')->on('ml_models');
-
-            $table->foreign('case_enquiry_id')->references('case_enquiry_id')->on('three_one_one_cases');
+            $table->foreign('three_one_one_case_id')->references('id')->on('three_one_one_cases')->onDelete('cascade'); 
+            $table->foreign('ml_model_id')->references('id')->on('ml_models')->onDelete('cascade');
         });
     }
 

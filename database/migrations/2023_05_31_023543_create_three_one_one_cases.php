@@ -14,7 +14,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('three_one_one_cases', function (Blueprint $table) {
-            $table->bigInteger('case_enquiry_id')->primary();
+            $table->id(); // New auto-incrementing ID column
+            $table->bigInteger('case_enquiry_id'); // Removed primary()
             $table->dateTime('open_dt')->nullable();
             $table->text('target_dt')->nullable();
             $table->dateTime('closed_dt')->nullable();

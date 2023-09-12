@@ -7,20 +7,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ThreeOneOneCase extends Model
 {
-    
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'case_enquiry_id';
+    protected $primaryKey = 'id';
 
     /**
      * Indicates if the primary key is auto-incrementing.
      *
      * @var bool
      */
-    public $incrementing = false;
+    public $incrementing = true;
 
     /**
      * The data type of the auto-incrementing primary key.
@@ -31,7 +30,7 @@ class ThreeOneOneCase extends Model
 
     public function predictions(): HasMany
     {
-        return $this->hasMany(Prediction::class, 'case_enquiry_id', 'case_enquiry_id');
+        return $this->hasMany(Prediction::class);
     }
 
     const SEARCHABLE_COLUMNS = [
