@@ -15,42 +15,47 @@ class ThreeOneOneSeeder extends Seeder
         $seedersDir = database_path("seeders/");
         $manifestFiles = glob($seedersDir . "*manifest*");
         echo "\nmanifest files:\n".implode("\n", $manifestFiles)."\n";
-        $csvFilesToProcess = [];
-    
+        
+        $casesFiles = [];
+        $mlModelFiles = [];
+        $predictionFiles = [];
+        
         foreach ($manifestFiles as $manifestFile) {
             $lines = file($manifestFile, FILE_IGNORE_NEW_LINES);
             foreach ($lines as $line) {
                 if (file_exists($seedersDir . $line)) {
-                    $csvFilesToProcess[] = $line;
+                    if (strpos($line, '311_cases') !== false) {
+                        $casesFiles[] = $line;
+                    } elseif (strpos($line, '311_ml_models') !== false) {
+                        $mlModelFiles[] = $line;
+                    } elseif (strpos($line, '311_predictions') !== false) {
+                        $predictionFiles[] = $line;
+                    }
                 }
             }
         }
 
-        foreach ($csvFilesToProcess as $csvFile) {
-            $model = null;
-            $uniqueParams = [];
-    
-            if (strpos($csvFile, '311_cases') !== false) {
-                $model = 'ThreeOneOneCase';
-                $uniqueParams = ['case_enquiry_id'];
-            } elseif (strpos($csvFile, '311_ml_models') !== false) {
-                $model = 'MlModel';
-                $uniqueParams = ['ml_model_name'];
-            } elseif (strpos($csvFile, '311_predictions') !== false) {
-                $model = 'Prediction';
-                $uniqueParams = ['case_enquiry_id', 'ml_model_name', 'prediction_date'];
-            }
-    
-            if ($model) {
-                $this->processCSV($seedersDir . $csvFile, $model, $uniqueParams);
-            }
+        // Process the cases files first
+        foreach ($casesFiles as $csvFile) {
+            $this->processCSV($seedersDir . $csvFile, 'ThreeOneOneCase', ['case_enquiry_id']);
         }
-    
+
+        // Then, process the ml_model files
+        foreach ($mlModelFiles as $csvFile) {
+            $this->processCSV($seedersDir . $csvFile, 'MlModel', ['ml_model_name']);
+        }
+
+        // Lastly, process the prediction files
+        foreach ($predictionFiles as $csvFile) {
+            $this->processCSV($seedersDir . $csvFile, 'Prediction', ['case_enquiry_id', 'ml_model_name', 'prediction_date']);
+        }
+        
         foreach ($manifestFiles as $manifestFile) {
             $newName = str_replace('manifest', 'm4n1f3st', $manifestFile);
             rename($manifestFile, $newName);
         } 
     }
+
 
     private function processCSV($filePath, $modelClass, $uniqueKeys = ['id'])
     {

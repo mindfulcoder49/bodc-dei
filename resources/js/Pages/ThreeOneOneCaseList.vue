@@ -103,7 +103,8 @@ export default {
       return Object.keys(this.filteredCases[0]).filter(key => key !== 'predictions');
     },
     filteredPredKeys() {
-      return Object.keys(this.filteredCases[0].predictions[0]);
+      //return Object.keys(this.filteredCases[0].predictions[0]);
+      return ['id', 'created_at', 'updated_at', 'three_one_one_case_id', 'case_enquiry_id', 'ml_model_id', 'ml_model_name', 'prediction', 'prediction_date'];
     }
 
   },
