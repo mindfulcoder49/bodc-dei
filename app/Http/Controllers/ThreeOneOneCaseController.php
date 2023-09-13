@@ -43,7 +43,8 @@ class ThreeOneOneCaseController extends Controller
                 foreach (ThreeOneOneCase::SEARCHABLE_COLUMNS as $column) {
                     $query->orWhere($column, 'LIKE', "%{$searchTerm}%");
                 }
-            })->get(); 
+            })
+            ->take(7000)->get(); 
 
         return Inertia::render('ThreeOneOneProject', [
             'cases' => $cases,

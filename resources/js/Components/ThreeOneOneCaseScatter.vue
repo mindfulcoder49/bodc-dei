@@ -6,10 +6,11 @@
   import { use } from 'echarts/core';
   import { CanvasRenderer } from 'echarts/renderers';
   import { ScatterChart } from 'echarts/charts';
+  import { LegendComponent } from 'echarts/components';
   import VChart from 'vue-echarts';
-  import { ref } from 'vue';
+  import { ref, computed, defineProps } from 'vue';
   
-  use([CanvasRenderer, ScatterChart]);
+  use([CanvasRenderer, ScatterChart, LegendComponent]);
   
   const props = defineProps({
     cases: {
@@ -17,40 +18,66 @@
       required: true,
     },
   });
+
+  const closedCases = computed(() => 
+    props.cases.filter(item => item.case_status === 'Closed').map(item => [item.longitude, item.latitude])
+  );
+
+  const openCases = computed(() => 
+    props.cases.filter(item => item.case_status === 'Open').map(item => [item.longitude, item.latitude])
+  );
   
-  const chartOption = ref({
+  const chartOption = computed(() => ({
+    legend: {
+    // Try 'horizontal'
+    orient: 'vertical',
+    right: 10,
+    top: 'center'
+  },
     xAxis: {
     name: 'Longitude',
     scale: true,  // Auto scale based on data
-    min: 'dataMin',  // Optional: set minimum value based on data
-    max: 'dataMax',  // Optional: set maximum value based on data
+    min: -71.2,  // Adjusted westernmost point
+    max: -70.98,  // Adjusted easternmost point
     axisLabel: {
-      fontSize: 12,
+      fontSize: 16,
       color: '#333'
     }
   },
   yAxis: {
     name: 'Latitude',
     scale: true,  // Auto scale based on data
-    min: 'dataMin',  // Optional: set minimum value based on data
-    max: 'dataMax',  // Optional: set maximum value based on data
+    min: 42.22,  // Adjusted southernmost point
+    max: 42.4,  // Adjusted northernmost point
     axisLabel: {
-      fontSize: 12,
+      fontSize: 16,
       color: '#333'
     }
   },
-    series: [
+  series: [
       {
+        name: 'Closed',
         type: 'scatter',
-        data: props.cases.map(item => [item.longitude, item.latitude]),
-        symbol: 'round',
+        data: closedCases.value,
+        symbol: 'circle',
         itemStyle: {
-          color: 'green'  // Change to your desired color
+          color: '#0D6986'
         },
         symbolSize: 5,
       },
+      {
+        name: 'Open',
+        type: 'scatter',
+        data: openCases.value,
+        symbol: 'circle',
+        itemStyle: {
+          color: '#DB073D'
+        },
+        symbolSize: 5,
+      }
     ],
-  });
+  }));
+
   </script>
   
   <style scoped>
@@ -58,8 +85,8 @@
     /* make css height the same as page width */
 
 
-    height: 100vw;
-    width: 100vw;
+    height: 100vh;
+    width: 100vh;
   }
   </style>
   

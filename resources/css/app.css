@@ -294,3 +294,18 @@ body.pageTemplate {
     background-color: rgba(84, 95, 242, 0.1);
     border-radius: 10px;
 }
+
+.scatter-chart {
+    background-image: url(/images/bostonmap.png);
+    /* set background coordinate 
+    background-position: -70px -40px;
+    background-repeat: no-repeat;
+    background-size: 120%
+    */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    
+    margin: 0 auto;
+
+}

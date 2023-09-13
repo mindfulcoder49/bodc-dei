@@ -16,7 +16,7 @@
           <button @click="fetchCases">Search</button>
         </div>
 
-        <ThreeOneOneCaseScatter :cases="cases" />
+        <ThreeOneOneCaseScatter :cases="filteredCases" />
         
     <section>Total number of cases: {{ numberOfCases }}</section>
 
