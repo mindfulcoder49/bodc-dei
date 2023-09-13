@@ -25,10 +25,27 @@ class ThreeOneOneCaseController extends Controller
                     $query->orWhere($column, 'LIKE', "%{$searchTerm}%");
                 }
             })
-            ->take(400)
+            ->take(500)
             ->get(); 
 
         return Inertia::render('ThreeOneOneCaseList', [
+            'cases' => $cases,
+            'search' => $searchTerm
+        ]);
+    }
+
+    public function indexnofilter(Request $request)
+    {
+        $searchTerm = $request->get('searchTerm', '');
+       //Log::debug("doing a search for $searchTerm");
+        $cases = ThreeOneOneCase::with(['predictions'])
+            ->where(function($query) use ($searchTerm) {
+                foreach (ThreeOneOneCase::SEARCHABLE_COLUMNS as $column) {
+                    $query->orWhere($column, 'LIKE', "%{$searchTerm}%");
+                }
+            })->get(); 
+
+        return Inertia::render('ThreeOneOneProject', [
             'cases' => $cases,
             'search' => $searchTerm
         ]);

@@ -40,6 +40,9 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get('/cases', [ThreeOneOneCaseController::class, 'index'])->name('cases.index');
+
+Route::get('/scatter', [ThreeOneOneCaseController::class, 'indexnofilter'])->name('cases.indexnofilter');
+
 Route::inertia('/about', "About")->name('about');
 Route::inertia('/contact', "Contact")->name('contact');
 Route::inertia('/projects', "Projects")->name('projects');

@@ -17,6 +17,8 @@
           />
           <button @click="fetchCases">Search</button>
         </div>
+
+        <!-- <ThreeOneOneCaseScatter :cases="cases" /> -->
         
 <section>Total number of cases: {{ numberOfCases }}</section>
 
@@ -64,6 +66,7 @@
 
 <script>
 import PageTemplate from '../Components/PageTemplate.vue';
+import ThreeOneOneCaseScatter from '../Components/ThreeOneOneCaseScatter.vue'; 
 import { Head, Link } from '@inertiajs/vue3';
 
 export default {
@@ -78,7 +81,7 @@ export default {
     },
   },
   components: {
-    PageTemplate, Head, Link
+    PageTemplate, Head, Link, ThreeOneOneCaseScatter
   },
   data() {
     return {
