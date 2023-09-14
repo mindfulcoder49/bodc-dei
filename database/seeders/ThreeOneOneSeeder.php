@@ -2,33 +2,46 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use App\Models\ThreeOneOneCase;
-use App\Models\Prediction;
 use App\Models\MlModel;
+use App\Models\Prediction;
 
 class ThreeOneOneSeeder extends Seeder
 {
+    private const SEEDERS_DIR = 'seeders/';
+    private const BATCH_SIZE = 500;
+
     public function run(): void
     {
-        $seedersDir = database_path("seeders/");
+        $seedersDir = database_path(self::SEEDERS_DIR);
         $manifestFiles = glob($seedersDir . "*manifest*");
-        echo "\nmanifest files:\n".implode("\n", $manifestFiles)."\n";
         
+        echo "\nManifest files:\n" . implode("\n", $manifestFiles) . "\n";
+        
+        $fileCategorization = $this->categorizeFiles($manifestFiles, $seedersDir);
+        
+        echo "\nTotal records to process: " . $fileCategorization['totalLines'] . "\n";
+
+        $this->processFiles($fileCategorization['casesFiles'], $seedersDir, ThreeOneOneCase::class, ['case_enquiry_id', 'checksum'], $fileCategorization['totalLines']);
+        $this->processFiles($fileCategorization['mlModelFiles'], $seedersDir, MlModel::class, ['ml_model_name'], $fileCategorization['totalLines']);
+        $this->processFiles($fileCategorization['predictionFiles'], $seedersDir, Prediction::class, [], $fileCategorization['totalLines']);
+        
+        $this->renameManifestFiles($manifestFiles);
+    }
+
+    private function categorizeFiles(array $manifestFiles, string $seedersDir): array
+    {
         $casesFiles = [];
         $mlModelFiles = [];
         $predictionFiles = [];
-        
-        // Initialize a counter for the total number of lines across all files
         $totalLines = 0;
-        
-        // Loop through each manifest file and categorize the files listed within
+
         foreach ($manifestFiles as $manifestFile) {
             $lines = file($manifestFile, FILE_IGNORE_NEW_LINES);
             foreach ($lines as $line) {
                 if (file_exists($seedersDir . $line)) {
-                    // Count the lines in the file (subtracting 1 for the header) and add to the total
                     $totalLines += count(file($seedersDir . $line)) - 1;
                     if (strpos($line, '311_cases') !== false) {
                         $casesFiles[] = $line;
@@ -41,38 +54,22 @@ class ThreeOneOneSeeder extends Seeder
             }
         }
 
-        // Inform the user about the total number of records to be processed
-        echo "\nTotal records to process: " . $totalLines . "\n";
-
-        // Process the categorized files
-        $this->processFiles($casesFiles, $seedersDir, 'ThreeOneOneCase', ['case_enquiry_id'], $totalLines);
-        $this->processFiles($mlModelFiles, $seedersDir, 'MlModel', ['ml_model_name'], $totalLines);
-        $this->processFiles($predictionFiles, $seedersDir, 'Prediction', ['case_enquiry_id', 'ml_model_name', 'prediction_date'], $totalLines);
-        
-        // Rename the manifest files to indicate they've been processed
-        foreach ($manifestFiles as $manifestFile) {
-            $newName = str_replace('manifest', 'm4n1f3st', $manifestFile);
-            rename($manifestFile, $newName);
-        } 
+        return [
+            'casesFiles' => $casesFiles,
+            'mlModelFiles' => $mlModelFiles,
+            'predictionFiles' => $predictionFiles,
+            'totalLines' => $totalLines
+        ];
     }
 
-    /**
-     * Process a list of files of a specific type.
-     */
-    private function processFiles($files, $seedersDir, $modelClass, $uniqueKeys, &$totalLines)
+    private function processFiles(array $files, string $seedersDir, string $modelClass, array $uniqueKeys, int &$totalLines): void
     {
         foreach ($files as $csvFile) {
             $this->processCSV($seedersDir . $csvFile, $modelClass, $uniqueKeys, $totalLines);
         }
     }
 
-    /**
-     * Format the given time in seconds into a readable format.
-     *
-     * @param float $timeInSeconds
-     * @return string
-     */
-    private function formatTime($timeInSeconds)
+    private function formatTime(float $timeInSeconds): string
     {
         $hours = floor($timeInSeconds / 3600);
         $minutes = floor(($timeInSeconds % 3600) / 60);
@@ -90,25 +87,18 @@ class ThreeOneOneSeeder extends Seeder
         return implode(', ', $formattedTime);
     }
 
-
-            
-    /**
-     * Process a specific CSV file and insert/update records in the database.
-     */
-    private function processCSV($filePath, $modelClass, $uniqueKeys, &$totalLines)
+    private function processCSV(string $filePath, string $modelClass, array $uniqueKeys, int &$totalLines): void
     {
-        echo "\nProcessing ".$filePath."\n";
+        echo "\nProcessing " . $filePath . "\n";
 
         $file = fopen($filePath, 'r');
         $header = fgetcsv($file);
 
+        $dataBatch = [];
         $progress = 0;
         $startTime = microtime(true);
-
-        // Get the file count once before the loop
         $fileCount = count(file($filePath));
 
-        // Loop through each line in the CSV
         while ($row = fgetcsv($file)) {
             $progress++;
             $totalLines--;
@@ -119,14 +109,13 @@ class ThreeOneOneSeeder extends Seeder
                 $estimatedTimePerRecord = $timeTaken / 100;
                 $estimatedTimeRemainingFile = $estimatedTimePerRecord * ($fileCount - 1 - $progress);
                 $estimatedTimeRemainingTotal = $estimatedTimePerRecord * $totalLines;
-            
-            
+
                 // Clear the previous 6 lines
                 echo "\033[6A";  // Move 6 lines up
                 echo "\033[K";   // Clear current line
                 echo $progress . " " . $modelClass . " records processed.\n";
                 echo "\033[K";   // Clear current line
-                echo "Records remaining in this file: " . (count(file($filePath)) - 1 - $progress) . ".\n";
+                echo "Records remaining in this file: " . ($fileCount - 1 - $progress) . ".\n";
                 echo "\033[K";   // Clear current line
                 echo "Total records remaining: " . $totalLines . ".\n";
                 echo "\033[K";   // Clear current line
@@ -135,48 +124,154 @@ class ThreeOneOneSeeder extends Seeder
                 echo "Estimated time remaining for this file: " . $this->formatTime($estimatedTimeRemainingFile) . ".\n";
                 echo "\033[K";   // Clear current line
                 echo "Estimated time for all files: " . $this->formatTime($estimatedTimeRemainingTotal) . ".\n";
-            
+
                 $startTime = microtime(true);
+                gc_collect_cycles();
             }
-            
 
             $data = array_combine($header, $row);
-            $data = array_filter($data, function($value) {
-                return !($value == '' || $value == ' ');
-            });
+            $data = array_map(function ($value) {
+                return ($value == '' || $value == ' ') ? null : $value;
+            }, $data);
+            
 
+            $dataBatch[] = $data;
+
+            if ($progress % self::BATCH_SIZE == 0) {
+                if ($modelClass === ThreeOneOneCase::class) {
+                    $this->insertOrUpdateCasesBatch($dataBatch, $modelClass, $uniqueKeys);
+                } elseif ($modelClass === MlModel::class) {
+                    $this->insertOrUpdateMlModelsBatch($dataBatch, $modelClass, $uniqueKeys);
+                } elseif ($modelClass === Prediction::class) {
+                    $this->insertOrUpdatePredictionsBatch($dataBatch, $modelClass, $uniqueKeys);
+                }
+                $dataBatch = []; // Reset the batch
+            }
+        }
+
+        // Process any remaining data
+        if (!empty($dataBatch)) {
+            if ($modelClass === ThreeOneOneCase::class) {
+                $this->insertOrUpdateCasesBatch($dataBatch, $modelClass, $uniqueKeys);
+            } elseif ($modelClass === MlModel::class) {
+                $this->insertOrUpdateMlModelsBatch($dataBatch, $modelClass, $uniqueKeys);
+            } elseif ($modelClass === Prediction::class) {
+                $this->insertOrUpdatePredictionsBatch($dataBatch, $modelClass, $uniqueKeys);
+            }
+        }
+
+        fclose($file);
+    }
+
+    private function insertOrUpdateCasesBatch(array $dataBatch, string $modelClass, array $uniqueKeys): void
+    { 
+        // Fetch existing records
+        $existingRecords = ThreeOneOneCase::whereIn('case_enquiry_id', array_column($dataBatch, 'case_enquiry_id'))
+                                        ->get()
+                                        ->keyBy('case_enquiry_id')
+                                        ->toArray();
+
+        $insertData = [];
+        $updateData = [];
+
+        foreach ($dataBatch as $data) {
+            // Convert empty values to null
+            $data = array_map(function ($value) {
+                return $value === '' ? null : $value;
+            }, $data);
+
+            $caseEnquiryId = $data['case_enquiry_id'];
+            if (isset($existingRecords[$caseEnquiryId])) {
+                if ($existingRecords[$caseEnquiryId]['checksum'] !== $data['checksum']) {
+                    $updateData[] = $data;
+                }
+            } else {
+                $insertData[] = $data;
+            }
+        }
+        //dd($insertData);
+
+        // Batch insert
+        if (!empty($insertData)) {
+            DB::table((new $modelClass)->getTable())->insert($insertData);
+        }
+
+        // Batch update
+        foreach ($updateData as $data) {
+            DB::table((new $modelClass)->getTable())
+            ->where('case_enquiry_id', $data['case_enquiry_id'])
+            ->update($data);
+        }
+
+        
+    }
+
+
+    private function insertOrUpdateMlModelsBatch(array $dataBatch, string $modelClass, array $uniqueKeys): void
+    {
+        foreach ($dataBatch as $data) {
             $conditions = [];
             foreach ($uniqueKeys as $key) {
                 $conditions[$key] = $data[$key];
             }
-
-            if ($modelClass == 'Prediction') {
-                // Here we get the actual IDs for foreign keys
-                $case = ThreeOneOneCase::where('case_enquiry_id', $data['case_enquiry_id'])->first();
-                $mlModel = MlModel::where('ml_model_name', $data['ml_model_name'])->first();
-            
-                if (!$case) {
-                    echo "\nWarning: Skipping Prediction record due to missing Case reference. Case with ID {$data['case_enquiry_id']} not found.\n";
-                    continue;  // Skip this iteration and continue with the next one
-                }
-            
-                if (!$mlModel) {
-                    echo "\nWarning: Skipping Prediction record due to missing ML Model reference. ML Model with name {$data['ml_model_name']} not found.\n";
-                    continue;  // Skip this iteration and continue with the next one
-                }
-            
-                $data['three_one_one_case_id'] = $case->id;
-                $data['ml_model_id'] = $mlModel->id;
-            
-                unset($data['ml_model_name']);
-            }
-            
-            
-
-            $model = '\\App\\Models\\' . $modelClass;
-            $model::updateOrCreate($conditions, $data);
+            $modelClass::updateOrCreate($conditions, $data);
         }
+    }
 
-        fclose($file);
+    private function insertOrUpdatePredictionsBatch(array $dataBatch, string $modelClass, array $uniqueKeys): void
+    {
+        // Fetch the three_one_one_case_id for the given case_enquiry_ids
+        $caseIds = ThreeOneOneCase::whereIn('case_enquiry_id', array_column($dataBatch, 'case_enquiry_id'))
+                                  ->pluck('id', 'case_enquiry_id')
+                                  ->toArray();
+        
+        // Fetch the ml_model_id for the given model_name
+        $mlModelIds = MlModel::whereIn('ml_model_name', array_column($dataBatch, 'ml_model_name'))
+                             ->pluck('id', 'ml_model_name')
+                             ->toArray();
+        
+    
+        $insertData = [];
+        $updateData = [];
+    
+        foreach ($dataBatch as $data) {
+            // Convert empty values to null
+            $data = array_map(function ($value) {
+                return $value === '' ? null : $value;
+            }, $data);
+    
+            // Add the three_one_one_case_id to the data
+            $data['three_one_one_case_id'] = $caseIds[$data['case_enquiry_id']] ?? null;
+    
+            // Add the ml_model_id to the data
+            $data['ml_model_id'] = $mlModelIds[$data['ml_model_name']] ?? null;
+    
+            $caseEnquiryId = $data['case_enquiry_id'];
+
+            $insertData[] = $data;
+            
+        }
+        
+        // Batch insert
+        if (!empty($insertData)) {
+            DB::table((new $modelClass)->getTable())->insert($insertData);
+        }
+    
+        // Batch update
+        foreach ($updateData as $data) {
+            DB::table((new $modelClass)->getTable())
+              ->where('case_enquiry_id', $data['case_enquiry_id'])
+              ->update($data);
+        }
+    }
+    
+    
+
+    private function renameManifestFiles(array $manifestFiles): void
+    {
+        foreach ($manifestFiles as $manifestFile) {
+            $newName = str_replace('manifest', 'm4n1f3st', $manifestFile);
+            rename($manifestFile, $newName);
+        }
     }
 }

@@ -10,6 +10,8 @@ class MlModel extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'ml_model_name', 'ml_model_type', 'ml_model_date',
     ];

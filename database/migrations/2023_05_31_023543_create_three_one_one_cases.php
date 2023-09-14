@@ -44,11 +44,8 @@ return new class extends Migration
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
             $table->text('source')->nullable();
-            $table->text('survival_time')->nullable();
-            $table->bigInteger('event')->nullable();
+            $table->text('checksum')->nullable();
             $table->text('ward_number')->nullable();
-            $table->double('survival_time_hours')->nullable();
-            $table->timestamps();
         });
 
     }

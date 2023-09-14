@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('predictions', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->unsignedBigInteger('three_one_one_case_id');  // Foreign key to three_one_one_cases
             $table->bigInteger('case_enquiry_id');
             $table->unsignedBigInteger('ml_model_id');  // Foreign key to ml_models

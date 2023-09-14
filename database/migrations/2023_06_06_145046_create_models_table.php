@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('ml_models', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('ml_model_name')->unique();
             $table->string('ml_model_type');
             $table->date('ml_model_date');
