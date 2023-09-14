@@ -44,7 +44,7 @@ class ThreeOneOneCaseController extends Controller
                     $query->orWhere($column, 'LIKE', "%{$searchTerm}%");
                 }
             })
-            ->take(7000)->get(); 
+            ->take(4000)->get(); 
 
         return Inertia::render('ThreeOneOneProject', [
             'cases' => $cases,
