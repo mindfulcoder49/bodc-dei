@@ -196,12 +196,42 @@ class ThreeOneOneSeeder extends Seeder
             DB::table((new $modelClass)->getTable())->insert($insertData);
         }
 
-        // Batch update
-        foreach ($updateData as $data) {
-            DB::table((new $modelClass)->getTable())
-            ->where('case_enquiry_id', $data['case_enquiry_id'])
-            ->update($data);
+        //Batch update
+        $valuesToUpdate = [];
+
+        if (!empty($updateData)) {
+            foreach ($updateData as $data) {
+                $columns = array_keys($data);
+                $values = array_map(function ($value) {
+
+                    if ($value === null) {
+                        return 'NULL';
+                    }
+                    return "'" . addslashes($value) . "'";
+                }, array_values($data));
+                
+                $valuesToUpdate[] = "(" . implode(",", $values) . ")";
+            }
+            
+            $columnsString = implode(",", $columns);
+            $valuesToUpdateString = implode(',', $valuesToUpdate);
+            
+            $updateParts = [];
+            foreach ($columns as $column) {
+                $updateParts[] = "$column = VALUES($column)";
+            }
+            $updateOnDuplicate = implode(", ", $updateParts);
+            
+            $sql = "
+                INSERT INTO " . (new $modelClass)->getTable() . " ($columnsString)
+                VALUES $valuesToUpdateString
+                ON DUPLICATE KEY UPDATE 
+                    $updateOnDuplicate;
+            ";
+            
+            DB::statement($sql);
         }
+        
 
         
     }
