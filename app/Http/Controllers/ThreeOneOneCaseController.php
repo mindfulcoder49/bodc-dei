@@ -24,6 +24,9 @@ class ThreeOneOneCaseController extends Controller
                 foreach (ThreeOneOneCase::SEARCHABLE_COLUMNS as $column) {
                     $query->orWhere($column, 'LIKE', "%{$searchTerm}%");
                 }
+            })->//only include cases with predictions
+            whereHas('predictions', function($query) {
+                $query->where('prediction_date', '>', '2021-01-01');
             })
             ->take(500)
             ->get(); 

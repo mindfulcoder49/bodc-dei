@@ -26,7 +26,7 @@ class ThreeOneOneSeeder extends Seeder
 
         $this->processFiles($fileCategorization['casesFiles'], $seedersDir, ThreeOneOneCase::class, ['case_enquiry_id', 'checksum'], $fileCategorization['totalLines']);
         $this->processFiles($fileCategorization['mlModelFiles'], $seedersDir, MlModel::class, ['ml_model_name'], $fileCategorization['totalLines']);
-        $this->processFiles($fileCategorization['predictionFiles'], $seedersDir, Prediction::class, [], $fileCategorization['totalLines']);
+        $this->processFiles($fileCategorization['predictionFiles'], $seedersDir, Prediction::class, ['case_enquiry_id', 'ml_model_id'], $fileCategorization['totalLines']);
         
         $this->renameManifestFiles($manifestFiles);
     }
@@ -280,11 +280,13 @@ class ThreeOneOneSeeder extends Seeder
 
             $insertData[] = $data;
             
-        }
+        }   
         
         // Batch insert
         if (!empty($insertData)) {
-            DB::table((new $modelClass)->getTable())->insert($insertData);
+            //use updateorInsert with uniquekeys to only insert new records
+            DB::table((new $modelClass)->getTable())->upsert($insertData, $uniqueKeys);
+
         }
     
         // Batch update

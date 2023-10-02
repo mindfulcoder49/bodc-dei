@@ -37,3 +37,7 @@ Thumbs.db
 .vite/
 
 /public/hot
+
+*.csv
+*manifest.txt
+*m4n1f3st.txt
