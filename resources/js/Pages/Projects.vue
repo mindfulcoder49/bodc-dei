@@ -36,6 +36,7 @@ defineProps({
         </p>
         <p><Link href="/cases" class="btn btn-primary">This page shows a searchable list of the cases and their outcome predictions.</Link></p>
         <p><Link href="/scatter" class="btn btn-primary">This page shows a geographical scatterplot of 311 case location.</Link> </p>
+        <p><Link href="/311models" class="btn btn-primary">This page shows information about the model and its accuracy.</Link> </p>
         <!-- <button>View Details</button> -->
       </section>
     </main>

@@ -24,7 +24,7 @@ class ThreeOneOneSeeder extends Seeder
         
         echo "\nTotal records to process: " . $fileCategorization['totalLines'] . "\n";
 
-        $this->processFiles($fileCategorization['casesFiles'], $seedersDir, ThreeOneOneCase::class, ['case_enquiry_id', 'checksum'], $fileCategorization['totalLines']);
+        $this->processFiles($fileCategorization['casesFiles'], $seedersDir, ThreeOneOneCase::class, ['case_enquiry_id'], $fileCategorization['totalLines']);
         $this->processFiles($fileCategorization['mlModelFiles'], $seedersDir, MlModel::class, ['ml_model_name'], $fileCategorization['totalLines']);
         $this->processFiles($fileCategorization['predictionFiles'], $seedersDir, Prediction::class, ['case_enquiry_id', 'ml_model_id'], $fileCategorization['totalLines']);
         
@@ -182,9 +182,8 @@ class ThreeOneOneSeeder extends Seeder
 
             $caseEnquiryId = $data['case_enquiry_id'];
             if (isset($existingRecords[$caseEnquiryId])) {
-                if ($existingRecords[$caseEnquiryId]['checksum'] !== $data['checksum']) {
-                    $updateData[] = $data;
-                }
+                $updateData[] = $data;
+                
             } else {
                 $insertData[] = $data;
             }

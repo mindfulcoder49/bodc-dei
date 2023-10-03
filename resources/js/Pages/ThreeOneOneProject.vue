@@ -20,7 +20,7 @@
         
     <section>Total number of cases: {{ numberOfCases }}</section>
 
-
+    
     </main>
   </PageTemplate>
 </template>

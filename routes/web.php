@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThreeOneOneCaseController;
+use App\Http\Controllers\MlModelController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -42,6 +43,8 @@ require __DIR__.'/auth.php';
 Route::get('/cases', [ThreeOneOneCaseController::class, 'index'])->name('cases.index');
 
 Route::get('/scatter', [ThreeOneOneCaseController::class, 'indexnofilter'])->name('cases.indexnofilter');
+
+Route::get('/311models', [MlModelController::class, 'index'])->name('models.index');
 
 Route::inertia('/about', "About")->name('about');
 Route::inertia('/contact', "Contact")->name('contact');

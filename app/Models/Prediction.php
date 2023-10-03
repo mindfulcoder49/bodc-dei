@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\MlModel;
+use App\Models\ThreeOneOneCase;
 
 class Prediction extends Model
 {
@@ -16,11 +18,34 @@ class Prediction extends Model
 
     public function threeoneonecase(): BelongsTo
     {
-        return $this->belongsTo(ThreeOneOneCase::class, 'case_enquiry_id', 'case_enquiry_id');
+        return $this->belongsTo(ThreeOneOneCase::class, 'three_one_one_case_id', 'id');
     }
 
     public function mlmodel(): BelongsTo
     {
         return $this->belongsTo(MlModel::class, 'ml_model_id', 'id');
+    }
+
+    //define function to return prediction timespan
+    public function getPredictionTimespanAttribute(): array
+    {
+        //get prediction
+        $prediction = $this->prediction;
+        //get prediction timespans
+        $prediction_timespans = [
+            "0-12 hours" => [0, 12],
+            "12-24 hours" => [12, 24],
+            "1-3 days" => [24, 72],
+            "4-7 days" => [96, 168],
+            "1-2 weeks" => [168, 336],
+            "2-4 weeks" => [336, 672],
+            "1-2 months" => [672, 1344],
+            "2-4 months" => [1344, 2688],
+            "4+ months" => [2688, 1000000]
+        ];        
+        //get prediction timespan
+        $prediction_timespan = $prediction_timespans[$prediction];
+        //return prediction timespan
+        return $prediction_timespan;
     }
 }
