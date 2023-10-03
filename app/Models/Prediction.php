@@ -29,8 +29,18 @@ class Prediction extends Model
     //define function to return prediction timespan
     public function getPredictionTimespanAttribute(): array
     {
-        //get prediction
-        $prediction = $this->prediction;
+        //explode on space
+        $prediction = explode(" ", $this->prediction);
+        //convert each element to a float
+        $prediction = array_map('floatval', $prediction);
+
+        //find the index of the max value and 2nd max value
+        $max = max($prediction);
+        $max_index = array_search($max, $prediction);
+        $prediction[$max_index] = 0;
+        $max2 = max($prediction);
+        $max2_index = array_search($max2, $prediction);
+
         //get prediction timespans
         $prediction_timespans = [
             "0-12 hours" => [0, 12],
@@ -42,10 +52,13 @@ class Prediction extends Model
             "1-2 months" => [672, 1344],
             "2-4 months" => [1344, 2688],
             "4+ months" => [2688, 1000000]
-        ];        
+        ];
+        
+        $prediction_timespan_array = array_values($prediction_timespans);
         //get prediction timespan
-        $prediction_timespan = $prediction_timespans[$prediction];
+        $prediction_timespan_first = $prediction_timespan_array[$max_index];
+        $prediction_timespan_second = $prediction_timespan_array[$max2_index];
         //return prediction timespan
-        return $prediction_timespan;
+        return [$prediction_timespan_first, $prediction_timespan_second];
     }
 }

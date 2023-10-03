@@ -39,7 +39,8 @@ class MlModel extends Model
         ->get();
 
         $csvRow = "open_dt,closed_dt,prediction,survival_time,prediction_timespan_start,prediction_timespan_end\n";
-        $correct = 0;
+        $firstcorrect = 0;
+        $secondcorrect = 0;
         $total = 0; 
         $caseList = [];
         foreach ($predictions as $prediction) {
@@ -50,20 +51,27 @@ class MlModel extends Model
                 continue;
             }
             $survivalTime = $prediction->threeoneonecase->getSurvivalTimeAttribute();
-            $predictionTimespan = $prediction->getPredictionTimespanAttribute();
+            $predictionTimespans = $prediction->getPredictionTimespanAttribute();
 
-            if ($survivalTime >= $predictionTimespan[0] && $survivalTime < $predictionTimespan[1]) {
+            $top_span = $predictionTimespans[0];
+            $second_span = $predictionTimespans[1];
+
+            if ($survivalTime >= $top_span[0] && $survivalTime < $top_span[1]) {
                 
-                $correct++;
-            } else
+                $firstcorrect++;
+            } 
+            elseif ($survivalTime >= $second_span[0] && $survivalTime < $second_span[1]) {
+                   $secondcorrect++;
+            }
+             else 
             {
-                $csvRow .= implode(',', [$case->open_dt, $case->closed_dt, $prediction->prediction, $survivalTime, $predictionTimespan[0], $predictionTimespan[1]]);
+                $csvRow .= implode(' ', [$case->open_dt, $case->closed_dt, $prediction->prediction, $survivalTime, $top_span[0], $top_span[1], $second_span[0], $second_span[1]]);
                 $csvRow .= "\n";
 
             }
             $caseList[] = $prediction->three_one_one_case_id;
             $total++;
         }
-        return $total === 0 ? ['correct' => 0, 'total' => 0, 'accuracy' => 0 ] : ['correct' => $correct, 'total' => $total, 'accuracy' => $correct / $total];
+        return $total === 0 ? ['firstcorrect' => 0, 'secondcorrect' => 0, 'total' => 0, 'firstaccuracy' => 0, 'secondaccuracy' => 0] : ['firstcorrect' => $firstcorrect, 'secondcorrect' => $secondcorrect, 'total' => $total, 'firstaccuracy' => $firstcorrect / $total, 'secondaccuracy' => $secondcorrect / $total];
     }
 }

@@ -18,11 +18,48 @@
         <div class="text-black text-opacity-80 m-10">
           Considering closed cases only:
         </div>
-        <div class="relative items-center ">
-          <div class="text-lg m-10"><span class="font-medium text-black">Accuracy:</span> <span class="font-light absolute right-20">{{ value.accuracy.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }} </span></div>
-          <div class="text-lg m-10"><span class="font-medium text-black">Correct:</span> <span class="font-light absolute right-20">{{ value.correct }}</span></div>
-          <div class="text-lg m-10"><span class="font-medium text-black">Total:</span> <span class="font-light absolute right-20">{{ value.total }}</span></div>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 p-4 bg-gray-100 rounded-lg shadow-md">
+  <div class="font-bold text-gray-700 text-lg md:text-xl">Top Predictions</div>
+  <div class="font-bold text-gray-700 text-lg md:text-xl">Performance Metrics</div>
+
+  <div class="text-gray-600 text-sm md:text-base flex items-center">
+    <span class="w-32">Most Likely Accuracy:</span>
+    <span class="ml-auto text-green-600">{{ value.firstaccuracy.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }}</span>
+  </div>
+  <div class="text-gray-600 text-sm md:text-base flex items-center">
+    <span class="w-32">Most Likely Cases:</span>
+    <span class="ml-auto">{{ value.firstcorrect }}</span>
+  </div>
+
+  <div class="text-gray-600 text-sm md:text-base flex items-center">
+    <span class="w-32">Next Likely Accuracy:</span>
+    <span class="ml-auto text-yellow-600">{{ value.secondaccuracy.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }}</span>
+  </div>
+  <div class="text-gray-600 text-sm md:text-base flex items-center">
+    <span class="w-32">Next Likely Cases:</span>
+    <span class="ml-auto">{{ value.secondcorrect }}</span>
+  </div>
+
+  <div class="font-bold text-gray-700 text-lg md:text-xl">Composite Results</div>
+  <div class="font-bold text-gray-700 text-lg md:text-xl">Aggregate Metrics</div>
+
+  <div class="text-gray-600 text-sm md:text-base flex items-center">
+    <span class="w-32">Combined Accuracy:</span>
+    <span class="ml-auto text-blue-600">{{ (value.secondaccuracy+value.firstaccuracy).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }}</span>
+  </div>
+  <div class="text-gray-600 text-sm md:text-base flex items-center">
+    <span class="w-32">Total Correct Predictions:</span>
+    <span class="ml-auto">{{ value.secondcorrect + value.firstcorrect }}</span>
+  </div>
+
+  <div class="col-span-2 font-bold text-gray-700 text-lg md:text-xl">Case Statistics</div>
+
+  <div class="col-span-2 text-gray-600 text-sm md:text-base flex items-center">
+    <span class="w-32">Total Cases Analyzed:</span>
+    <span class="ml-auto">{{ value.total }}</span>
+  </div>
+</div>
+
       </section>
     </div>
   </div>
