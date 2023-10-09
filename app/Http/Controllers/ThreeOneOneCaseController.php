@@ -28,7 +28,7 @@ class ThreeOneOneCaseController extends Controller
             whereHas('predictions', function($query) {
                 $query->where('prediction_date', '>', '2021-01-01');
             })
-            ->take(500)
+            ->orderBy('open_dt', 'desc')->take(500)
             ->get(); 
 
         return Inertia::render('ThreeOneOneCaseList', [
