@@ -15,9 +15,6 @@
           <h2 class="text-xl text-black font-extrabold">
             Model: <br /> {{ parseModelName(key) }}
           </h2>
-        <div class="text-black text-opacity-80 m-10">
-          Considering closed cases only:
-        </div>
         <div class="px-4 py-2 bg-gray-100 rounded-lg shadow-md">
   <div class="font-bold text-xl mb-2">Model Predictions</div>
   

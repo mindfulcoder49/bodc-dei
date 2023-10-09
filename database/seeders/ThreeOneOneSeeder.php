@@ -129,6 +129,11 @@ class ThreeOneOneSeeder extends Seeder
                 gc_collect_cycles();
             }
 
+            if(count($header) !== count($row)) {
+                echo "Warning: Mismatch detected in $filePath at line $progress.\n";
+                continue;  // Skip this row
+            }
+            
             $data = array_combine($header, $row);
             $data = array_map(function ($value) {
                 return ($value == '' || $value == ' ') ? null : $value;

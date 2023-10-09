@@ -45,9 +45,7 @@ class MlModel extends Model
         $caseList = [];
         foreach ($predictions as $prediction) {
             $case = $prediction->threeoneonecase;
-            if ($case->closed_dt == null) {
-                continue;
-            } elseif (in_array($prediction->three_one_one_case_id, $caseList)) {
+            if (in_array($prediction->three_one_one_case_id, $caseList)) {
                 continue;
             }
             $survivalTime = $prediction->threeoneonecase->getSurvivalTimeAttribute();
@@ -56,22 +54,32 @@ class MlModel extends Model
             $top_span = $predictionTimespans[0];
             $second_span = $predictionTimespans[1];
 
-            if ($survivalTime >= $top_span[0] && $survivalTime < $top_span[1]) {
-                
-                $firstcorrect++;
-            } 
-            elseif ($survivalTime >= $second_span[0] && $survivalTime < $second_span[1]) {
-                   $secondcorrect++;
-            }
-             else 
-            {
+            if ($case->closed_dt != null) {
+            
+                if ($survivalTime >= $top_span[0] && $survivalTime < $top_span[1]) {
+                    
+                    $firstcorrect++;
+                } 
+                elseif ($survivalTime >= $second_span[0] && $survivalTime < $second_span[1]) {
+                    $secondcorrect++;
+                }
+               
+            } else {
+                if ($survivalTime < $top_span[1]) {
+                    $firstcorrect++;
+                } elseif ($survivalTime < $second_span[1]) {
+                    $secondcorrect++;
+                }
+                else  {
                 $csvRow .= implode(' ', [$case->open_dt, $case->closed_dt, $prediction->prediction, $survivalTime, $top_span[0], $top_span[1], $second_span[0], $second_span[1]]);
                 $csvRow .= "\n";
-
+                }
             }
+
             $caseList[] = $prediction->three_one_one_case_id;
             $total++;
         }
+        dd($csvRow);
         return $total === 0 ? ['firstcorrect' => 0, 'secondcorrect' => 0, 'total' => 0, 'firstaccuracy' => 0, 'secondaccuracy' => 0] : ['firstcorrect' => $firstcorrect, 'secondcorrect' => $secondcorrect, 'total' => $total, 'firstaccuracy' => $firstcorrect / $total, 'secondaccuracy' => $secondcorrect / $total];
     }
 }
