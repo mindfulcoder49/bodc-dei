@@ -61,7 +61,7 @@ class ThreeOneOneSeeder extends Seeder
 
         foreach ($duplicates as $duplicate) {
         // Keep one of the duplicate records and delete the rest
-            $keepRecord = ThreeOneOneCase::where('case_enquiry_id', $duplicate->three_one_one_case_id)
+            $keepRecord = ThreeOneOneCase::where('case_enquiry_id', $duplicate->case_enquiry_id)
                 ->orderBy('id')  // You can order by other columns if needed
                 ->first();
 
