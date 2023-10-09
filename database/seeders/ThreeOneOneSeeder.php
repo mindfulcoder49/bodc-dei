@@ -29,6 +29,26 @@ class ThreeOneOneSeeder extends Seeder
         $this->processFiles($fileCategorization['predictionFiles'], $seedersDir, Prediction::class, ['case_enquiry_id', 'ml_model_id'], $fileCategorization['totalLines']);
         
         $this->renameManifestFiles($manifestFiles);
+
+        
+        // Fetch duplicates based on specific columns
+        $duplicates = Prediction::select('three_one_one_case_id', 'ml_model_id', 'prediction')
+        ->groupBy('three_one_one_case_id', 'ml_model_id', 'prediction')
+        ->havingRaw('COUNT(*) > 1')
+        ->get();
+
+        foreach ($duplicates as $duplicate) {
+        // Keep one of the duplicate records and delete the rest
+        $duplicateRecords = Prediction::where('title', $duplicate->title)
+            ->where('content', $duplicate->content)
+            ->orderBy('id')  // You can order by other columns if needed
+            ->skip(1)        // Skip the first record
+            ->get();
+
+        foreach ($duplicateRecords as $record) {
+            $record->delete();
+        }
+        }
     }
 
     private function categorizeFiles(array $manifestFiles, string $seedersDir): array
