@@ -32,22 +32,22 @@ class ThreeOneOneSeeder extends Seeder
 
         
         // Fetch duplicates based on specific columns
-        $duplicates = Prediction::select('three_one_one_case_id', 'ml_model_id', 'prediction')
-        ->groupBy('three_one_one_case_id', 'ml_model_id', 'prediction')
+        $duplicates = Prediction::select('three_one_one_case_id', 'ml_model_name')
+        ->groupBy('three_one_one_case_id', 'ml_model_name')
         ->havingRaw('COUNT(*) > 1')
         ->get();
 
         foreach ($duplicates as $duplicate) {
         // Keep one of the duplicate records and delete the rest
             $keepRecord = Prediction::where('three_one_one_case_id', $duplicate->three_one_one_case_id)
-                ->where('prediction', $duplicate->prediction)
+                ->where('ml_model_name', $duplicate->ml_model_name)
                 ->orderBy('id')  // You can order by other columns if needed
                 ->first();
 
             // If you found a record to keep
             if ($keepRecord) {
                 Prediction::where('three_one_one_case_id', $duplicate->three_one_one_case_id)
-                    ->where('prediction', $duplicate->prediction)
+                    ->where('ml_model_name', $duplicate->ml_model_name)
                     ->where('id', '!=', $keepRecord->id)
                     ->delete();
             }
