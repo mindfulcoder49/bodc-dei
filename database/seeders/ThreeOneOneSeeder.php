@@ -39,15 +39,18 @@ class ThreeOneOneSeeder extends Seeder
 
         foreach ($duplicates as $duplicate) {
         // Keep one of the duplicate records and delete the rest
-        $duplicateRecords = Prediction::where('title', $duplicate->title)
-            ->where('content', $duplicate->content)
-            ->orderBy('id')  // You can order by other columns if needed
-            ->skip(1)        // Skip the first record
-            ->get();
+            $keepRecord = Prediction::where('three_one_one_case_id', $duplicate->three_one_one_case_id)
+                ->where('prediction', $duplicate->prediction)
+                ->orderBy('id')  // You can order by other columns if needed
+                ->first();
 
-        foreach ($duplicateRecords as $record) {
-            $record->delete();
-        }
+            // If you found a record to keep
+            if ($keepRecord) {
+                Prediction::where('three_one_one_case_id', $duplicate->three_one_one_case_id)
+                    ->where('prediction', $duplicate->prediction)
+                    ->where('id', '!=', $keepRecord->id)
+                    ->delete();
+            }
         }
     }
 
