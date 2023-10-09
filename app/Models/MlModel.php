@@ -79,7 +79,7 @@ class MlModel extends Model
             $caseList[] = $prediction->three_one_one_case_id;
             $total++;
         }
-        dd($csvRow);
+        //dd($csvRow);
         return $total === 0 ? ['firstcorrect' => 0, 'secondcorrect' => 0, 'total' => 0, 'firstaccuracy' => 0, 'secondaccuracy' => 0] : ['firstcorrect' => $firstcorrect, 'secondcorrect' => $secondcorrect, 'total' => $total, 'firstaccuracy' => $firstcorrect / $total, 'secondaccuracy' => $secondcorrect / $total];
     }
 }
