@@ -52,6 +52,27 @@ class ThreeOneOneSeeder extends Seeder
                     ->delete();
             }
         }
+
+        // Fetch duplicates based on specific columns
+        $duplicates = ThreeOneOneCase::select('case_enquiry_id')
+        ->groupBy('case_enquiry_id')
+        ->havingRaw('COUNT(*) > 1')
+        ->get();
+
+        foreach ($duplicates as $duplicate) {
+        // Keep one of the duplicate records and delete the rest
+            $keepRecord = ThreeOneOneCase::where('case_enquiry_id', $duplicate->three_one_one_case_id)
+                ->orderBy('id')  // You can order by other columns if needed
+                ->first();
+
+            // If you found a record to keep
+            if ($keepRecord) {
+                ThreeOneOneCase::where('case_enquiry_id', $duplicate->case_enquiry_id)
+                    ->where('id', '!=', $keepRecord->id)
+                    ->delete();
+            }
+        }
+        
     }
 
     private function categorizeFiles(array $manifestFiles, string $seedersDir): array
