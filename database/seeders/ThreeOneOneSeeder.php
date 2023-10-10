@@ -31,7 +31,7 @@ class ThreeOneOneSeeder extends Seeder
         $this->renameManifestFiles($manifestFiles);
 
         
-        // Fetch duplicates based on specific columns
+        /* Fetch duplicates based on specific columns
         $duplicates = Prediction::select('three_one_one_case_id', 'ml_model_name')
         ->groupBy('three_one_one_case_id', 'ml_model_name')
         ->havingRaw('COUNT(*) > 1')
@@ -51,7 +51,7 @@ class ThreeOneOneSeeder extends Seeder
                     ->where('id', '!=', $keepRecord->id)
                     ->delete();
             }
-        }
+        } */
         
     }
 
@@ -194,75 +194,17 @@ class ThreeOneOneSeeder extends Seeder
 
     private function insertOrUpdateCasesBatch(array $dataBatch, string $modelClass, array $uniqueKeys): void
     { 
-        // Fetch existing records
-        $existingRecords = ThreeOneOneCase::whereIn('case_enquiry_id', array_column($dataBatch, 'case_enquiry_id'))
-                                        ->get()
-                                        ->keyBy('case_enquiry_id')
-                                        ->toArray();
-
-        $insertData = [];
-        $updateData = [];
-
-        foreach ($dataBatch as $data) {
-            // Convert empty values to null
+        // Convert empty values to null for all data
+        foreach ($dataBatch as &$data) {
             $data = array_map(function ($value) {
                 return $value === '' ? null : $value;
             }, $data);
-
-            $caseEnquiryId = $data['case_enquiry_id'];
-            if (isset($existingRecords[$caseEnquiryId])) {
-                $updateData[] = $data;
-                
-            } else {
-                $insertData[] = $data;
-            }
-        }
-        //dd($insertData);
-
-        // Batch insert
-        if (!empty($insertData)) {
-            DB::table((new $modelClass)->getTable())->insert($insertData);
         }
 
-        //Batch update
-        $valuesToUpdate = [];
-
-        if (!empty($updateData)) {
-            foreach ($updateData as $data) {
-                $columns = array_keys($data);
-                $values = array_map(function ($value) {
-
-                    if ($value === null) {
-                        return 'NULL';
-                    }
-                    return "'" . addslashes($value) . "'";
-                }, array_values($data));
-                
-                $valuesToUpdate[] = "(" . implode(",", $values) . ")";
-            }
-            
-            $columnsString = implode(",", $columns);
-            $valuesToUpdateString = implode(',', $valuesToUpdate);
-            
-            $updateParts = [];
-            foreach ($columns as $column) {
-                $updateParts[] = "$column = VALUES($column)";
-            }
-            $updateOnDuplicate = implode(", ", $updateParts);
-            
-            $sql = "
-                INSERT INTO " . (new $modelClass)->getTable() . " ($columnsString)
-                VALUES $valuesToUpdateString
-                ON DUPLICATE KEY UPDATE 
-                    $updateOnDuplicate;
-            ";
-            
-            DB::statement($sql);
-        }
-        
-
-        
+        // Use the upsert method to insert or update data based on unique keys
+        DB::table((new $modelClass)->getTable())->upsert($dataBatch, $uniqueKeys);
     }
+
 
 
     private function insertOrUpdateMlModelsBatch(array $dataBatch, string $modelClass, array $uniqueKeys): void
@@ -282,15 +224,11 @@ class ThreeOneOneSeeder extends Seeder
         $caseIds = ThreeOneOneCase::whereIn('case_enquiry_id', array_column($dataBatch, 'case_enquiry_id'))
                                   ->pluck('id', 'case_enquiry_id')
                                   ->toArray();
-        
+    
         // Fetch the ml_model_id for the given model_name
         $mlModelIds = MlModel::whereIn('ml_model_name', array_column($dataBatch, 'ml_model_name'))
                              ->pluck('id', 'ml_model_name')
                              ->toArray();
-        
-    
-        $insertData = [];
-        $updateData = [];
     
         foreach ($dataBatch as $data) {
             // Convert empty values to null
@@ -303,27 +241,12 @@ class ThreeOneOneSeeder extends Seeder
     
             // Add the ml_model_id to the data
             $data['ml_model_id'] = $mlModelIds[$data['ml_model_name']] ?? null;
-    
-            $caseEnquiryId = $data['case_enquiry_id'];
-
-            $insertData[] = $data;
-            
         }   
-        
-        // Batch insert
-        if (!empty($insertData)) {
-            //use updateorInsert with uniquekeys to only insert new records
-            DB::table((new $modelClass)->getTable())->upsert($insertData, $uniqueKeys);
-
-        }
     
-        // Batch update
-        foreach ($updateData as $data) {
-            DB::table((new $modelClass)->getTable())
-              ->where('case_enquiry_id', $data['case_enquiry_id'])
-              ->update($data);
-        }
+        // Use the upsert method to insert or update data based on unique keys
+        DB::table((new $modelClass)->getTable())->upsert($dataBatch, $uniqueKeys);
     }
+    
     
     
 
