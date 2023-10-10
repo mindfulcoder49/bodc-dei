@@ -22,6 +22,9 @@ return new class extends Migration
 
             $table->foreign('three_one_one_case_id')->references('id')->on('three_one_one_cases')->onDelete('cascade'); 
             $table->foreign('ml_model_id')->references('id')->on('ml_models')->onDelete('cascade');
+
+            //make the combination of case_enquiry_id and ml_model_name unique
+            $table->unique(['case_enquiry_id', 'ml_model_name']);
         });
     }
 

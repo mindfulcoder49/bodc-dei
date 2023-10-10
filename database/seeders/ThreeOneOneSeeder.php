@@ -199,6 +199,7 @@ class ThreeOneOneSeeder extends Seeder
             $data = array_map(function ($value) {
                 return $value === '' ? null : $value;
             }, $data);
+            
         }
 
         // Use the upsert method to insert or update data based on unique keys
@@ -230,7 +231,7 @@ class ThreeOneOneSeeder extends Seeder
                              ->pluck('id', 'ml_model_name')
                              ->toArray();
     
-        foreach ($dataBatch as $data) {
+        foreach ($dataBatch as &$data) {
             // Convert empty values to null
             $data = array_map(function ($value) {
                 return $value === '' ? null : $value;
