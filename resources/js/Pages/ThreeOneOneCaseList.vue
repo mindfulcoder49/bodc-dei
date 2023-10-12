@@ -107,7 +107,7 @@ export default {
     },
     filteredPredKeys() {
       //return Object.keys(this.filteredCases[0].predictions[0]);
-      return ['id', 'three_one_one_case_id', 'case_enquiry_id', 'ml_model_id', 'ml_model_name', 'prediction', 'prediction_date'];
+      return ['id', 'three_one_one_case_id', 'case_enquiry_id', 'ml_model_id', 'ml_model_name', 'predictionTimespan', 'prediction_date'];
     }
 
   },
