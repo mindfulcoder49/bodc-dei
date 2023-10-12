@@ -124,7 +124,7 @@ export default {
       } else if (predKey === 'predictionMaxThree') {
         return `First:${predValue[0]} Second:${predValue[1]} Third:${predValue[2]}`;
       } else if (predKey === 'prediction') {
-        return <div class="scrollable">{{ predValue }}</div>;
+        return "<div class=\"scrollable\">"+predValue+"</div>";
       } else {
       return predValue;
       }
