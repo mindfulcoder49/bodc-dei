@@ -26,6 +26,10 @@ class Prediction extends Model
         return $this->belongsTo(MlModel::class, 'ml_model_id', 'id');
     }
 
+    // Add this method to your Prediction model
+    protected $appends = ['predictionTimespan'];
+
+
     //define function to return prediction timespan
     public function getPredictionTimespanAttribute(): array
     {
