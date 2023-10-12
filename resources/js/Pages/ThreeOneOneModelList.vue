@@ -21,7 +21,7 @@
   <div class="flex flex-col md:flex-col">
     <!-- Most Likely Prediction -->
     <div class="flex flex-col w-full md:w-full mb-4 md:mb-4">
-      <span class="text-gray-700 font-semibold text-lg">Most Likely</span>
+      <span class="text-gray-700 font-semibold text-lg">1st Prediction</span>
       <div class="text-md text-gray-600 flex justify-between">
         <span>Accuracy:</span>
         <span class="text-green-600">{{ value.firstaccuracy.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }}</span>
@@ -34,7 +34,7 @@
     
     <!-- Next Likely Prediction -->
     <div class="flex flex-col w-full md:w-auto">
-      <span class="text-gray-700 font-semibold text-lg">Next Likely</span>
+      <span class="text-gray-700 font-semibold text-lg">Second Prediction</span>
       <div class="text-md text-gray-600 flex justify-between">
         <span>Accuracy:</span>
         <span class="text-yellow-600">{{ value.secondaccuracy.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }}</span>
@@ -44,6 +44,19 @@
         <span>{{ value.secondcorrect }}</span>
       </div>
     </div>
+
+        <!-- Next Likely Prediction -->
+    <div class="flex flex-col w-full md:w-auto">
+      <span class="text-gray-700 font-semibold text-lg">Third Prediction</span>
+      <div class="text-md text-gray-600 flex justify-between">
+        <span>Accuracy:</span>
+        <span class="text-yellow-600">{{ value.thirdaccuracy.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }}</span>
+      </div>
+      <div class="text-md text-gray-600 flex justify-between">
+        <span>Correct Cases:</span>
+        <span>{{ value.thirdcorrect }}</span>
+      </div>
+    </div>
   </div>
   
   <!-- Aggregate Metrics -->
@@ -51,11 +64,11 @@
     <span class="text-gray-700 font-semibold text-lg mb-2">Aggregate Metrics</span>
     <div class="text-md text-gray-600 flex justify-between">
       <span>Combined Accuracy:</span>
-      <span class="text-blue-600">{{ (value.secondaccuracy + value.firstaccuracy).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }}</span>
+      <span class="text-blue-600">{{ (value.secondaccuracy + value.firstaccuracy + value.thirdaccuracy).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }}</span>
     </div>
     <div class="text-md text-gray-600 flex justify-between">
       <span>Total Correct:</span>
-      <span>{{ value.secondcorrect + value.firstcorrect }}</span>
+      <span>{{ value.secondcorrect + value.firstcorrect + value.thirdcorrect }}</span>
     </div>
     <div class="text-md text-gray-600 flex justify-between">
       <span>Total Cases:</span>

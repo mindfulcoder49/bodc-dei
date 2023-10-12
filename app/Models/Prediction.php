@@ -40,6 +40,9 @@ class Prediction extends Model
         $prediction[$max_index] = 0;
         $max2 = max($prediction);
         $max2_index = array_search($max2, $prediction);
+        $prediction[$max2_index] = 0;
+        $max3 = max($prediction);
+        $max3_index = array_search($max3, $prediction);
 
         //get prediction timespans
         $prediction_timespans = [
@@ -230,8 +233,9 @@ class Prediction extends Model
         $prediction_timespan_array = array_values($prediction_timespans);
         //get prediction timespan
         $prediction_timespan_first = $prediction_timespan_array[$max_index];
-        $prediction_timespan_second = $prediction_timespan_array[$max2_index];
+        $prediction_timespan_second = $prediction_timespan_array[$max2_index];  
+        $prediction_timespan_third = $prediction_timespan_array[$max3_index];
         //return prediction timespan
-        return [$prediction_timespan_first, $prediction_timespan_second];
+        return [$prediction_timespan_first, $prediction_timespan_second, $prediction_timespan_third];
     }
 }

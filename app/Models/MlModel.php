@@ -41,6 +41,7 @@ class MlModel extends Model
         $csvRow = "open_dt,closed_dt,prediction,survival_time,prediction_timespan_start,prediction_timespan_end\n";
         $firstcorrect = 0;
         $secondcorrect = 0;
+        $thirdcorrect = 0;
         $total = 0; 
         $caseList = [];
         foreach ($predictions as $prediction) {
@@ -53,6 +54,7 @@ class MlModel extends Model
 
             $top_span = $predictionTimespans[0];
             $second_span = $predictionTimespans[1];
+            $third_span = $predictionTimespans[2];
 
             if ($case->closed_dt != null) {
             
@@ -63,12 +65,22 @@ class MlModel extends Model
                 elseif ($survivalTime >= $second_span[0] && $survivalTime < $second_span[1]) {
                     $secondcorrect++;
                 }
+                elseif ($survivalTime >= $third_span[0] && $survivalTime < $third_span[1]) {
+                    $thirdcorrect++;
+                }
+                else {
+                    $csvRow .= implode(' ', [$case->open_dt, $case->closed_dt, $prediction->prediction, $survivalTime, $top_span[0], $top_span[1], $second_span[0], $second_span[1]]);
+                    $csvRow .= "\n";
+                }
                
             } else {
                 if ($survivalTime < $top_span[1]) {
                     $firstcorrect++;
                 } elseif ($survivalTime < $second_span[1]) {
                     $secondcorrect++;
+                }
+                elseif ($survivalTime < $third_span[1]) {
+                    $thirdcorrect++;
                 }
                 else  {
                 $csvRow .= implode(' ', [$case->open_dt, $case->closed_dt, $prediction->prediction, $survivalTime, $top_span[0], $top_span[1], $second_span[0], $second_span[1]]);
@@ -80,6 +92,6 @@ class MlModel extends Model
             $total++;
         }
         //dd($csvRow);
-        return $total === 0 ? ['firstcorrect' => 0, 'secondcorrect' => 0, 'total' => 0, 'firstaccuracy' => 0, 'secondaccuracy' => 0] : ['firstcorrect' => $firstcorrect, 'secondcorrect' => $secondcorrect, 'total' => $total, 'firstaccuracy' => $firstcorrect / $total, 'secondaccuracy' => $secondcorrect / $total];
+        return $total === 0 ? ['firstcorrect' => 0, 'secondcorrect' => 0, 'thirdcorrect' => 0, 'total' => 0, 'firstaccuracy' => 0, 'secondaccuracy' => 0, 'thirdaccuracy' => 0] : ['firstcorrect' => $firstcorrect, 'secondcorrect' => $secondcorrect, 'thirdcorrect' => $thirdcorrect, 'total' => $total, 'firstaccuracy' => $firstcorrect / $total, 'secondaccuracy' => $secondcorrect / $total, 'thirdaccuracy' => $thirdcorrect / $total];
     }
 }
