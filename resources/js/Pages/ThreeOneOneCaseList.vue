@@ -107,7 +107,7 @@ export default {
     },
     filteredPredKeys() {
       //return Object.keys(this.filteredCases[0].predictions[0]);
-      return ['id', 'three_one_one_case_id', 'case_enquiry_id', 'ml_model_id', 'ml_model_name', 'prediction_date', 'predictionTimespan', 'predictionMaxThree'];
+      return ['id', 'three_one_one_case_id', 'case_enquiry_id', 'ml_model_id', 'ml_model_name', 'prediction', 'prediction_date', 'predictionTimespan', 'predictionMaxThree'];
     }
 
   },
@@ -124,7 +124,7 @@ export default {
       } else if (predKey === 'predictionMaxThree') {
         return `First:${predValue[0]} Second:${predValue[1]} Third:${predValue[2]}`;
       } else if (predKey === 'prediction') {
-        return null;
+        return <div class="scrollable">{{ predValue }}</div>;
       } else {
       return predValue;
       }
