@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigInteger('case_enquiry_id');
             $table->unsignedBigInteger('ml_model_id');  // Foreign key to ml_models
             $table->string('ml_model_name');  // Descriptive string for the model's name
-            $table->string('prediction');
+            $table->text('prediction');
             $table->date('prediction_date');
 
             $table->foreign('three_one_one_case_id')->references('id')->on('three_one_one_cases')->onDelete('cascade'); 
