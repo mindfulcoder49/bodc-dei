@@ -49,7 +49,7 @@
                   </div>
                 </div>
                         <div v-for="prediction in item.predictions" :key="prediction.id" class="tr ">
-                            <div v-for="(predValue, predKey) in prediction" :key="predKey" class="td">
+                            <div v-for="(predValue, predKey) in prediction" :key="predKey" class="td"  :class="{ 'scrollable': shouldScroll(predKey) }">
                               {{ displayValue(predKey, predValue) }}
                             </div>
                         </div>
@@ -126,7 +126,16 @@ export default {
       } else {
       return predValue;
       }
+    },
+    shouldScroll(predKey) {
+      return predKey === 'prediction';
     }
   }
 };
 </script>
+<style scoped>
+.scrollable {
+  overflow-y: auto;
+  height: 50px; /* replace with actual line-height */
+}
+</style>
