@@ -50,7 +50,7 @@
                 </div>
                         <div v-for="prediction in item.predictions" :key="prediction.id" class="tr ">
                             <div v-for="(predValue, predKey) in prediction" :key="predKey" class="td">
-                              {{ predValue }}
+                              {{ displayValue(predKey, predValue) }}
                             </div>
                         </div>
             </div>
@@ -107,7 +107,7 @@ export default {
     },
     filteredPredKeys() {
       //return Object.keys(this.filteredCases[0].predictions[0]);
-      return ['id', 'three_one_one_case_id', 'case_enquiry_id', 'ml_model_id', 'ml_model_name', 'predictionTimespan', 'prediction_date'];
+      return ['id', 'three_one_one_case_id', 'case_enquiry_id', 'ml_model_id', 'ml_model_name', 'prediction', 'prediction_date', 'predictionTimespan', 'predictionMaxThree'];
     }
 
   },
@@ -117,6 +117,15 @@ export default {
     },
     fetchCases() {
         this.$inertia.get('/cases', { searchTerm: this.searchTerm });
+    },
+    displayValue(predKey, predValue) {
+      if (predKey === 'predictionTimespan') {
+        return `First:${predValue[0]} Second:${predValue[1]} Third:${predValue[2]}`;
+      } else if (predKey === 'predictionMaxThree') {
+        return `First:${predValue[0]} Second:${predValue[1]} Third:${predValue[2]}`;
+      } else {
+      return predValue;
+      }
     }
   }
 };

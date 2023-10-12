@@ -27,7 +27,27 @@ class Prediction extends Model
     }
 
     // Add this method to your Prediction model
-    protected $appends = ['predictionTimespan'];
+    protected $appends = ['predictionTimespan', 'predictionMaxThree'];
+
+    public function getPredictionMaxThreeAttribute(): array
+    {
+        //explode on space
+        $prediction = explode(" ", $this->prediction);
+        //convert each element to a float
+        $prediction = array_map('floatval', $prediction);
+
+        //find the index of the max value and 2nd max value
+        $max = max($prediction);
+        $max_index = array_search($max, $prediction);
+        $prediction[$max_index] = 0;
+        $max2 = max($prediction);
+        $max2_index = array_search($max2, $prediction);
+        $prediction[$max2_index] = 0;
+        $max3 = max($prediction);
+        $max3_index = array_search($max3, $prediction);
+
+        return [$max_index, $max2_index, $max3_index];
+    }
 
 
     //define function to return prediction timespan
