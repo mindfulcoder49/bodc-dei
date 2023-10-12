@@ -46,7 +46,7 @@ class Prediction extends Model
         $max3 = max($prediction);
         $max3_index = array_search($max3, $prediction);
 
-        return [$max_index, $max2_index, $max3_index];
+        return [$max, $max2, $max3];
     }
 
 
