@@ -74,6 +74,13 @@
       <span>Total Cases:</span>
       <span>{{ value.total }}</span>
     </div>
+    <div class="text-md text-gray-600 justify-between">
+      <span>Accuracy Spread:</span>
+      <div 
+      v-for="(accuracy, timespan) in value.accuracyspread"  
+      class="block"
+    > {{ timespan }} accuracy is {{ accuracy.accuracy }} with {{ accuracy.correct }} correct of {{accuracy.total}} predicted </div>
+    </div>
   </div>
 </div>
 
