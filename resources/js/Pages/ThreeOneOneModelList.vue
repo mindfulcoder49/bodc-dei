@@ -79,7 +79,7 @@
       <div 
       v-for="(accuracy, timespan) in value.accuracyspread"  
       class="block"
-    > {{ timespan }} accuracy is {{ accuracy.accuracy }} with {{ accuracy.correct }} correct of {{accuracy.total}} predicted </div>
+    > {{ timespan }} accuracy is {{ accuracy.accuracy.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }} with {{ accuracy.correct }} correct and {{ accuracy.maybe }} possibly correct of {{accuracy.total}} predicted </div>
     </div>
   </div>
 </div>
