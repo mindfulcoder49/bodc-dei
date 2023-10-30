@@ -31,7 +31,7 @@ class MlModel extends Model
     public function getAccuracyAttribute(): array
     {
         $predictions = $this->predictions()
-            ->select(['id', 'case_enquiry_id', 'prediction', 'prediction_date', 'prediction', 'three_one_one_case_id'])
+            ->select(['id', 'case_enquiry_id', 'prediction', 'prediction_date', 'prediction', 'ml_model_name', 'three_one_one_case_id'])
             ->with(['threeoneonecase' => function ($query) {
                 $query->select(['id', 'open_dt', 'closed_dt']);
             }])
