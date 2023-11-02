@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('ml_model_name')->unique();
             $table->string('ml_model_type');
+            $table->string('ml_model_json');
             $table->date('ml_model_date');
         });
     
