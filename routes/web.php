@@ -49,6 +49,8 @@ Route::get('/311models', [MlModelController::class, 'index'])->name('models.inde
 Route::inertia('/about', "About")->name('about');
 Route::inertia('/contact', "Contact")->name('contact');
 Route::inertia('/projects', "Projects")->name('projects');
+Route::inertia('/311demo', "ThreeOneOneDemo")->name('311demo');
+Route::inertia('/thebostonappdemo', "TheBostonAppDemo")->name('thebostonappdemo');
 
 Route::resource('chirps', ChirpController::class)
     ->only(['index', 'store'])
