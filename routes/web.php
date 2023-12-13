@@ -53,6 +53,6 @@ Route::inertia('/311demo', "ThreeOneOneDemo")->name('311demo');
 Route::inertia('/thebostonappdemo', "TheBostonAppDemo")->name('thebostonappdemo');
 
 Route::resource('chirps', ChirpController::class)
-    ->only(['index', 'store'])
+    ->only(['index', 'store', 'destroy'])
     ->middleware(['auth', 'verified']);
 
