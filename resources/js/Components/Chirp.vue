@@ -1,7 +1,8 @@
 <template>
     <div class="p-6 flex space-x-2">
         <!-- ...existing content... -->
-        <div class="flex-1">
+        
+        <div class="flex-1 max-w-full">
             <div class="flex justify-between items-center">
                 <div>
                     <span class="text-gray-800">{{ chirp.user.name }}</span>
@@ -14,7 +15,7 @@
                     </svg>
                 </button>
             </div>
-            <p class="mt-4 text-lg text-gray-900">{{ chirp.message }}</p>
+            <p class="mt-4 text-lg text-gray-900 overflow-scroll">{{ chirp.message }}</p>
         </div>
     </div>
 </template>
