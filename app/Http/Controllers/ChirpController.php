@@ -10,34 +10,60 @@ use Inertia\Response;
 
 class ChirpController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
     public function index(): Response
     {
         $user = auth()->user();
-    
-        $chirpsQuery = Chirp::query();
-    
-        // Always include public chirps
-        $chirpsQuery->where('message', 'like', '%#public%');
-    
-        if ($user->email !== 'admin@mysite.com') {
-            // For non-admin users, also include their own chirps
-            $chirpsQuery->orWhere(function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            });
+
+        $quarantineChirpExists = Chirp::where('message', 'like', '%#quarantinechirps%')
+                                    ->whereHas('user', function ($query) {
+                                        $query->where('email', 'admin@mysite.com');
+                                    })
+                                    ->exists();
+
+        if ($quarantineChirpExists) {
+            // Regular logic for fetching chirps
+            $chirpsQuery = Chirp::query();
+
+            // Admin user can see all chirps
+            if ($user->email === 'admin@mysite.com') {
+                $chirps = $chirpsQuery->with('user:id,name')->latest()->get();
+            } else {
+                // Non-admin users see their own chirps and public chirps
+                $chirps = $chirpsQuery->with('user:id,name')
+                                    ->where(function ($query) use ($user) {
+                                        $query->where('user_id', $user->id);
+                                    })
+                                    ->latest()
+                                    ->get();
+            }
         } else {
-            // For admin users, include all Chirps where user_id is not null
-            $chirpsQuery->orWhereNotNull('user_id');
+            // Regular logic for fetching chirps
+            $chirpsQuery = Chirp::query();
+
+            // Admin user can see all chirps
+            if ($user->email === 'admin@mysite.com') {
+                $chirps = $chirpsQuery->with('user:id,name')->latest()->get();
+            } else {
+                // Non-admin users see their own chirps and public chirps
+                $chirps = $chirpsQuery->with('user:id,name')
+                                    ->where(function ($query) use ($user) {
+                                        $query->where('user_id', $user->id)
+                                                ->orWhere('message', 'like', '%#public%');
+                                    })
+                                    ->latest()
+                                    ->get();
+            }
         }
-    
-        $chirps = $chirpsQuery->with('user:id,name')->latest()->get();
-    
+
         return Inertia::render('Chirps/Index', [
             'chirps' => $chirps,
         ]);
     }
+
     
 
     /**
@@ -51,16 +77,29 @@ class ChirpController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'message' => 'required|string|max:255',
+            'message' => 'required|string|max:500',
         ]);
- 
+
+        // Check if there's a chirp from admin@mysite.com with #stopchirps
+        $stopChirpExists = Chirp::where('message', 'like', '%#stopchirps%')
+                                ->whereHas('user', function ($query) {
+                                    $query->where('email', 'admin@mysite.com');
+                                })
+                                ->exists();
+
+        if ($stopChirpExists) {
+            // Redirect back with an error message if chirp submissions are stopped
+            return back()->withErrors(['message' => 'Chirp submissions are currently stopped.']);
+        }
+
         $request->user()->chirps()->create($validated);
- 
+
         return redirect(route('chirps.index'));
     }
+
 
     /**
      * Display the specified resource.

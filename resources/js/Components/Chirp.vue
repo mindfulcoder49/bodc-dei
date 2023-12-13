@@ -15,7 +15,7 @@
                     </svg>
                 </button>
             </div>
-            <p class="mt-4 text-lg text-gray-900 overflow-scroll">{{ chirp.message }}</p>
+            <p class="mt-4 text-lg text-gray-900 overflow-auto">{{ chirp.message }}</p>
         </div>
     </div>
 </template>
