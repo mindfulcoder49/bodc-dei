@@ -128,7 +128,7 @@ body.pageTemplate {
     opacity: 100%;
     z-index:3;
 }
-.pageTemplate li {
+.pageTemplate section li {
     list-style-type: "\2735";
 }
 
