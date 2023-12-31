@@ -1,0 +1,314 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities; 
+
+:root {
+    --background-color: #f1f1f1; /* Light Gray */
+    --primary-color: #1b273a; /* Dark Slate Gray */
+    --accent-color1: #3f6e39; /* Bittersweet (red) */
+    --accent-color2: #1B998B; /* Keppel (green) */
+    --button-color: #b0c2f8; /* White */
+    --section-color: #F7F7F7;
+    --button-text-color: #F7F7F7;
+    --link-color: #116b61;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body.pageTemplate {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.pageTemplate header h1 {
+    font-size: 3rem;
+    margin: 1.5rem;
+    text-align: center;
+}
+
+.pageTemplate header {
+    margin-bottom: 5rem;
+}
+.pageTemplate nav {
+    background-color: var(--background-color);
+    padding: 0rem;
+}
+
+.pageTemplate nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+}
+
+.pageTemplate nav li {
+    margin: 0 1.5rem;
+    z-index:3;
+}
+
+@media (max-width: 768px) {
+    .pageTemplate nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pageTemplate nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pageTemplate nav li {
+        margin: 0.5rem 0;
+    }
+
+    .pageTemplate main {
+        padding: 1rem;
+    }
+
+    .pageTemplate section {
+        margin: 1rem;
+    }
+}
+
+.pageTemplate nav a {
+    display: inline-block;
+    color: var(--primary-color);
+    text-decoration: none;
+    background-color: var(--button-color);
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.pageTemplate nav a:hover, nav a:active {
+    background-color: var(--accent-color1);
+    color: var(--background-color);
+}
+
+.pageTemplate nav a:active {
+    background-color: var(--accent-color2);
+}
+
+.pageTemplate p a {
+    color: var(--link-color)
+}
+
+.pageTemplate main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 2%;
+    flex-flow: column;
+}
+
+.pageTemplate main.maintable {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 2%;
+    flex-flow: column;
+    position:relative;
+    z-index:3;
+    opacity:100%;
+    background-color: var(--section-color);
+}
+
+.pageTemplate section {
+    background-color: var(--section-color);
+    border-radius: 15px;
+    margin: 2%;
+    overflow: hidden;
+    position: relative;
+    width: 95%;
+    opacity: 100%;
+    z-index:3;
+}
+.pageTemplate section li {
+    list-style-type: "\2735";
+}
+
+.pageTemplate section h2, .pageTemplate section h3, .pageTemplate section h4, .pageTemplate section h5, .pageTemplate section h6 {
+    font-size: 2rem;
+    margin: 1.5rem;
+    text-align: center;
+}
+
+.pageTemplate section p {
+    margin: 1.5rem;
+}
+
+.pageTemplate input[type='text'], input[type='file'] {
+    background-color: white;
+    border: solid;
+    border-radius: 5px;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin: 1.5rem 1.5rem 1.5rem 1.5rem;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+    width: calc(100% - 2rem);
+    max-width: 450px;
+}
+
+.pageTemplate button {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    color: var(--button-text-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin: 1.5rem;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+    width: calc(100% - 2rem);
+    max-width: 450px;
+}
+
+.pageTemplate button:hover {
+    background-color: var(--button-color);
+    color: black;
+}
+
+.pageTemplate footer {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    padding: 2rem;
+    text-align: center;
+}
+
+.tech-entry {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    max-width: 550px;
+    align-items: center;
+}
+
+.tech-entry div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    max-width: 450px;
+    padding: 1.5rem;
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    min-width: calc(100% - 100px);
+    font-weight: bold;
+}
+
+.pageTemplate table {
+    width: 100%;
+    border-collapse: collapse; 
+}
+.pageTemplate  .cases.table {
+    display: table;
+    width: 100%;
+  }
+  .pageTemplate  .thead, .pageTemplate .tbody {
+    display: table-row-group;
+  }
+.pageTemplate .tr {
+    display: table-row;
+}
+
+.pageTemplate .th, .pageTemplate .td {
+    border: 2px solid #ddd;
+    padding: 1.2rem;
+    display: table-cell;
+}
+
+.pageTemplate .th {
+    background-color: var(--primary-color);
+    color: var(--button-text-color);
+}
+
+.prediction.table {
+    position:absolute;
+    display: table;
+    background-color: rgba(255, 255, 255, 0.9);
+    /*css to make the table look like a cool glassy overlay with a shadow and border */
+    border: 10px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    /* end of css to make the table look like a cool glassy overlay with a shadow and border */
+    margin-top:-10%;
+    margin-left:10%;
+
+}
+
+
+.larger-square {
+    position: relative;
+    left: 80%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 61.8vh; /* Golden ratio of the height */
+    height: 61.8vh;
+    background-color: rgba(84, 95, 242, 0.1);
+    border-radius: 10px;
+}
+
+.smaller-square {
+    position: absolute;
+    left: 20%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+    width: 38.2vh; /* 100 - 61.8 = 38.2. This is the remaining percentage that will keep the golden ratio */
+    height: 38.2vh;
+    background-color: rgba(27,153,139, 0.1);
+    border-radius: 10px;
+}
+
+.smaller-square .larger-square  {
+    position: relative;
+    left: 20%;
+    top: 150%;
+    transform: translate(-61.8%, -61.8%);
+    width: 61.8vh; /* Golden ratio of the height */
+    height: 61.8vh;
+    background-color: rgba(27,153,139, 0.1);
+    border-radius: 10px;
+}
+
+.larger-square .smaller-square  {
+    position: absolute;
+    left: 20%;
+    top: 100%;
+    transform: translate(-61.8%, -61.8%);
+    width: 38.2vh; /* 100 - 61.8 = 38.2. This is the remaining percentage that will keep the golden ratio */
+    height: 38.2vh;
+    background-color: rgba(84, 95, 242, 0.1);
+    border-radius: 10px;
+}
+
+.scatter-chart {
+    background-image: url(/images/bostonmap.png);
+    /* set background coordinate 
+    background-position: -70px -40px;
+    background-repeat: no-repeat;
+    background-size: 120%
+    */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    
+    margin: 0 auto;
+
+}
