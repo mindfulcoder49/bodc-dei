@@ -37,6 +37,20 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
                                     Chirps
                                 </NavLink>
+                                <!-- Add Links for About, contact, projects, and home-->
+                                <NavLink :href="route('about')" :active="route().current('about')">
+                                    About
+                                </NavLink>
+                                <NavLink :href="route('contact')" :active="route().current('contact')">
+                                    Contact
+                                </NavLink>
+                                <NavLink :href="route('projects')" :active="route().current('projects')">
+                                    Projects
+                                </NavLink>
+                                <NavLink :href="route('home')" :active="route().current('home')">
+                                    Home
+                                </NavLink>
+                                
                             </div>
                         </div>
 
@@ -122,6 +136,19 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
                             Chirps
+                        </ResponsiveNavLink>
+                        <!-- Add Links for About, contact, projects, and home-->
+                        <ResponsiveNavLink :href="route('about')" :active="route().current('about')">
+                            About
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('contact')" :active="route().current('contact')">
+                            Contact
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('projects')" :active="route().current('projects')">
+                            Projects    
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('home')" :active="route().current('home')">
+                            Home
                         </ResponsiveNavLink>
                     </div>
 

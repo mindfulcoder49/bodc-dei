@@ -36,7 +36,7 @@ const submit = () => {
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
-
+        <section class="p-20">
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="email" value="Email" />
@@ -90,5 +90,6 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
+        </section>
     </GuestLayout>
 </template>

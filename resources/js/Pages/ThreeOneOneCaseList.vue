@@ -6,61 +6,59 @@
     <Head>
       <title>311 Case List</title>
     </Head>
-    <main class="maintable">
-        <div>
-          <input 
+    <main class="bg-gray-100 p-8">
+    <div class="flex flex-col items-center">
+        <input 
             :value="searchTerm" 
             @input="updateSearchTerm" 
             placeholder="Search..."
             type="text"
-            class="pageTemplate"
-          />
-          <button @click="fetchCases">Search</button>
-        </div>
-
-        <!-- <ThreeOneOneCaseScatter :cases="cases" /> -->
-        
-<section>Total number of cases: {{ numberOfCases }}</section>
-
-<div class="cases table" v-if="filteredCases.length">
-    <div class="thead">
-        <div class="tr">
-            <div class="th">Show Predictions</div>
-            <div class="th" v-for="key in filteredKeys" :key="key">{{ key }}</div>
-        </div>
+            class="form-input mt-1 block w-full border-none bg-white h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"
+        />
+        <button 
+            @click="fetchCases" 
+            class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+            Search
+        </button>
     </div>
-    <div class="tbody">
+
+    <section class="text-lg font-semibold mt-6 text-center">Total number of cases: {{ numberOfCases }}</section>
+
+    <div class="mt-6" v-if="filteredCases.length">
         <template v-for="item in filteredCases" :key='item["case_enquiry_id"]'>
-            <!-- Main Data Row -->
-            <div class="tr">
-                <!-- Plus icon to toggle predictions -->
-                <div class="td">
-                    <button v-if="!item.predictions.showPredictions" @click="item.predictions.showPredictions = !item.predictions.showPredictions">+</button>
-                    <button v-if="item.predictions.showPredictions" @click="item.predictions.showPredictions = !item.predictions.showPredictions">-</button>
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-bold">Case ID: {{ item["case_enquiry_id"] }}</h3>
                 </div>
-                <div class="td" v-for="key in filteredKeys" :key="key">{{ item[key] }}</div>
-            </div>
-            
-            <!-- Predictions Row -->
-            <div class="table prediction" v-if="item.predictions.showPredictions">
-                <div class="thead">
-                  <div class="tr">
-                      <div class="th" v-for="key in filteredPredKeys" :key="key">{{ key }}</div>
-                  </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <div v-for="key in filteredKeys" :key="key">
+                        <div class="font-semibold">{{ key }}</div>
+                        <div>{{ item[key] }}</div>
+                    </div>
                 </div>
-                        <div v-for="prediction in item.predictions" :key="prediction.id" class="tr ">
-                            <div v-for="(predValue, predKey) in prediction" :key="predKey" class="td" >
-                              {{ displayValue(predKey, predValue) }}
+
+                <button v-if="!item.predictions.showPredictions" @click="item.predictions.showPredictions = !item.predictions.showPredictions" class="text-indigo-600 hover:text-indigo-900">+</button>
+                    <button v-if="item.predictions.showPredictions" @click="item.predictions.showPredictions = !item.predictions.showPredictions" class="text-indigo-600 hover:text-indigo-900">-</button>
+                <div v-if="item.predictions.showPredictions" class="mt-4">
+                    <h4 class="text-lg font-bold">Predictions</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        <div v-for="prediction in item.predictions" :key="prediction.id" class="flex flex-col">
+                            <div v-for="(predValue, predKey) in prediction" :key="predKey">
+                                <div class="font-semibold">{{ predKey }}</div>
+                                <div>{{ displayValue(predKey, predValue) }}</div>
                             </div>
                         </div>
+                    </div>
+                </div>
             </div>
         </template>
     </div>
-</div>
 
+    <div v-else class="text-center mt-6 text-xl">No cases found.</div>
+</main>
 
-        <div v-else>No cases found.</div>
-    </main>
   </PageTemplate>
 </template>
 
