@@ -32,6 +32,9 @@ export default {
   
      <footer class="pl-20">
        <p>&copy; 2023 BODC-DEI</p>
+       <!-- add Vue Links to about and contact pages-->
+        <p><Link href="/about">About</Link></p>
+        <p><Link href="/contact">Contact</Link></p>
      </footer>
   </GuestLayout>
   </div>

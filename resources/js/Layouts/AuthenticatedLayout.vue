@@ -31,24 +31,18 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+
+                                <NavLink :href="route('home')" :active="route().current('home')">
+                                    Home
+                                </NavLink>
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
                                 <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
                                     Chirps
                                 </NavLink>
-                                <!-- Add Links for About, contact, projects, and home-->
-                                <NavLink :href="route('about')" :active="route().current('about')">
-                                    About
-                                </NavLink>
-                                <NavLink :href="route('contact')" :active="route().current('contact')">
-                                    Contact
-                                </NavLink>
                                 <NavLink :href="route('projects')" :active="route().current('projects')">
                                     Projects
-                                </NavLink>
-                                <NavLink :href="route('home')" :active="route().current('home')">
-                                    Home
                                 </NavLink>
                                 
                             </div>
@@ -131,24 +125,17 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('home')" :active="route().current('home')">
+                            Home
+                        </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
                             Chirps
                         </ResponsiveNavLink>
-                        <!-- Add Links for About, contact, projects, and home-->
-                        <ResponsiveNavLink :href="route('about')" :active="route().current('about')">
-                            About
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('contact')" :active="route().current('contact')">
-                            Contact
-                        </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('projects')" :active="route().current('projects')">
                             Projects    
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('home')" :active="route().current('home')">
-                            Home
                         </ResponsiveNavLink>
                     </div>
 

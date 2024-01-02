@@ -4,17 +4,17 @@
 
 
 
+
+
 :root {
     --background-color: #e8e8e8; /* Cool Grey - Subtle and Professional */
     --primary-color: #333333; /* Charcoal Grey - Bold and Strong */
-    --accent-color1: #4a90e2; /* Vibrant Blue - Modern and Clean Accent */
-    --accent-color2: #4a90e2; /* Same as Accent Color1 */
-    --button-color: #4a90e2; /* Vibrant Blue - Eye-catching yet Professional */
+    --accent-color: #aaaaaa; /* Medium Grey - Professional Accent */
+    --button-color: #333333; /* Charcoal Grey - Bold and Professional */
     --section-color: #ffffff; /* Off White - Clean Section Background */
     --button-text-color: #ffffff; /* Pure White - Clear Contrast for Buttons */
-    --link-color: #4a90e2; /* Vibrant Blue - Consistent with Button Color */
+    --link-color: #4a90e2; /* Charcoal Grey - Consistent with Button Color */
 }
-
 
 /* style all links */
 a {
@@ -26,27 +26,28 @@ a {
 button {
     background-color: var(--button-color);
     color: var(--button-text-color);
-    border: none;
+    border: 1px solid var(--primary-color); /* Add a border for definition */
     border-radius: 0.25rem;
     padding: 0.5rem 1rem;
     font-size: 1rem;
     cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for button states */
 }
 
 /* style all buttons on hover */
 button:hover {
-    background-color: var(--accent-color1);
+    background-color: var(--accent-color); /* A lighter grey for hover */
 }
 
 /* style all buttons on focus */
 button:focus {
-    outline: 2px solid var(--accent-color1);
+    outline: 2px solid var(--accent-color);
     outline-offset: 2px;
 }
 
 /* style all buttons on active */
 button:active {
-    background-color: var(--accent-color2);
+    background-color: darken(var(--button-color), 10%); /* Darken the button color for active state */
 }
 
 /* style all buttons on disabled */
@@ -54,6 +55,7 @@ button:disabled {
     background-color: var(--background-color);
     color: var(--primary-color);
     cursor: not-allowed;
+    border: 1px solid var(--background-color); /* Match border with background for disabled state */
 }
 
 /* style all main, section, heading, and paragraph elements in separate but similar ways */
@@ -72,4 +74,18 @@ h1, h2, h3, h4, h5, h6 {
 p {
     color: var(--primary-color);
     margin: 1rem 0;
+}
+
+/* make all text bigger on large screens */
+@media (min-width: 768px) {
+    html {
+        font-size: 125%;
+    }
+}
+
+/* make all text bigger on large screens */
+@media (min-width: 1024px) {
+    html {
+        font-size: 150%;
+    }
 }
