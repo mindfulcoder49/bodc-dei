@@ -27,7 +27,6 @@ defineProps({
       <Head>
         <title class="text-xl font-bold">Home</title>
       </Head>
-      <main class="p-4">
         <section class="mb-8">
           <h1 class="text-2xl font-semibold mb-3">Welcome to BODC-DEI</h1>
         </section>  
@@ -75,7 +74,6 @@ defineProps({
           <p class="text-base mb-4">See the code demo here:</p>
           <Link href="/thebostonappdemo" class="btn btn-primary">View Demo</Link>
         </section>
-      </main>
     </PageTemplate>
   </template>
   

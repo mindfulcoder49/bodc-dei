@@ -23,7 +23,7 @@ const submit = () => {
 <template>
     <GuestLayout>
         <Head title="Register" />
-        <section class="p-20">
+        <section class="lg:p-20">
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="name" value="Name" />
