@@ -29,10 +29,33 @@ defineProps({
       <title>Projects</title>
     </Head>
     <main>
+      
+      <section class="mb-8">
+        <h1 class="text-2xl font-semibold mb-3">Some of My Projects</h1>
+        <p class="mb-3">My programming projects tend to complement the community groups I run and the Boston Open Data Collaboration for Diversity Equity and Inclusion spirit. They are free or open source, focused on educating people on AI, and as accessible to all skill levels as possible. The projects span various technologies including python, javascript, php, SQL, Machine Learning, and Natural Language Processing.</p>
+      </section>
       <section>
-        <h2 class="text-2xl font-semibold mb-3">Boston 311 Preliminary Results</h2>
+        <h2 class="text-2xl font-semibold mb-3">AI in 2024: Terms, Trends, and LLMs, The Book</h2>
         <p>
-            The 311 Project dashboard is still under construction, but we're happy to share what we have so far.
+            For my first meetup for the Boston AI Group for Healthcare Law and educaton I wrote a very short book on the direction of AI in 2024 as it appeared to be headed at the end of January 2024. The book is called AI in 2024: Terms, Trends, and LLMs. It is a short book that is meant to be a quick read for anyone who is interested in AI, but not necessarily a developer or data scientist. It was written completely without the assistance of any Large Language Model. 
+        </p>
+        <p><a href="https://github.com/mindfulcoder49/NorthShoreAI/blob/main/AI%20in%202024%3A%20Terms%20Trends%20and%20LLMs%2C%20The%20Book.pdf" class="btn btn-primary">The book is available here on Github</a></p>
+      </section>
+
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">North Shore AI Developers Demo Notebooks</h2>
+        <p>
+            The demo notebooks use for the North Shore AI Developer meetups are hosted on a github repository for that group. The notebooks are written in Python and use Jupyter Notebooks. They are meant to be a quick and easy way to get started with some of the latest cutting edge AI tools.
+        </p>
+        <p><a href="https://github.com/mindfulcoder49/NorthShoreAI" class="btn btn-primary">Check out the North Shore AI Developers Github to see the notebooks</a></p>
+        <!-- <button>View Details</button> -->
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">Boston 311 Machine Learning Python Package</h2>
+        <p class="mb-5">
+            The 311 Project is a demonstration of a python package that can be used to easily train machine learning models with Boston 311 data. <a href="https://github.com/mindfulcoder49/Boston_311"> The package is open source and the repository is on Github here.</a> Below are links to pages on this site that demonstrate the package in action.
         </p>
         <div class="space-y-4">
           <div class="border p-4 rounded shadow flex items-center space-x-4 bg-gray-100">
@@ -65,6 +88,15 @@ defineProps({
 
 </div>
 
+        <!-- <button>View Details</button> -->
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">This Website: BODC-DEI.org</h2>
+        <p>
+          This website is an open source Laravel implementation written in PHP and Vue.js. You can see the code for it on my github:
+        </p>
+        <p><a href="https://github.com/mindfulcoder49/BODC-DEI" class="btn btn-primary">Check out the code repository for the BODC-DEI website.</a></p>
         <!-- <button>View Details</button> -->
       </section>
       <section>

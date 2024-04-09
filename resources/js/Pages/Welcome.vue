@@ -28,52 +28,47 @@ defineProps({
         <title class="text-xl font-bold">Home</title>
       </Head>
         <section class="mb-8">
-          <h1 class="text-2xl font-semibold mb-3">Welcome to BODC-DEI</h1>
+          <h1 class="text-2xl font-semibold mb-3">Boston Open Data Collaboration for Diversity Equity and Inclusion</h1>
         </section>  
         <section>
-        <h2 class="text-2xl font-semibold mb-3">Boston 311 Preliminary Results</h2>
-        <p>
-            The 311 Project dashboard is still under construction, but we're happy to share what we have so far.
+        <h2 class="text-2xl font-semibold mb-3">What is BODC-DEI?</h2>
+        <p class="mb-2">
+            BODC-DEI stands for Boston Open Data Collaboration for Diversity, Equity, and Inclusion. It is the main principle and organizing ethos for my community projects. The goal is to foster the exploration of open data and open-source solutions to champion diversity, equity, and inclusion within Boston's vibrant AI and ML landscape.
         </p>
-        <div class="space-y-4">
-          <div class="border p-4 rounded shadow flex items-center space-x-4 bg-gray-100">
-  <Link href="/cases" class="inline-block px-6 py-3 bg-gray-500 text-gray-100 font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition ease-in-out duration-150">
-    Case List
-  </Link>
-  <p class="text-sm text-gray-600">Explore case outcomes and predictions.</p>
-</div>
-
-<div class="border p-4 rounded shadow flex items-center space-x-4 bg-gray-100">
-  <Link href="/scatter" class="inline-block px-6 py-3 bg-gray-500 text-gray-100 font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition ease-in-out duration-150">
-    Case Map
-  </Link>
-  <p class="text-sm text-gray-600">Visualize case locations with a scatterplot.</p>
-</div>
-
-<div class="border p-4 rounded shadow flex items-center space-x-4 bg-gray-100">
-  <Link href="/311models" class="inline-block px-6 py-3 bg-gray-500 text-gray-100 font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition ease-in-out duration-150">
-    Model Info
-  </Link>
-  <p class="text-sm text-gray-600">Review the predictive model details and accuracy metrics.</p>
-</div>
-
-<div class="border p-4 rounded shadow flex items-center space-x-4 bg-gray-100">
-  <Link href="/311demo" class="inline-block px-6 py-3 bg-gray-500 text-gray-100 font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition ease-in-out duration-150">
-    Notebook Demo
-  </Link>
-  <p class="text-sm text-gray-600">Engage with a tutorial on utilizing the Boston 311 package for predictive modeling.</p>
-</div>
-
-</div>
-
-        <!-- <button>View Details</button> -->
-      </section>
-        <section>
-          <h2 class="text-2xl font-semibold mb-3">Coming Soon: "The Boston App"</h2>
-          <p class="text-base mb-4">The proposed project is an app for residents of Boston to stay informed about city operations in their area that affect their daily lives. The app will provide information about city services, such as trash pickup and street cleaning, as well street construction, building permits, and health inspections.</p>
-          <p class="text-base mb-4">See the code demo here:</p>
-          <Link href="/thebostonappdemo" class="btn btn-primary">View Demo</Link>
         </section>
+        <section>
+        <h2 class="text-2xl font-semibold mb-3">BODC-DEI Groups</h2>
+        <p class="mb-2">
+            There are currently two BODC DEI Groups, both hosted on Meetup.com. One geared more towards developers and one geared more towards other professionals that will be heavily impacted by AI and ML technologies:
+            <ul>
+                <li><a href="https://www.meetup.com/north-shore-ai-developers/">North Shore AI Developers</a></li>
+                <li><a href="https://www.meetup.com/boston-ai-group-for-health-law-education/">Boston AI Group for Healthcare Law and Education</a></li>
+            </ul>
+        </p>
+        </section>
+        <section>
+            <h2 class="text-2xl font-semibold mb-3">
+              <a href="https://www.meetup.com/north-shore-ai-developers/">North Shore AI Developers</a> 
+            </h2>
+            <div>
+              
+              <p class="mb-2">The North Shore AI, Machine Learning, and Coding Meetup Group is based in Everett, MA. It is a vibrant community of tech enthusiasts, professionals, and hobbyists interested in exploring the exciting realms of artificial intelligence, machine learning, and coding.</p>
+
+              <p class="mb-2">The vast majority of AI Developer meetups in Boston happen either at an educational insitution, or in Kendall Sqaure in Cambridge. The group fills that gap by having in person meetups in Everett and other locations north of Boston. This group also has regular virtual meetups that each focus on one of the latest cutting edge open source AI tools</p>
+
+              <p class="mb-2">Check out our past events here: <a href="https://www.meetup.com/north-shore-ai-developers/events/past/">North Shore AI Developers Past Events</a></p>
+              </div>
+         
+        </section>
+        <section>
+          <h2 class="text-2xl font-semibold mb-3">
+                <a href="https://www.meetup.com/boston-ai-group-for-health-law-education/">Boston AI Group for Healthcare Law and Education</a>
+            </h2>
+            <p class="mb-2">The Boston AI Group for Healthcare Law and Education is a community designed for people who are interested in examining AI's effects on healthcare, law, and education. This group has had two successful in person meetups at the Microsoft New England Research and Development Center in Kendall Sqaure. While the other meetup is about bringing developer to Everett MA, a city that otherwise would have none, this meetup is about bringing non-technical professionals to Kendall Square to feel they can be a part of this AI revolution.</p>
+
+            <p class="mb-2">Check out our past events here: <a href="https://www.meetup.com/boston-ai-group-for-health-law-education/events/past/">Boston AI Group for Healthcare Law and Education Past Events</a></p>
+        </section>
+        
     </PageTemplate>
   </template>
   
