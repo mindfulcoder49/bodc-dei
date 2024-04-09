@@ -37,18 +37,20 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
+                                <!--
                                 <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
                                     Chirps
                                 </NavLink>
+                            -->
                                 <NavLink :href="route('projects')" :active="route().current('projects')">
                                     Projects
                                 </NavLink>
                                 
                             </div>
                         </div>
-
+                        <!--
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <!-- Settings Dropdown -->
+                        
                             <div class="ml-3 relative">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
@@ -76,14 +78,16 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        <!-- Add links for login and register-->
+                                    
                                         <DropdownLink :href="route('login')"> Login </DropdownLink>
                                         <DropdownLink :href="route('register')"> Register </DropdownLink>
 
                                     </template>
                                 </Dropdown>
-                            </div>
-                        </div>
+                            
+                            </div> 
+                        
+                        </div> -->
 
                         <!-- Hamburger -->
                         <div class="-mr-2 flex items-center sm:hidden">
@@ -130,9 +134,11 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
+                        <!--
                         <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
                             Chirps
                         </ResponsiveNavLink>
+                    -->
                         <ResponsiveNavLink :href="route('projects')" :active="route().current('projects')">
                             Projects    
                         </ResponsiveNavLink>
@@ -142,13 +148,14 @@ const showingNavigationDropdown = ref(false);
                     <div class="pt-4 pb-1 border-t border-gray-200">
 
                         <div class="mt-3 space-y-1">
-                            <!-- Add login and register-->
+                            <!-- Add login and register
                             <ResponsiveNavLink :href="route('login')" :active="route().current('login')">
                                 Login
                             </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('register')" :active="route().current('register')">
                                 Register
                             </ResponsiveNavLink>
+                        -->
                         </div>
                     </div>
                 </div>
