@@ -3,47 +3,70 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import PageTemplate from '../Components/PageTemplate.vue';
 
+const apiUrl = 'https://us-central1-llama-3-attempt-2.cloudfunctions.net/llama-3-chat';
+const defaultPrompts = [
+  { text: "Write a poem about the ocean", value: "Write a poem about the ocean" },
+  { text: "Summarize the main points of the theory of relativity", value: "Summarize the main points of the theory of relativity" },
+  { text: "Tell me a joke", value: "Tell me a joke" },
+];
+let selectedPrompt = null;
+let customPrompt = '';
+
+const submitPrompt = () => {
+  const formData = new FormData();
+  if (selectedPrompt) {
+    formData.append('user_input', selectedPrompt);
+  } else if (customPrompt) {
+    formData.append('user_input', customPrompt);
+  } else {
+    alert('Please select or enter a prompt.');
+    return;
+  }
+  window.open(`${apiUrl}?${new URLSearchParams(formData)}`, '_blank');
+};
 </script>
 
 <template>
-    <Head title="Dashboard" />
-
-    <PageTemplate>
-        <div class="pageTemplate">
-        <main>
+  <Head title="Dashboard" />
+  <PageTemplate>
+    <div class="pageTemplate p-6">
+      <main>
         <section>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Welcome to your BODC-DEI Dashboard</h2>
+          <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-6">
+            Welcome to your BODC-DEI Dashboard
+          </h2>
         </section>
-      <!-- Event Description -->
-    <section>
-        <h3 class="text-2xl font-semibold mb-4">App Details</h3>
-        <p class="mb-6">
-          This app is hosted by the Boston Open Data Collaborative for Diversity, Equity, and Inclusion. 
-        </p>
-    </section>
-
-    <!-- Chirps App Instructions -->
-    <section>
-            <h4 class="text-xl font-medium">Using the Chirps App</h4>
-            <h5 class="text-lg mt-2">A Public Introduction</h5>
-            <p>Use the Chirps app to introduce yourself. You can find the Chirps app in the menu above. Remember:</p>
-            <ul class="list-disc list-inside pl-5">
-              <li>All Chirps are private by default.</li>
-              <li>Include <strong>#public</strong> to make your Chirp public.</li>
-            </ul>
-    </section>
-
-    <section>
-            <h5 class="text-lg font-medium">Public Chirps</h5>
-            <p>Share your thoughts and feedback during the event using Chirps. You can find the Chirps app in the menu above. Remember:</p>
-            <ul class="list-disc list-inside pl-5">
-              <li>All Chirps are private by default, visible only to the event host.</li>
-              <li>Include <strong>#public</strong> to share publicly.</li>
-            </ul>
-    </section>
-</main>
-</div>
-</PageTemplate>
+        <section>
+          <h3 class="text-2xl font-semibold mb-4">Llama 3 Prompts</h3>
+          <form @submit.prevent="submitPrompt">
+            <div class="flex flex-wrap gap-4 mb-4">
+              <button 
+                v-for="prompt in defaultPrompts" 
+                :key="prompt.value" 
+                :class="{ 'bg-blue-500 text-white': selectedPrompt === prompt.value, 'bg-gray-200 hover:bg-gray-300': selectedPrompt !== prompt.value }"
+                class="px-4 py-2 rounded border font-medium"
+                @click="selectedPrompt = prompt.value"
+              >
+                {{ prompt.text }}
+              </button>
+            </div>
+            <div v-if="!selectedPrompt" class="mb-4">
+              <label for="custom-prompt" class="block text-lg font-medium mb-2">
+                Or enter your own:
+              </label>
+              <textarea 
+                id="custom-prompt" 
+                v-model="customPrompt" 
+                rows="4" 
+                class="w-full rounded border px-3 py-2 focus:ring focus:ring-blue-500 focus:border-blue-500"
+              ></textarea>
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded">
+              Submit Prompt
+            </button>
+          </form>
+        </section>
+      </main>
+    </div>
+  </PageTemplate>
 </template>
-
-
