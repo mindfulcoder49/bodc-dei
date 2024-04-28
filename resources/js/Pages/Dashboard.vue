@@ -14,10 +14,10 @@ let customPrompt = '';
 
 const submitPrompt = () => {
   const formData = new FormData();
-  if (selectedPrompt) {
-    formData.append('user_input', selectedPrompt);
-  } else if (customPrompt) {
+  if (customPrompt !== '') {
     formData.append('user_input', customPrompt);
+  } else if (selectedPrompt) {
+    formData.append('user_input', selectedPrompt);
   } else {
     alert('Please select or enter a prompt.');
     return;
