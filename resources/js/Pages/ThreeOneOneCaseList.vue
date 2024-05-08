@@ -44,6 +44,8 @@
             <div class="mt-2">
               <div>Date: {{ item["open_dt"] }}</div>
               <div>SLA: {{ item["sla_target_dt"] }}</div>
+              <div>Status: {{ item["case_status"] }}</div>
+              <div v-if="item['closed_dt']">Closed date: {{ item["closed_dt"] }}</div>
             </div>
             <div v-if="item.predictions.length" class="mt-4">
               <h4 class="text-lg font-bold">Predictions</h4>
