@@ -2,6 +2,19 @@
   <PageTemplate>
     <Head>
       <title>311 Case List</title>
+      <meta property="og:title" content="311 Case List" />
+      <meta property="og:description" content="A comprehensive list of Boston 311 cases with detailed predictions and insights." />
+      <meta property="og:image" content="https://bodc-dei.com/images/logo.jpeg" />
+      <meta property="og:url" content="https://bodc-dei.com/cases" />
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="311 Case Management" />
+
+      <!-- Twitter Card Meta Tags -->
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="311 Case List" />
+      <meta name="twitter:description" content="A comprehensive list of Boston 311 cases with detailed predictions and insights." />
+      <meta name="twitter:image" content="https://bodc-dei.com/images/logo.jpeg" />
+      <meta name="twitter:site" content="@BODC-DEI" />
     </Head>
     <div class="border p-4 rounded shadow items-center space-4 bg-gray-100 overflow-wrap">
       <Link href="/cases" class="inline-block px-6 py-3 bg-gray-500 text-gray-100 font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition ease-in-out duration-150 m-2">
