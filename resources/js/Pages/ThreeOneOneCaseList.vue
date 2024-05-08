@@ -50,11 +50,11 @@
               <div class="mt-2"><strong>Model:</strong> {{ item.predictions[0].ml_model_name }}</div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                 <div v-for="prediction in item.predictions" :key="prediction.id" class="flex flex-col">
-                  <div class="font-semibold">Predicted Hours to Close:</div>
+                  <div class="font-semibold">Predicted Days to Close:</div>
                   <ul>
-                    <li><strong>First:</strong> {{ prediction.predictionTimespan[0] }} hours ({{ (prediction.predictionMaxThree[0] * 100).toFixed(2) }}%)</li>
-                    <li><strong>Second:</strong> {{ prediction.predictionTimespan[1] }} hours ({{ (prediction.predictionMaxThree[1] * 100).toFixed(2) }}%)</li>
-                    <li><strong>Third:</strong> {{ prediction.predictionTimespan[2] }} hours ({{ (prediction.predictionMaxThree[2] * 100).toFixed(2) }}%)</li>
+                    <li v-if="prediction.predictionTimespan.length > 0"><strong>First:</strong> {{ convertToDaysRange(prediction.predictionTimespan[0]) }} ({{ (prediction.predictionMaxThree[0] * 100).toFixed(2) }}%)</li>
+                    <li v-if="prediction.predictionTimespan.length > 1"><strong>Second:</strong> {{ convertToDaysRange(prediction.predictionTimespan[1]) }} ({{ (prediction.predictionMaxThree[1] * 100).toFixed(2) }}%)</li>
+                    <li v-if="prediction.predictionTimespan.length > 2"><strong>Third:</strong> {{ convertToDaysRange(prediction.predictionTimespan[2]) }} ({{ (prediction.predictionMaxThree[2] * 100).toFixed(2) }}%)</li>
                   </ul>
                 </div>
               </div>
@@ -120,7 +120,7 @@ export default {
     },
     filteredKeys() {
       // Exclude predictions and the initially displayed fields
-      return Object.keys(this.filteredCases[0]).filter((key) => !['predictions', 'case_title', 'case_enquiry_id', 'open_dt', 'sla_target_date'].includes(key));
+      return Object.keys(this.filteredCases[0]).filter((key) => !['predictions', 'case_title', 'case_enquiry_id', 'open_dt', 'sla_target_dt'].includes(key));
     },
   },
   methods: {
@@ -130,16 +130,14 @@ export default {
     fetchCases() {
       this.$inertia.get('/cases', { searchTerm: this.searchTerm });
     },
-    displayValue(predKey, predValue) {
-      if (predKey === 'predictionTimespan') {
-        return `First:${predValue[0]} Second:${predValue[1]} Third:${predValue[2]}`;
-      } else if (predKey === 'predictionMaxThree') {
-        return `First:${predValue[0]} Second:${predValue[1]} Third:${predValue[2]}`;
-      } else if (predKey === 'prediction') {
-        return "Predicted hours to close";
-      } else {
-        return predValue;
-      }
+    convertToDaysRange(value) {
+
+      const hoursPerDay = 24;
+      const startDay = Math.floor(value[0] / hoursPerDay);
+      const endDay = Math.floor(value[1] / hoursPerDay);
+
+      //return `[${startDay}, ${endDay}] days`;
+      return `${startDay} - ${endDay} days`;
     },
   },
 };
