@@ -102,10 +102,10 @@ defineProps({
       <section>
         <h2 class="text-2xl font-semibold mb-3">The Boston App</h2>
         <p>
-            The Boston App is still under construction, but we're happy to share what we have so far.
+            The Boston App is still under construction, but the idea is to make localized information available to Boston residents.
         </p>
-        <p><Link href="/thebostonappdemo" class="btn btn-primary">This page shows examples of the kind of reports this app might generate, and a python notebook with proof of concept code that generates those example reports.</Link></p>
-        <!-- <button>View Details</button> -->
+        <p><Link href="/dashboard" class="btn btn-primary">The BODC-DEI Dashboard</Link> right now has a form that allows you to get a crime report for a location in Boston. The report is generated using a Google Cloud Function that uses two data sets on data.boston.gov, one for crime reports, and one to get the coordinates for street addresses, and it then sends that data to chatGPT for summary and translation.  The function is written in Python and uses the Google Cloud Platform to run the function. The function is called from the form on the dashboard and the report is displayed on the page.</p>
+        <Link href="/dashboard" class="btn btn-primary">Check out the BODC-DEI Crime Report Generator</Link>
       </section>
     </main>
   </PageTemplate>
