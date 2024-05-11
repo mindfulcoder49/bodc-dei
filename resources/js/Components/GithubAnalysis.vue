@@ -4,6 +4,12 @@
       <p class="text-gray-700 text-lg mb-4">
         This form allows you to analyze changes within a GitHub repository over a specified period. Select a repository from the dropdown menu, then enter an interval in hours to define how often changes should be checked, and specify the number of iterations to determine how many past intervals should be analyzed. This will help you track development progress, identify frequent updates, and understand the repository's modification history.
         </p>
+        <p class="text-gray-700 text-lg mb-4"> The two repositories available for analysis are opendevin and devika. They are both open source AI agent tools. You can find them on github here:
+            <ul class="list-disc ml-8">
+                <li><a href="https://github.com/OpenDevin/OpenDevin" target="_blank">OpenDevin</a></li>
+                <li><a href="https://github.com/stitionai/devika" target="_blank">Devika</a></li>
+            </ul>
+        </p>
 
       <form @submit.prevent="fetchGithubAnalysis" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         
