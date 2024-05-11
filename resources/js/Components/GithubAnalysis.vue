@@ -31,7 +31,11 @@
               Analyze
             </span>
           </button>
+          
         </div>
+        <p class="text-sm mt-4 text-gray-600">
+            Please be patient, generating the report may take a moment.
+        </p>
       </form>
       <div v-if="analysis && analysis.length" class="bg-gray-100 p-6 rounded shadow-lg">
         <h2 class="text-xl font-semibold mb-2">Analysis</h2>
