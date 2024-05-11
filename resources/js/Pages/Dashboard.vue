@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import PageTemplate from '../Components/PageTemplate.vue';
 import CrimeReport from '../Components/CrimeReport.vue';
+import GithubAnalysis from '../Components/GithubAnalysis.vue';
 
 const apiUrl = 'https://us-central1-llama-3-attempt-2.cloudfunctions.net/llama-3-chat';
 const defaultPrompts = [
@@ -30,6 +31,7 @@ const submitPrompt = () => {
 <template>
   <Head title="Dashboard" />
   <PageTemplate>
+          <GithubAnalysis />
           <CrimeReport />
   </PageTemplate>
 </template>

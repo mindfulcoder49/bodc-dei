@@ -107,6 +107,13 @@ defineProps({
         <p><Link href="/dashboard" class="btn btn-primary">The BODC-DEI Dashboard</Link> right now has a form that allows you to get a crime report for a location in Boston. The report is generated using a Google Cloud Function that uses two data sets on data.boston.gov, one for crime reports, and one to get the coordinates for street addresses, and it then sends that data to chatGPT for summary and translation.  The function is written in Python and uses the Google Cloud Platform to run the function. The function is called from the form on the dashboard and the report is displayed on the page.</p>
         <Link href="/dashboard" class="btn btn-primary">Check out the BODC-DEI Crime Report Generator</Link>
       </section>
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">Github Change Analysis</h2> 
+          <p class="text-gray-700 text-sm mb-4">
+            This form allows you to analyze changes within a GitHub repository over a specified period. Select a repository from the dropdown menu, then enter an interval in hours to define how often changes should be checked, and specify the number of iterations to determine how many past intervals should be analyzed. This will help you track development progress, identify frequent updates, and understand the repository's modification history.
+          </p>
+          <Link href="/dashboard" class="btn btn-primary">Check out the BODC-DEI Github Change Analysis</Link>
+      </section>
     </main>
   </PageTemplate>
 </template>

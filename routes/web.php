@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThreeOneOneCaseController;
 use App\Http\Controllers\MlModelController;
 use App\Http\Controllers\CrimeReportsController;
+use App\Http\Controllers\GithubAnalysisController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,6 +40,7 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 
 Route::get('/api/crime-reports', [CrimeReportsController::class, 'handle']);
+Route::get('/api/github-analysis', [GithubAnalysisController::class, 'handle']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
