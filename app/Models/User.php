@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -48,4 +49,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Chirp::class);
     }
+
+    public function interactions(): HasMany
+    {
+        return $this->hasMany(Interaction::class);
+    }   
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+
 }

@@ -6,6 +6,8 @@ use App\Http\Controllers\ThreeOneOneCaseController;
 use App\Http\Controllers\MlModelController;
 use App\Http\Controllers\CrimeReportsController;
 use App\Http\Controllers\GithubAnalysisController;
+use App\Http\Controllers\InteractionController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -46,6 +48,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('interactions', InteractionController::class);
+    Route::resource('templates', TemplateController::class);
+    Route::resource('usage', UsageController::class);
+
+
+    //Route::get('/api/AI', [AIController::class, 'handle']);
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    //
 });
 
 

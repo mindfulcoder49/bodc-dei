@@ -48,7 +48,7 @@ const showingNavigationDropdown = ref(false);
                                 
                             </div>
                         </div>
-                        <!--
+                        
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                         
                             <div class="ml-3 relative">
@@ -87,7 +87,7 @@ const showingNavigationDropdown = ref(false);
                             
                             </div> 
                         
-                        </div> -->
+                        </div> 
 
                         <!-- Hamburger -->
                         <div class="-mr-2 flex items-center sm:hidden">
@@ -148,14 +148,14 @@ const showingNavigationDropdown = ref(false);
                     <div class="pt-4 pb-1 border-t border-gray-200">
 
                         <div class="mt-3 space-y-1">
-                            <!-- Add login and register
+                             Add login and register
                             <ResponsiveNavLink :href="route('login')" :active="route().current('login')">
                                 Login
                             </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('register')" :active="route().current('register')">
                                 Register
                             </ResponsiveNavLink>
-                        -->
+                        
                         </div>
                     </div>
                 </div>
