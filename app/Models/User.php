@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->hasMany(Interaction::class);
     }   
 
+    public function templates(): HasMany
+    {
+        return $this->hasMany(Template::class);
+    }
+
     public function isAdmin()
     {
         return $this->role === 'admin';

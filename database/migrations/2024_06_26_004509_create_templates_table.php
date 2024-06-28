@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('templates', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->string('template');
+            $table->json('template');  // Changed to json type to handle complex data
+            $table->string('name')->unique();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 

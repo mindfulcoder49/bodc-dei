@@ -7,6 +7,9 @@ use App\Http\Controllers\MlModelController;
 use App\Http\Controllers\CrimeReportsController;
 use App\Http\Controllers\GithubAnalysisController;
 use App\Http\Controllers\InteractionController;
+use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\UsageController;
+use App\Http\Controllers\Auth\RoleController;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -49,13 +52,26 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::put('/profile', [RoleController::class, 'update'])->name('role.update');
+
+
     Route::resource('interactions', InteractionController::class);
-    Route::resource('templates', TemplateController::class);
+    Route::resource('templates', TemplateController::class)->except(['show', 'destroy']);
     Route::resource('usage', UsageController::class);
 
 
     //Route::get('/api/AI', [AIController::class, 'handle']);
 });
+
+// Add a route for fetching a template by name
+Route::get('/templates/{name}', [TemplateController::class, 'getTemplateByName'])->name('templates.getByName')->middleware('auth');
+
+// Update the delete route to use name instead of ID
+Route::delete('/templates/{name}', [TemplateController::class, 'destroyByName'])->name('templates.destroyByName')->middleware('auth');
+
+
+//Route::post('/interact/generate', [InteractionController::class, 'generateCompletion'])->middleware('auth');
+
 
 Route::middleware(['auth', 'admin'])->group(function () {
     //
