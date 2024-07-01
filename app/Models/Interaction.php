@@ -11,7 +11,7 @@ class Interaction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'prompt', 'completion', 'prompt_tokens', 'completion_tokens', 'prompt_token_price', 'completion_token_price', 'total_cost', 'model_name'
+        'prompt', 'fields', 'completion', 'prompt_tokens', 'completion_tokens', 'prompt_token_price', 'completion_token_price', 'total_cost', 'model_name'
     ];
 
     public function user(): BelongsTo

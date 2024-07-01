@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->text('prompt');
+            $table->json('fields');
             $table->text('completion');
             $table->unsignedBigInteger('prompt_tokens');
             $table->unsignedBigInteger('completion_tokens');

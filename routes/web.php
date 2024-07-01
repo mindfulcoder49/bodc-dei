@@ -69,6 +69,11 @@ Route::get('/templates/{name}', [TemplateController::class, 'getTemplateByName']
 // Update the delete route to use name instead of ID
 Route::delete('/templates/{name}', [TemplateController::class, 'destroyByName'])->name('templates.destroyByName')->middleware('auth');
 
+// Add a route for the estimateCost function in the InteractionController
+Route::post('/interact/estimate', [InteractionController::class, 'estimateCost'])->name('interact.estimate')->middleware('auth');
+
+// Add a route for the logInteraction function in the InteractionController
+Route::post('/interact/log', [InteractionController::class, 'logInteraction'])->name('interact.log')->middleware('auth');
 
 //Route::post('/interact/generate', [InteractionController::class, 'generateCompletion'])->middleware('auth');
 

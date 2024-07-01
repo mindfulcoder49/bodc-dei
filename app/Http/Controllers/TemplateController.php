@@ -16,9 +16,10 @@ class TemplateController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
             'template' => 'required|array',
-            'name' => 'required|string|unique:templates,name', // Ensure name is unique
+            'name' => 'string|unique:templates,name', // Ensure name is unique
         ]);
     
         $template = auth()->user()->templates()->create([

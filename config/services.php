@@ -35,4 +35,8 @@ return [
     'api_key' => env('OPENAI_API_KEY'),
     ],
 
+    'anthropic' => [
+    'api_key' => env('ANTHROPIC_API_KEY'),
+    ],
+
 ];
