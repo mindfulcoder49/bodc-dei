@@ -6,15 +6,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Interaction from '@/Components/Interaction.vue';
 
-const { interactions, templates, models, currentInteraction } = defineProps({
+const { interactions, models, currentInteraction } = defineProps({
   interactions: Array,
-  templates: Array,
   models: Array,
   currentInteraction: Object,
-});
-
-const state = reactive({
-  currentInteraction: currentInteraction || {}  // defaulting if no prop is passed
 });
 
 const form = useForm({
@@ -24,6 +19,7 @@ const form = useForm({
   temperature: 0.5,
   maxTokens: 1024,
   prompt: '',
+  my_action: '',
   errors: {},
   fields: [{
             name: 'Prompt',
@@ -42,10 +38,10 @@ function removeField(index) {
   form.fields.splice(index, 1);
 }
 
-function handleSubmit() {
+function handleSubmit( button_option ) {
     //turn the fields array into json
     const fieldsObject = form.fields.map(f => ({ name: f.name, value: f.value }));
-
+    form.my_action = button_option;
     // Include the fields object in the form data
     form.post(route('interactions.store'), {
         ...form, // Spread the existing form properties
@@ -60,141 +56,6 @@ function handleSubmit() {
     });
 }
 
-function loadInteraction(interaction) {
-    state.currentInteraction = {...interaction};
-    // Clear current fields first
-    form.fields.splice(0, form.fields.length);
-
-    if (interaction.fields && Array.isArray(interaction.fields) && interaction.fields.length > 0) {
-        // Load the fields if they exist and are not empty
-        form.fields.push(...interaction.fields.map(f => ({
-            name: f.name || 'Field',  // Fallback name if none provided
-            value: f.value
-        })));
-    } else if (interaction.prompt && typeof interaction.prompt === 'string') {
-        // Fallback to using prompt as a single field if fields are not available
-        form.fields.push({
-            name: 'Prompt',
-            value: interaction.prompt
-        });
-    } else {
-        // Log an error or set up a default field if neither fields nor prompt are suitable
-        console.error('No suitable data found in the interaction to load fields.');
-        // Optionally add a default empty field to allow user input
-        form.fields.push({
-            name: 'Field 1',
-            value: ''
-        });
-    }
-
-    //Update the rest of the form fields
-    form.model = interaction.model_name;
-
-}
-
-
-function logInteraction() {
-
-    //turn the fields array into json
-    const fieldsObject = form.fields.map(f => ({ name: f.name, value: f.value }));
-
-    // Include the fields object in the form data
-    form.post(route('interact.log'), {
-        ...form, // Spread the existing form properties
-        fields: fieldsObject, // Override the fields with the JSON object
-    onSuccess: () => {
-        console.log('Submission successful!');
-    },
-    onError: (errors) => {
-        form.errors = errors;
-        console.error('Error:', errors);
-    }
-});
-  
-}
-
-function estimateCosts() {
-  form.prompt = form.fields.map(f => `${f.name}: ${f.value}`).join('\n');
-  axios.post(route('interact.estimate'), {
-    prompt: form.prompt,
-    maxTokens: form.maxTokens,
-    model: form.model
-  })
-    .then(response => {
-      console.log('Costs estimated:', response.data);
-      form.costEstimate = response.data;
-    })
-    .catch(error => console.error('Error estimating costs', error));
-}
-
-function clearFields() {
-  form.fields.forEach(field => field.value = '');
-  console.log('Fields cleared');
-}
-
-function saveTemplate() {
-  const fieldsObject = form.fields.map(f => ({ name: f.name, value: f.value }));
-  const templateData = {
-    fields: fieldsObject,
-    settings: {
-      model: form.model,
-      temperature: form.temperature,
-      maxTokens: form.maxTokens
-    }
-  };
-
-  //if templateName is empty, create one with the time stamp
-  if (form.templateName=='') {
-    const timestamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\..+/, '');
-    form.templateName = `Template ${timestamp}`;
-  }
-  const templateName = form.templateName;
-  axios.post(route('templates.store'), { template: templateData, name: templateName })
-    .then(response => {
-      console.log('Template saved');
-      const newTemplate = {
-        name: templateName,
-        ...response.data.template
-      };
-      templates.push(newTemplate);  // This should automatically update your component
-      form.templateChoice = newTemplate.name;
-    })
-    .catch(error => console.error('Error saving template', error));
-}
-
-
-
-function loadTemplate(templateName) {
-    axios.get(`/templates/${templateName}`)
-         .then(response => {
-             // Adjust the reference to match the nested structure
-             const template = response.data.template.template; // Access the nested template object
-             if (!template.fields) {
-                 console.error('Template fields are missing');
-                 return;
-             }
-             form.fields = template.fields;
-             form.model = template.settings.model;
-             form.temperature = template.settings.temperature;
-             form.maxTokens = template.settings.maxTokens;
-             form.templateName = template.name; // Update the form to reflect the loaded template name
-         })
-         .catch(error => console.error('Error loading template', error));
-}
-
-
-function deleteTemplate(templateName) {
-    axios.delete(`/templates/${templateName}`)
-         .then(() => {
-             console.log('Template deleted');
-             // Optionally, remove the deleted template from the local list
-             const index = templates.findIndex(t => t.name === templateName);
-             if (index !== -1) {
-                 templates.splice(index, 1);
-             }
-         })
-         .catch(error => console.error('Error deleting template', error));
-}
 
 
 
@@ -215,9 +76,9 @@ function deleteTemplate(templateName) {
         </div>
         <div class="template-buttons">
         <!-- Bind the selected template name for loading and deleting -->
-        <button type="button" @click="saveTemplate" class="btn-primary">Save Template</button>
-        <button type="button" @click="() => loadTemplate(form.templateChoice)" class="btn-primary">Load Template</button>
-        <button type="button" @click="() => deleteTemplate(form.templateChoice)" class="btn-danger">Delete Template</button>
+        <button type="button" @click="() => handleSubmit('savetemplate')" class="btn-primary">Save Template</button>
+        <button type="button" @click="() => handleSubmit('loadtemplate')" class="btn-primary">Load Template</button>
+        <button type="button" @click="() => handleSubmit('deletetemplate')" class="btn-danger">Delete Template</button>
         </div>
         <div>
         <label for="templateName">Template Name</label>
@@ -253,25 +114,25 @@ function deleteTemplate(templateName) {
           </div>
         </div>
         <button type="button" @click="addField" class="btn-primary">Add Field</button>
-        <button type="submit" class="btn-primary">Submit</button>
-        <button type="button" @click="logInteraction" class="btn-primary">Log Interaction</button>
-        <button type="button" @click="estimateCosts" class="btn-info">Estimate Costs</button>
+        <button type="button" @click="() => handleSubmit('submit')" class="btn-primary">Submit</button>
+        <button type="button" @click="() => handleSubmit('loginteraction')" class="btn-primary">Log Interaction</button>
+        <button type="button" @click="() => handleSubmit('estimatecosts')" class="btn-info">Estimate Costs</button>
 
         <button type="button" @click="clearFields" class="btn-danger">Clear Fields</button>
         <div v-if="form.costEstimate">Input Cost: {{ form.costEstimate.prompt_cost }} Output Cost: {{ form.costEstimate.completion_cost }} Total Cost: {{ form.costEstimate.total_cost }}</div>
-        <InputError :message="form.errors.message" class="mt-2" />
+        <InputError :message="form.errors" class="mt-2" />
       </form>
-      <div v-if="state.currentInteraction">
+      <div v-if="currentInteraction">
         <h2 class="mt-6 text-lg font-semibold">Completion</h2>
-        <p>{{ state.currentInteraction.completion }}</p>
+        <p>{{ currentInteraction.completion }}</p>
         <div class="flex">
-        <small class="p-4 text-sm text-gray-500">Tokens: {{ state.currentInteraction.prompt_tokens + state.currentInteraction.completion_tokens }}</small>
+        <small class="p-4 text-sm text-gray-500">Tokens: {{ currentInteraction.prompt_tokens + currentInteraction.completion_tokens }}</small>
         <!--Add fields for input and output tokens and their prices-->
-        <small class="p-4 text-sm text-gray-500">Input Tokens: {{ state.currentInteraction.prompt_tokens }}</small>
-        <small class="p-4 text-sm text-gray-500">Output Tokens: {{ state.currentInteraction.completion_tokens }}</small>
-        <small class="p-4 text-sm text-gray-500">Input Token Price: ${{ state.currentInteraction.prompt_token_price }}</small>
-        <small class="p-4 text-sm text-gray-500">Output Token Price: ${{ state.currentInteraction.completion_token_price }}</small>
-        <small class="p-4 text-sm text-gray-500">Cost: ${{ state.currentInteraction.total_cost }}</small>
+        <small class="p-4 text-sm text-gray-500">Input Tokens: {{ currentInteraction.prompt_tokens }}</small>
+        <small class="p-4 text-sm text-gray-500">Output Tokens: {{ currentInteraction.completion_tokens }}</small>
+        <small class="p-4 text-sm text-gray-500">Input Token Price: ${{ currentInteraction.prompt_token_price }}</small>
+        <small class="p-4 text-sm text-gray-500">Output Token Price: ${{ currentInteraction.completion_token_price }}</small>
+        <small class="p-4 text-sm text-gray-500">Cost: ${{ currentInteraction.total_cost }}</small>
       </div>
 
         </div>

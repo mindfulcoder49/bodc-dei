@@ -10,11 +10,11 @@ const { interactions, templates, models, currentInteraction } = defineProps({
   interactions: Array,
   templates: Array,
   models: Array,
-  currentInteraction: Object
+  currentInteraction: Object,
 });
 
 const state = reactive({
-  currentInteraction: currentInteraction || {}  // defaulting if no prop is passed
+  currentInteraction: {...currentInteraction} || {}  // defaulting if no prop is passed
 });
 
 const form = useForm({
@@ -25,53 +25,97 @@ const form = useForm({
   maxTokens: 1024,
   prompt: '',
   errors: {},
+  fields: [{
+            name: 'Prompt',
+            content: '',
+          }]
 });
 
-const fields = reactive([{
-  name: 'Field 1',
-  content: '',
-}]);
-
 function addField() {
-  fields.push({
-    label: `Field ${fields.length + 1} Content`,
-    content: '',
-    placeholder: `Enter field ${fields.length + 1} content...`
+  form.fields.push({
+    name: `Field ${form.fields.length + 1}`,
+    value: ''
   });
 }
 
 function removeField(index) {
-  fields.splice(index, 1);
+  form.fields.splice(index, 1);
 }
 
 function handleSubmit() {
-  const combinedPrompt = getCombinedPrompt();
-  form.prompt = combinedPrompt,
-  form.post(route('interactions.store'), {
-    onSuccess: () => {
-      console.log('Submission successful!');
-    },
-    onError: (errors) => {
-      form.errors = errors;
-      console.error(errors);
-    }
-  });
-}
+    //turn the fields array into json
+    const fieldsObject = form.fields.map(f => ({ name: f.name, value: f.value }));
 
-function getCombinedPrompt() {
-  return fields.map(f => `${f.placeholder} ${f.label}: ${f.content}`).join('\n');
+    // Include the fields object in the form data
+    form.post(route('interactions.store'), {
+        ...form, // Spread the existing form properties
+        fields: fieldsObject, // Override the fields with the JSON object
+        onSuccess: () => {
+            console.log('Submission successful!');
+            state.currentInteraction = {...currentInteraction}
+        },
+        onError: (errors) => {
+            form.errors = errors;
+            console.error('Error:', errors);
+        }
+    });
 }
 
 function loadInteraction(interaction) {
     state.currentInteraction = {...interaction};
+    // Clear current fields first
+    form.fields.splice(0, form.fields.length);
+
+    if (interaction.fields && Array.isArray(interaction.fields) && interaction.fields.length > 0) {
+        // Load the fields if they exist and are not empty
+        form.fields.push(...interaction.fields.map(f => ({
+            name: f.name || 'Field',  // Fallback name if none provided
+            value: f.value
+        })));
+    } else if (interaction.prompt && typeof interaction.prompt === 'string') {
+        // Fallback to using prompt as a single field if fields are not available
+        form.fields.push({
+            name: 'Prompt',
+            value: interaction.prompt
+        });
+    } else {
+        // Log an error or set up a default field if neither fields nor prompt are suitable
+        console.error('No suitable data found in the interaction to load fields.');
+        // Optionally add a default empty field to allow user input
+        form.fields.push({
+            name: 'Field 1',
+            value: ''
+        });
+    }
+
+    //Update the rest of the form fields
+    form.model = interaction.model_name;
+
 }
 
+
 function logInteraction() {
-  console.log('Interaction logged:', fields);
+
+    //turn the fields array into json
+    const fieldsObject = form.fields.map(f => ({ name: f.name, value: f.value }));
+
+    // Include the fields object in the form data
+    form.post(route('interact.log'), {
+        ...form, // Spread the existing form properties
+        fields: fieldsObject, // Override the fields with the JSON object
+    onSuccess: () => {
+        console.log('Submission successful!');
+    },
+    onError: (errors) => {
+        form.errors = errors;
+        console.error('Error:', errors);
+    }
+});
+  
 }
 
 function estimateCosts() {
-  form.prompt = getCombinedPrompt();
+  form.prompt = form.fields.map(f => `${f.name}: ${f.value}`).join('\n');
   axios.post(route('interact.estimate'), {
     prompt: form.prompt,
     maxTokens: form.maxTokens,
@@ -85,13 +129,14 @@ function estimateCosts() {
 }
 
 function clearFields() {
-  fields.forEach(field => field.content = '');
+  form.fields.forEach(field => field.value = '');
   console.log('Fields cleared');
 }
 
 function saveTemplate() {
+  const fieldsObject = form.fields.map(f => ({ name: f.name, value: f.value }));
   const templateData = {
-    fields: fields,
+    fields: fieldsObject,
     settings: {
       model: form.model,
       temperature: form.temperature,
@@ -129,7 +174,7 @@ function loadTemplate(templateName) {
                  console.error('Template fields are missing');
                  return;
              }
-             fields.splice(0, fields.length, ...template.fields); // Reset and repopulate fields
+             form.fields = template.fields;
              form.model = template.settings.model;
              form.temperature = template.settings.temperature;
              form.maxTokens = template.settings.maxTokens;
@@ -195,18 +240,14 @@ function deleteTemplate(templateName) {
           <label for="maxTokens">Max Tokens: {{ form.maxTokens }} </label>
           <input type="range" id="maxTokens" min="10" max="4096" step="1" v-model.number="form.maxTokens">
         </div>
-        <div v-for="(field, index) in fields" :key="index" class="mb-4">
+        <div v-for="(field, index) in form.fields" :key="index" class="mb-4">
           <div>
-              <label for="fieldName">Field Name</label>
-              <input type="text" id="fieldName" v-model="field.label">
+              <label :for="'fieldName' + index">Field Name</label>
+              <input :id="'fieldName' + index" v-model="field.name">
           </div>
           <div>
-              <label for="fieldIntro">Field Intro</label>
-              <input type="text" id="fieldIntro" v-model="field.placeholder">
-          </div>
-          <div>
-              <label for="fieldContent">Field Content</label>
-              <textarea id="fieldContent" v-model="field.content"></textarea>
+              <label :for="'fieldContent' + index">Field Content</label>
+              <textarea :id="'fieldContent' + index" v-model="field.value"></textarea>
           </div>
           <div>
             <button type="button" @click="removeField(index)" class="btn-danger btn-remove">Remove</button>
@@ -221,7 +262,7 @@ function deleteTemplate(templateName) {
         <div v-if="form.costEstimate">Input Cost: {{ form.costEstimate.prompt_cost }} Output Cost: {{ form.costEstimate.completion_cost }} Total Cost: {{ form.costEstimate.total_cost }}</div>
         <InputError :message="form.errors.message" class="mt-2" />
       </form>
-      <div v-if="state.currentInteraction.completion">
+      <div v-if="state.currentInteraction">
         <h2 class="mt-6 text-lg font-semibold">Completion</h2>
         <p>{{ state.currentInteraction.completion }}</p>
         <div class="flex">

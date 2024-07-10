@@ -25,6 +25,8 @@ class InteractionController extends Controller
     protected const ANTHROPICMODELS = ['claude-3-5-sonnet-20240620', 'claude-3-opus-20240229', 'claude-3-sonnet-20240229', 'claude-3-haiku-20240307'];
 
 
+
+
     public function index(Request $request)
     {
         // Get last ten interactions for this user if logged in
@@ -47,6 +49,7 @@ class InteractionController extends Controller
             'maxTokens' => 'required|integer',
             'model' => 'required|string|in:' . implode(',', self::MODELS),
             'temperature' => 'required|numeric',
+            'my_action' => 'required|string',
         ]);
 
         
@@ -59,31 +62,58 @@ class InteractionController extends Controller
 
         $prompt = $this->combineFields($fields);
 
-        try {
-            //use the OPENAIMODELS constant to check if the model is an OpenAI model
-            if (in_array($model, self::OPENAIMODELS)) {
-                $interaction = $this->queryOpenAI($fields, $prompt, $maxTokens, $model, $temperature);
-            } else if (in_array($model, self::ANTHROPICMODELS)) {
-                // Call the function to query the Anthropic API
-                $interaction = $this->queryAnthropic($fields, $prompt, $maxTokens, $model);
-            } else {
-                throw new \Exception("Model '{$model}' is not supported.");
+        if ($request->input('my_action') == 'loginteraction') {
+            return $this->logInteraction($request);
+        }
+
+        if ($request->input('my_action') == 'estimatecost') {
+            return $this->estimateCost($request);
+        }
+
+        if ($request->input('my_action') == 'loadtemplate') {
+    
+       
+        }
+        if ($request->input('my_action') == 'deletetemplate') {
+       
+        }
+        if ($request->input('my_action') == 'savetemplate') {
+       
+        }
+        if ($request->input('my_action') == '') {
+       
+        }
+
+        if ($request->input('my_action') == 'submit') {
+
+
+            try {
+                //use the OPENAIMODELS constant to check if the model is an OpenAI model
+                if (in_array($model, self::OPENAIMODELS)) {
+                    $interaction = $this->queryOpenAI($fields, $prompt, $maxTokens, $model, $temperature);
+                } else if (in_array($model, self::ANTHROPICMODELS)) {
+                    // Call the function to query the Anthropic API
+                    $interaction = $this->queryAnthropic($fields, $prompt, $maxTokens, $model);
+                } else {
+                    throw new \Exception("Model '{$model}' is not supported.");
+                }
+
+                
+
+                // Refresh and return
+                return Inertia::render('Interactions/Index', [
+                    'interactions' => auth()->user()->interactions()->latest()->take(10)->get(),
+                    'currentInteraction' => $interaction,
+                    'models' => self::MODELS,
+                    'templates' => auth()->user()->templates()->latest()->get(),
+                ]);
+
+            } catch (\Exception $e) {
+                return back()->withErrors(['message' => $e->getMessage()]);
             }
-
-            
-
-            // Refresh and return
-            return Inertia::render('Interactions/Index', [
-                'interactions' => auth()->user()->interactions()->latest()->take(10)->get(),
-                'currentInteraction' => $interaction,
-                'models' => self::MODELS,
-                'templates' => auth()->user()->templates()->latest()->get(),
-            ]);
-
-        } catch (\Exception $e) {
-            return back()->withErrors(['message' => $e->getMessage()]);
         }
     }
+
 
     //create a function logInteraction that acts identical to the store function but doesn't query an API, just saves the interaction to the database
     public function logInteraction(Request $request)
@@ -262,7 +292,7 @@ class InteractionController extends Controller
     {
         $prompt = '';
         foreach ($fields as $field) {
-            $prompt .= $field['name'] . ' : ' . $field['value'] . '\n';
+            $prompt .= $field['name'] . ' : ' . $field['value'] . ';';
         }
         return $prompt;
     }
