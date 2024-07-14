@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import PageTemplate from '../Components/PageTemplate.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
+import LeafletMap from '@/Components/LeafletMap.vue';
 
 defineProps({
     canLogin: {
@@ -35,6 +36,12 @@ defineProps({
         <p class="mb-2">
             BODC-DEI stands for Boston Open Data Collaboration for Diversity, Equity, and Inclusion. It is the main principle and organizing ethos for my community projects. The goal is to foster the exploration of open data and open-source solutions to champion diversity, equity, and inclusion within Boston's vibrant AI and ML landscape.
         </p>
+        </section>
+        <section>
+        <h2 class="text-2xl font-semibold mb-3">Featured Project</h2>
+          <div id="leafletMapDiv">
+            <LeafletMap />
+          </div>
         </section>
         <section>
         <h2 class="text-2xl font-semibold mb-3">BODC-DEI Groups</h2>
@@ -72,3 +79,13 @@ defineProps({
     </PageTemplate>
   </template>
   
+  <style scoped>
+  #leafletAppDiv {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
