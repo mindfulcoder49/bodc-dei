@@ -6,6 +6,7 @@ use App\Http\Controllers\ThreeOneOneCaseController;
 use App\Http\Controllers\MlModelController;
 use App\Http\Controllers\CrimeReportsController;
 use App\Http\Controllers\GithubAnalysisController;
+use App\Http\Controllers\CrimeMapController;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -78,4 +79,9 @@ Route::inertia('/thebostonappdemo', "TheBostonAppDemo")->name('thebostonappdemo'
 Route::resource('chirps', ChirpController::class)
     ->only(['index', 'store', 'destroy'])
     ->middleware(['auth', 'verified']);
+
+
+Route::post('/api/crime-data', [CrimeMapController::class, 'getCrimeData'])->name('crime-data.api');
+Route::get('/crime-map', [CrimeMapController::class, 'index'])->name('crime-map');
+Route::post('/api/natural-language-query', [CrimeMapController::class, 'naturalLanguageQuery'])->name('crime-map.natural-language-query');
 

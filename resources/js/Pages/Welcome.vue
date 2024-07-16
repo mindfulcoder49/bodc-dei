@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import PageTemplate from '../Components/PageTemplate.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import LeafletMap from '@/Components/LeafletMap.vue';
+import LeafletMap from '@/Pages/CrimeMap.vue';
 
 defineProps({
     canLogin: {
@@ -39,9 +39,10 @@ defineProps({
         </section>
         <section>
         <h2 class="text-2xl font-semibold mb-3">Featured Project</h2>
-          <div id="leafletMapDiv">
-            <LeafletMap />
-          </div>
+        <p class="mb-2">
+            The featured project is the Boston AI Crime Map. This project is a web application that allows users to explore crime data in Boston. The data is sourced from the Boston Police Department and is updated daily. The application allows users to filter the data by various criteria, such as date, time, and type of crime. The application also features a map view that displays the location of each crime on a map of Boston.
+            <Link href="/crime-map" class="text-blue-500">Explore the Boston AI Crime Map</Link>
+        </p>
         </section>
         <section>
         <h2 class="text-2xl font-semibold mb-3">BODC-DEI Groups</h2>
