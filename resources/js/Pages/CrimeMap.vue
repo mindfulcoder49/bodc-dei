@@ -8,8 +8,8 @@
       <p class="mb-4">Enter a natural language query to filter the crime data:</p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <button @click="naturalLanguageQuery = 'All the fraud that happened last week'" class="p-2 border rounded-md w-full mb-4">All the fraud that happened last week</button>
-      <button @click="naturalLanguageQuery = 'All the shootings that happened last month'" class="p-2 border rounded-md w-full mb-4">All the shootings that happened last month</button>
-      <button @click="naturalLanguageQuery = 'All the thefts that happened last year'" class="p-2 border  rounded-md w-full mb-4">All the thefts that happened last year</button>
+      <button @click="naturalLanguageQuery = 'Last month\'s welfare checks'" class="p-2 border rounded-md w-full mb-4">Last month's welfare checks</button>
+      <button @click="naturalLanguageQuery = 'Todo el robo que ocurrió el mes pasado'" class="p-2 border  rounded-md w-full mb-4">Todo el robo que ocurrió el mes pasado</button>
     </div>
       <input v-model="naturalLanguageQuery" type="text" placeholder="Example: All the fraud that happened last week" class="p-2 border rounded-md w-full mb-4">
       <button @click="submitQuery" class="p-2 bg-blue-500 text-white rounded-md mb-4">Submit to GPT-4o</button>
