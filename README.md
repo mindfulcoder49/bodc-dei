@@ -1,4 +1,4 @@
-```markdown
+
 ![BODC-DEI Logo](https://github.com/mindfulcoder49/bodc-dei/blob/main/public/images/logo.jpeg)
 
 # BODC-DEI Repository
@@ -121,4 +121,3 @@ This project is open-source and licensed under the MIT License. See the [LICENSE
 If you have any questions or need further assistance, please open an issue on GitHub or contact us via the Contact page on the website.
 
 Thank you for your interest in the BODC-DEI project! Together, we can make a positive impact through open technology and data.
-```
