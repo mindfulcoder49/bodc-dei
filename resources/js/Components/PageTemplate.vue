@@ -1,43 +1,47 @@
 <script>
 import { Head, Link } from '@inertiajs/vue3';
+import GuestLayout from '@/Layouts/GuestLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 export default {
   name: 'PageTemplate',
   components: {
     Link,
     Head,
+    GuestLayout,
+    AuthenticatedLayout,
+  },
+  computed: {
+    user() {
+      return this.$page.props.auth.user;
+    }
   },
 };
 </script>
 
 <template>
-    <!DOCTYPE html>
- <html lang="en">
-   <Head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1" />
-   </Head>
-   <body class="pageTemplate">
-     <header>
-     <div class="smaller-square"><div class="larger-square"></div></div>
-       <h1>BODC-DEI</h1>
-       <nav>
-         <ul>
-            <li><Link :href="route('home')" class="btn btn-primary">Home</Link></li>
-            <li><Link :href="route('about')" class="btn btn-primary">About</Link></li>
-            <li><Link :href="route('projects')" class="btn btn-primary">Projects</Link></li>
-            <li><Link :href="route('contact')" class="btn btn-primary">Contact</Link></li>
-         </ul>
-       </nav>
-     </header>
+  <div>
+    <!-- Check if user is authenticated -->
+    <AuthenticatedLayout v-if="user">
+     
+      <slot></slot>
+    </AuthenticatedLayout>
+    
+    <GuestLayout v-else>
      <slot></slot>
   
-     <footer>
-        <div class="larger-square"><div class="smaller-square"></div></div>
+     <footer class="pl-20">
        <p>&copy; 2023 BODC-DEI</p>
+       <!-- add Vue Links to about and contact pages-->
+        <p><Link href="/about">About</Link></p>
+        <p><Link href="/contact">Contact</Link></p>
      </footer>
-   </body>
- </html>
+  </GuestLayout>
+  </div>
+
+  
+
+ 
  </template>
   
 

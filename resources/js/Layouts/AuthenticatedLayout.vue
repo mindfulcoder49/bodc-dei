@@ -31,12 +31,24 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+
+                                <NavLink :href="route('home')" :active="route().current('home')">
+                                    Home
+                                </NavLink>
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
                                 <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
                                     Chirps
                                 </NavLink>
+                                <NavLink :href="route('projects')" :active="route().current('projects')">
+                                    Projects
+                                </NavLink>
+                                <!-- Add a link to the crime map page -->
+                                <NavLink :href="route('crime-map')" :active="route().current('crime-map')">
+                                    Crime Map
+                                </NavLink>
+
                             </div>
                         </div>
 
@@ -117,11 +129,21 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('home')" :active="route().current('home')">
+                            Home
+                        </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
                             Chirps
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('projects')" :active="route().current('projects')">
+                            Projects    
+                        </ResponsiveNavLink>
+                        <!-- Add a link to the crime map page -->
+                        <ResponsiveNavLink :href="route('crime-map')" :active="route().current('crime-map')">
+                            Crime Map
                         </ResponsiveNavLink>
                     </div>
 
