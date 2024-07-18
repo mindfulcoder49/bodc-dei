@@ -1,5 +1,6 @@
 
-![BODC-DEI Logo](https://github.com/mindfulcoder49/bodc-dei/blob/main/public/images/logo.jpeg)
+<img src="https://github.com/mindfulcoder49/bodc-dei/blob/main/public/images/logo.jpeg" alt="BODC-DEI Logo" width="200"/>
+
 
 # BODC-DEI Repository
 
