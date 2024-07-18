@@ -1,66 +1,124 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+```markdown
+![BODC-DEI Logo](https://github.com/mindfulcoder49/bodc-dei/blob/main/public/images/logo.jpeg)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# BODC-DEI Repository
 
-## About Laravel
+Welcome to the Boston Open Data Collaboration for Diversity, Equity, and Inclusion (BODC-DEI) project! This project is an initiative to foster the adoption of open data and open-source solutions to champion diversity, equity, and inclusion within Boston's vibrant AI and ML landscape. The BODC-DEI repository contains the code and documentation for our web application, which includes several components and features aimed at empowering communities through technology.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Sponsored by [AlcivarTech](https://alcivartech.com). Visit [BODC-DEI](https://bodc-dei.org) for more information.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **About Page:** Describes the mission and objectives of BODC-DEI.
+- **Contact Page:** Provides information on how to connect with the project via GitHub.
+- **Crime Map:** A web application that displays crime data in Boston using a map interface.
+- **Dashboard:** A comprehensive dashboard with components for crime reporting and GitHub analysis.
+- **Projects Page:** Showcases various open-source projects related to AI and ML.
+- **The Boston App Demo:** A demonstration of an app that generates personalized location-based reports.
+- **311 Case List:** Displays a list of 311 cases with detailed predictions and insights.
+- **311 Demo:** A code demo for the 311 project.
+- **311 Model Tracker:** Tracks the accuracy of different predictive models used in the 311 project.
+- **Welcome Page:** The home page of the BODC-DEI website.
 
-## Learning Laravel
+## Technologies Used
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Laravel:** A PHP framework for building robust web applications.
+- **Inertia.js:** A library that allows you to build single-page applications using classic server-side routing and controllers.
+- **Vue.js:** A progressive JavaScript framework for building user interfaces.
+- **Tailwind CSS:** A utility-first CSS framework for styling the application.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Installation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+To get started with the BODC-DEI project, follow these steps:
 
-## Laravel Sponsors
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/mindfulcoder49/BODC-DEI.git
+   cd BODC-DEI
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+2. **Install dependencies:**
+   ```bash
+   composer install
+   npm install
+   ```
 
-### Premium Partners
+3. **Set up environment variables:**
+   Copy the `.env.example` file to `.env` and update the necessary environment variables.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+4. **Generate application key:**
+   ```bash
+   php artisan key:generate
+   ```
+
+5. **Run database migrations:**
+   ```bash
+   php artisan migrate
+   ```
+
+6. **Build assets:**
+   ```bash
+   npm run dev
+   ```
+
+7. **Serve the application:**
+   ```bash
+   php artisan serve
+   ```
+
+## Project Structure
+
+The project follows a standard Laravel structure with additional Vue.js components. Here are some of the important files and directories:
+
+- **/resources/js/Pages:** Contains the Vue.js components for each page.
+  - `About.vue`
+  - `Contact.vue`
+  - `CrimeMap.vue`
+  - `Dashboard.vue`
+  - `Projects.vue`
+  - `TheBostonAppDemo.vue`
+  - `ThreeOneOneCaseList.vue`
+  - `ThreeOneOneDemo.vue`
+  - `ThreeOneOneModelList.vue`
+  - `ThreeOneOneProject.vue`
+  - `Welcome.vue`
+
+- **/resources/js/Components:** Contains reusable Vue.js components.
+  - `CrimeMapComponent.vue`
+  - `PageTemplate.vue`
+
+- **/resources/views:** Contains the Blade templates used by Laravel Breeze.
+  - `app.blade.php`
+  - `welcome.blade.php`
+
+- **/routes/web.php:** Defines the web routes for the application.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+We welcome contributions from the community. If you would like to contribute to the project, please follow these steps:
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. **Fork the repository.**
+2. **Create a new branch:**
+   ```bash
+   git checkout -b my-feature-branch
+   ```
+3. **Make your changes and commit them:**
+   ```bash
+   git commit -m "Add new feature"
+   ```
+4. **Push to the branch:**
+   ```bash
+   git push origin my-feature-branch
+   ```
+5. **Submit a pull request.**
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-source and licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Contact
+
+If you have any questions or need further assistance, please open an issue on GitHub or contact us via the Contact page on the website.
+
+Thank you for your interest in the BODC-DEI project! Together, we can make a positive impact through open technology and data.
+```
