@@ -31,27 +31,25 @@ defineProps({
     <main>
       
       <section class="mb-8">
-        <h1 class="text-2xl font-semibold mb-3">Some of My Projects</h1>
-        <p class="mb-3">My programming projects tend to complement the community groups I run and the Boston Open Data Collaboration for Diversity Equity and Inclusion spirit. They are free or open source, focused on educating people on AI, and as accessible to all skill levels as possible. The projects span various technologies including python, javascript, php, SQL, Machine Learning, and Natural Language Processing.</p>
+        <h1 class="text-2xl font-semibold mb-3">BODC-DEI Projects</h1>
+        <p class="mb-3">These projects are free or open source, focused on educating people on AI, and as accessible to all skill levels as possible. The projects span various technologies including python, javascript, php, SQL, Machine Learning, and Natural Language Processing.</p>
       </section>
       <section>
         <h2 class="text-2xl font-semibold mb-3">AI in 2024: Terms, Trends, and LLMs, The Book</h2>
         <p>
-            For my first meetup for the Boston AI Group for Healthcare Law and educaton I wrote a very short book on the direction of AI in 2024 as it appeared to be headed at the end of January 2024. The book is called AI in 2024: Terms, Trends, and LLMs. It is a short book that is meant to be a quick read for anyone who is interested in AI, but not necessarily a developer or data scientist. It was written completely without the assistance of any Large Language Model. 
+            A very short book on the direction of AI in 2024 as it appeared to be headed at the end of January 2024. The book is called AI in 2024: Terms, Trends, and LLMs. It is a short book that is meant to be a quick read for anyone who is interested in AI, but not necessarily a developer or data scientist. It was written completely without the assistance of any Large Language Model. 
         </p>
         <p><a href="https://github.com/mindfulcoder49/NorthShoreAI/blob/main/AI%20in%202024%3A%20Terms%20Trends%20and%20LLMs%2C%20The%20Book.pdf" class="btn btn-primary">The book is available here on Github</a></p>
       </section>
 
-
+      <!-- Add a section about the Crime Map-->
       <section>
-        <h2 class="text-2xl font-semibold mb-3">North Shore AI Developers Demo Notebooks</h2>
+        <h2 class="text-2xl font-semibold mb-3">Boston AI Crime Map</h2>
         <p>
-            The demo notebooks use for the North Shore AI Developer meetups are hosted on a github repository for that group. The notebooks are written in Python and use Jupyter Notebooks. They are meant to be a quick and easy way to get started with some of the latest cutting edge AI tools.
+            The Boston Crime Map is a web application that allows users to explore crime data in Boston. The data is sourced from the Boston Police Department and is updated daily. The application allows users to filter the data by various criteria, such as date, time, and type of crime. The application also features a map view that displays the location of each crime on a map of Boston.
         </p>
-        <p><a href="https://github.com/mindfulcoder49/NorthShoreAI" class="btn btn-primary">Check out the North Shore AI Developers Github to see the notebooks</a></p>
-        <!-- <button>View Details</button> -->
+        <p><Link href="/crime-map" class="btn btn-primary">Explore the Boston Crime Map</Link></p>
       </section>
-
       <section>
         <h2 class="text-2xl font-semibold mb-3">Boston 311 Machine Learning Python Package</h2>
         <p class="mb-5">
