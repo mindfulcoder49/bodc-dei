@@ -51,9 +51,14 @@ defineProps({
         <h2 class="text-2xl font-semibold mb-3">Featured Project</h2>
         <p class="mb-2">
             The featured project is the Boston AI Crime Map. This project is a web application that allows users to explore crime data in Boston. The data is sourced from the Boston Police Department and is updated daily. The application allows users to filter the data by various criteria, such as date, time, and type of crime. The application also features a map view that displays the location of each crime on a map of Boston.
-            <Link href="/crime-map" class="text-blue-500">Explore the Boston AI Crime Map</Link>
+            <!-- Make the Link the image on bostonmap.png in public -->
+            <Link href="/crime-map">
+              <!--put on a border and center click me text-->
+              <img src="/images/bostonmap.png" alt="Boston Crime Map" class="border border-gray-500 mx-auto" />
+              <p class="text-center">Click the map explore the Boston Crime Map</p>
+      
+            </Link>
         </p>
-        <CrimeMapComponent />
         </section>
         
     </PageTemplate>
