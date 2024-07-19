@@ -1,0 +1,1 @@
+@keyframes bounce{0%,to{transform:translateY(0)}50%{transform:translateY(-5px)}}i.fas.fa-spinner{animation:spin 2s linear infinite}button[disabled]{animation:bounce .5s infinite;background-color:#999;cursor:not-allowed}button[disabled]{background-color:#999;cursor:not-allowed}
