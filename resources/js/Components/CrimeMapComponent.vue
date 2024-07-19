@@ -11,7 +11,7 @@
         <button @click="naturalLanguageQuery = 'Todo el robo que ocurrió el mes pasado'" class="p-2 border  rounded-md w-full mb-4">Todo el robo que ocurrió el mes pasado</button>
       </div>
         <input v-model="naturalLanguageQuery" type="text" placeholder="Example: All the fraud that happened last week" class="p-2 border rounded-md w-full mb-4">
-        <button @click="submitQuery" class="p-2 bg-blue-500 text-white rounded-md mb-4">Submit to GPT-4o</button>
+        <button @click="submitQuery" class="p-2 bg-blue-500 text-white rounded-md mb-4">Submit to GPT-4o-mini</button>
         <pre v-if="filters" class="p-2 border rounded-md w-full mb-4 overflow-scroll" rows="5" readonly>{{ JSON.stringify(filters, null, 2) }}</pre>
         <h4 class="text-lg font-semibold mb-4">Or Use Manual Filters</h4>
         <p class="mb-4">Use the manual filters below to filter the crime data:</p>
