@@ -49,9 +49,36 @@ onMounted(() => {
   const updateMarkers = () => {
     markers.value.clearLayers();
     props.cases.forEach(item => {
-      const marker = L.marker([item.latitude, item.longitude]);
-      marker.bindPopup(`<b>${item.case_title}</b><br>${item.case_status}`);
-      markers.value.addLayer(marker);
+      //check if latitude and longitude are not null
+      if (item.latitude && item.longitude) {
+        
+        const popupContent = `
+          <h3><strong>${item.case_title}</strong></h3>
+          <span><strong>Case ID:</strong> ${item.case_enquiry_id}</span>
+          <span><strong>Status:</strong> ${item.case_status}</span>
+          <span><strong>Opened:</strong> ${item.open_dt}</span>
+          <span><strong>Closed:</strong> ${item.closed_dt || 'N/A'}</span>
+          <span><strong>Department:</strong> ${item.department}</span>
+          <span><strong>Location:</strong> ${item.location}</span>
+          <span><strong>Street Name:</strong> ${item.location_street_name}</span>
+          <span><strong>Zipcode:</strong> ${item.location_zipcode}</span>
+          <span><strong>Latitude:</strong> ${item.latitude}</span>
+          <span><strong>Longitude:</strong> ${item.longitude}</span>
+          <span><strong>Reason:</strong> ${item.reason}</span>
+          <span><strong>SLA Target Date:</strong> ${item.sla_target_dt}</span>
+          <span><strong>Source:</strong> ${item.source}</span>
+          <span><strong>Subject:</strong> ${item.subject}</span>
+          <span><strong>On Time:</strong> ${item.on_time}</span>
+          <span><strong>Closed Photo:</strong> ${item.closed_photo || 'N/A'}</span>
+          <span><strong>Closure Reason:</strong> ${item.closure_reason || 'N/A'}</span>
+        `;
+
+        
+        const marker = L.marker([item.latitude, item.longitude]);
+        marker.bindPopup(popupContent);
+
+        markers.value.addLayer(marker);
+      }
     });
   };
 </script>

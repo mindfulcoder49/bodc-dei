@@ -135,6 +135,7 @@ export default {
     },
     filteredKeys() {
       // Exclude predictions and the initially displayed fields
+
       return Object.keys(this.filteredCases[0]).filter((key) => !['predictions', 'case_title', 'case_enquiry_id', 'open_dt', 'sla_target_dt'].includes(key));
     },
   },
