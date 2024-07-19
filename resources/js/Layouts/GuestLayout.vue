@@ -47,7 +47,11 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                                 <!-- Add a link to the crime map page -->
                                 <NavLink :href="route('crime-map')" :active="route().current('crime-map')">
-                                    Crime Map
+                                    Boston Crime Map
+                                </NavLink>
+                                <!-- Add a link to the cases.indexnofilter page, it's a Boston 311 Case Map-->
+                                <NavLink :href="route('cases.indexnofilter')" :active="route().current('scatter')">
+                                    Boston 311 Case Map
                                 </NavLink>
                                 
                             </div>
@@ -148,7 +152,11 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                         <!-- Add a link to the crime map page -->
                         <ResponsiveNavLink :href="route('crime-map')" :active="route().current('crime-map')">
-                            Crime Map
+                            Boston Crime Map
+                        </ResponsiveNavLink>
+                        <!-- Add a link to the cases.indexnofilter page, it's a Boston 311 Case Map-->
+                        <ResponsiveNavLink :href="route('cases.indexnofilter')" :active="route().current('scatter')">
+                            Boston 311 Case Map
                         </ResponsiveNavLink>
                     </div>
 
