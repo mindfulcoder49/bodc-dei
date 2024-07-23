@@ -65,14 +65,7 @@
   <div class="mt-6">
     <h4 class="text-lg font-semibold mb-4">List of Crime Data Points</h4>
     <button @click="downloadCSV" class="p-2 bg-green-500 text-white rounded-md mb-4">Download as CSV</button>
-    <ul class="pl-5">
-      <!-- number of results-->
-      <li v-if="filteredCrimeData.length === 0" class="text-gray-500">No results found</li>
-      <li v-else class="text-gray-500">Number of results: {{ filteredCrimeData.length }}</li>
-      <li v-for="(crime, index) in filteredCrimeData" :key="index">
-        <CrimeData :crimeData="crime" />
-      </li>
-    </ul>
+    <CrimeDataList :filteredCrimeData="filteredCrimeData" />
   </div>
 </template>
 
@@ -85,6 +78,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster';
 import CrimeData from './CrimeData.vue';
+import CrimeDataList from './CrimeDataList.vue';
 
 const { props } = usePage();
 
