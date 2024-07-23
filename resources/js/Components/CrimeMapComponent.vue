@@ -11,7 +11,7 @@
       <button @click="naturalLanguageQuery = 'Todo el robo que ocurrió el mes pasado'" class="p-2 border  rounded-md w-full mb-4">Todo el robo que ocurrió el mes pasado</button>
     </div>
     <input v-model="naturalLanguageQuery" type="text" placeholder="Example: All the fraud that happened last week" class="p-2 border rounded-md w-full mb-4">
-    <button @click="submitQuery" class="p-2 bg-blue-500 text-white rounded-md mb-4">Submit to GPT-4o-mini</button>
+    <button @click="submitQuery" id="submitQuery" class="p-2 bg-blue-500 text-white rounded-md mb-4">Submit to GPT-4o-mini</button>
     <pre v-if="filters" class="p-2 border rounded-md w-full mb-4 overflow-scroll" rows="5" readonly>{{ JSON.stringify(filters, null, 2) }}</pre>
 
     <h4 class="text-lg font-semibold mb-4">Or Use Manual Filters</h4>
@@ -293,6 +293,10 @@ const formatDate = (dateString) => {
 
 const submitQuery = async () => {
   try {
+    // Change the button text for element with id submitQuery to "Loading..."
+    document.getElementById('submitQuery').innerText = 'Loading...';
+    //disable it
+    document.getElementById('submitQuery').disabled = true;
     const response = await axios.post('/api/natural-language-query', { query: naturalLanguageQuery.value });
     const data = response.data;
     crimeData.value = data.crimeData;
@@ -309,8 +313,17 @@ const submitQuery = async () => {
       }
     });
 
+    // Change the button text for element with id submitQuery back to "Submit to GPT-4o-mini"
+    document.getElementById('submitQuery').innerText = 'Submit to GPT-4o-mini';
+    //enable it
+    document.getElementById('submitQuery').disabled = false;
+
     updateMarkers();
   } catch (error) {
+    // Change the button text for element with id submitQuery back to "Submit to GPT-4o-mini"
+    document.getElementById('submitQuery').innerText = 'Submit to GPT-4o-mini';
+    //enable it
+    document.getElementById('submitQuery').disabled = false;
     console.error("Failed to process natural language query", error);
   }
 };

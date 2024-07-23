@@ -13,10 +13,8 @@
       </div>
       <div class="mt-2 text-sm text-gray-600">
         <p>Offense Code: {{ crimeData.offense_code }}</p>
-        <p>Offense Code Group: {{ crimeData.offense_code_group }}</p>
         <p>Reporting Area: {{ crimeData.reporting_area }}</p>
         <p>Shooting: {{ crimeData.shooting ? 'Yes' : 'No' }}</p>
-        <p>UCR Part: {{ crimeData.ucr_part }}</p>
         <p>Street: {{ crimeData.street }}</p>
         <p>Location: {{ crimeData.location }}</p>
         <p>Offense Category: {{ crimeData.offense_category }}</p>
