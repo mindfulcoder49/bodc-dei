@@ -61,6 +61,7 @@
         </div>  
     </div>
     <button @click="updateMarkers" class="mt-4 p-2 bg-blue-500 text-white rounded-md">Submit Filters</button>
+    <button @click="clearFilters" class="m-4  p-2 bg-blue-500 text-white rounded-md">Clear Filters</button>
   </div>
   <div class="mt-6">
     <h4 class="text-lg font-semibold mb-4">List of Crime Data Points</h4>
@@ -320,6 +321,19 @@ const submitQuery = async () => {
     document.getElementById('submitQuery').disabled = false;
     console.error("Failed to process natural language query", error);
   }
+};
+
+const clearFilters = () => {
+  Object.keys(filters.value).forEach(key => {
+    if (key === 'offense_category' || key === 'district' || key === 'year') {
+      filters.value[key] = [];
+    } else if (key === 'shooting') {
+      filters.value[key] = false;
+    } else {
+      filters.value[key] = '';
+    }
+  });
+  updateMarkers();
 };
 
 watch(filters, updateMarkers, { deep: true });
