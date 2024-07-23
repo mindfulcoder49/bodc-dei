@@ -1,0 +1,4 @@
+
+Route::post('/api/BuildingPermits', [BuildingpermitsController::class, 'getData'])->name('BuildingPermits.api');
+Route::get('/BuildingPermits-map', [BuildingpermitsController::class, 'index'])->name('BuildingPermits-map');
+Route::post('/api/BuildingPermits/natural-language-query', [BuildingpermitsController::class, 'naturalLanguageQuery'])->name('BuildingPermits-map.natural-language-query');

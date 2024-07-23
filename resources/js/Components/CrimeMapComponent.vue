@@ -125,53 +125,59 @@
   const hours = ref([...new Set(crimeData.value.map(crime => crime.hour))].sort((a, b) => a - b));
   
   onMounted(() => {
-    initialMap.value = L.map('map').setView([42.3601, -71.0589], 13);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(initialMap.value);
+  initialMap.value = L.map('map').setView([42.3601, -71.0589], 13);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(initialMap.value);
   
-    markers.value = L.markerClusterGroup();
-    initialMap.value.addLayer(markers.value);
-    updateMarkers();
-  });
-  
-  const updateMarkers = async () => {
-    try {
-      const response = await axios.post( '/api/crime-data', { filters: filters.value });
-      const data = response.data;
-      markers.value.clearLayers();
-      data.crimeData.forEach((crime) => {
-        if (crime.lat && crime.long) {
-          const popupContent = `
-            <div>
-              <strong>Incident Number:</strong> ${crime.incident_number}<br>
-              <strong>Offense Code:</strong> ${crime.offense_code}<br>
-              <strong>Offense Code Group:</strong> ${crime.offense_code_group}<br>
-              <strong>Offense Description:</strong> ${crime.offense_description}<br>
-              <strong>District:</strong> ${crime.district}<br>
-              <strong>Reporting Area:</strong> ${crime.reporting_area}<br>
-              <strong>Shooting:</strong> ${crime.shooting ? 'Yes' : 'No'}<br>
-              <strong>Occurred On:</strong> ${new Date(crime.occurred_on_date).toLocaleString()}<br>
-              <strong>Year:</strong> ${crime.year}<br>
-              <strong>Month:</strong> ${crime.month}<br>
-              <strong>Day of Week:</strong> ${crime.day_of_week}<br>
-              <strong>Hour:</strong> ${crime.hour}<br>
-              <strong>UCR Part:</strong> ${crime.ucr_part}<br>
-              <strong>Street:</strong> ${crime.street}<br>
-              <strong>Location:</strong> ${crime.location}<br>
-              <strong>Offense Category:</strong> ${crime.offense_category}
-            </div>
-          `;
-          const marker = L.marker([crime.lat, crime.long]);
-          marker.bindPopup(popupContent);
-          markers.value.addLayer(marker);
-        }
-      });
-    } catch (error) {
-      console.error("Failed to fetch crime data", error);
-    }
-  };
+  updateMarkers();
+});
+
+const updateMarkers = async () => {
+  try {
+    const response = await axios.post('/api/crime-data', { filters: filters.value });
+    const data = response.data;
+    
+    // Clear all existing markers
+    initialMap.value.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        initialMap.value.removeLayer(layer);
+      }
+    });
+
+    data.crimeData.forEach((crime) => {
+      if (crime.lat && crime.long) {
+        const popupContent = `
+          <div>
+            <strong>Incident Number:</strong> ${crime.incident_number}<br>
+            <strong>Offense Code:</strong> ${crime.offense_code}<br>
+            <strong>Offense Code Group:</strong> ${crime.offense_code_group}<br>
+            <strong>Offense Description:</strong> ${crime.offense_description}<br>
+            <strong>District:</strong> ${crime.district}<br>
+            <strong>Reporting Area:</strong> ${crime.reporting_area}<br>
+            <strong>Shooting:</strong> ${crime.shooting ? 'Yes' : 'No'}<br>
+            MapComponent<strong>Occurred On:</strong> ${new Date(crime.occurred_on_date).toLocaleString()}<br>
+            <strong>Year:</strong> ${crime.year}<br>
+            <strong>Month:</strong> ${crime.month}<br>
+            <strong>Day of Week:</strong> ${crime.day_of_week}<br>
+            <strong>Hour:</strong> ${crime.hour}<br>
+            <strong>UCR Part:</strong> ${crime.ucr_part}<br>
+            <strong>Street:</strong> ${crime.street}<br>
+            <strong>Location:</strong> ${crime.location}<br>
+            <strong>Offense Category:</strong> ${crime.offense_category}
+          </div>
+        `;
+        const marker = L.marker([crime.lat, crime.long]);
+        marker.bindPopup(popupContent);
+        marker.addTo(initialMap.value);
+      }
+    });
+  } catch (error) {
+    console.error("Failed to fetch crime data", error);
+  }
+};
+
   
   
   const formatDate = (dateString) => {
