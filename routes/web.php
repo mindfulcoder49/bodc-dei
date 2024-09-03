@@ -11,6 +11,16 @@ use App\Http\Controllers\CrimeMapController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\GenericMapController;
+use App\Http\Controllers\AiAssistantController;
+
+// Route to display the generic map interface
+Route::get('/map', [GenericMapController::class, 'index'])->name('map.index');
+
+// Route to fetch data for the map based on filters
+Route::post('/api/map-data', [GenericMapController::class, 'getData'])->name('map.data');
+
+Route::post('/api/ai-chat', [AiAssistantController::class, 'handleRequest'])->name('ai.assistant');
 
 /*
 |--------------------------------------------------------------------------
