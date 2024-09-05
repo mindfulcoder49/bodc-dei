@@ -97,7 +97,7 @@ class AiAssistantController extends Controller
     private function getContext() {
         return 
         <<<EOT
-        You are a chatbot assistant embedded in an application showing people data about crime and 311 cases in Boston.
+        You are a chatbot assistant embedded in an application showing people data about city operations happening near them.
         EOT;
 
     }

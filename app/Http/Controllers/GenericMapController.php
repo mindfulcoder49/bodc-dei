@@ -6,6 +6,7 @@ use App\Models\CrimeData;
 use App\Models\ThreeOneOneCase;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\BuildingPermit;
 
 class GenericMapController extends Controller
 {
@@ -13,9 +14,11 @@ class GenericMapController extends Controller
     {
         $crimeData = $this->getCrimeData($request);
         $caseData = $this->getThreeOneOneCaseData($request); // Get 311 case data
+        $buildingPermits = $this->getBuildingPermits($request); // Get building permit data
 
-        // Combine both datasets into a single collection
+        // Combine all datasets into a single collection
         $dataPoints = $crimeData->merge($caseData);
+        $dataPoints = $dataPoints->merge($buildingPermits);
 
         return Inertia::render('GenericMap', [
             'dataPoints' => $dataPoints,
@@ -130,5 +133,37 @@ class GenericMapController extends Controller
         });
 
         return $dataPoints;
+    }
+
+    public function getBuildingPermits(Request $request)
+    {
+        // Implement the logic to fetch building permit data
+        // This can be similar to the getCrimeData and getThreeOneOneCaseData methods
+        // Return the data in the format needed for the generic map
+        //for now just get the first 150 records
+        $buildingPermits = BuildingPermit::limit(150)->get();
+
+        $dataPoints = $buildingPermits->map(function ($permit) {
+            return [
+                'latitude' => $permit->y_latitude,
+                'longitude' => $permit->x_longitude,
+                'date' => $permit->issued_date,
+                'type' => 'Building Permit', // You can set a default or dynamic type
+                'info' => [
+                    'permit_number' => $permit->permitnumber,
+                    'work_type' => $permit->worktype,
+                    'description' => $permit->description,
+                    'applicant' => $permit->applicant,
+                    'status' => $permit->status,
+                    'address' => $permit->address,
+                    'city' => $permit->city,
+                    'state' => $permit->state,
+                    'zip' => $permit->zip,
+                ],
+            ];
+        });
+
+        return $dataPoints;
+
     }
 }
