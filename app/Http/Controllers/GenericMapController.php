@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use App\Models\BuildingPermit;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 class GenericMapController extends Controller
 {
@@ -97,19 +98,15 @@ class GenericMapController extends Controller
 
         // Transform data for the map
         return $crimeData->map(function ($crime) {
+            // Convert crime object to an array and exclude the latitude, longitude, and date fields
+            $info = Arr::except($crime->toArray(), ['lat', 'long', 'occurred_on_date', 'created_at', 'updated_at', 'location', 'offense_code_group']);
+        
             return [
                 'latitude' => $crime->lat,
                 'longitude' => $crime->long,
                 'date' => $crime->occurred_on_date,
                 'type' => 'Crime',
-                'info' => [
-                    'category' => $crime->offense_category,
-                    'description' => $crime->offense_description,
-                    'district' => $crime->district,
-                    'reporting_area' => $crime->reporting_area,
-                    'shooting' => $crime->shooting ? 'Yes' : 'No',
-                    'street' => $crime->street,
-                ],
+                'info' => $info,
             ];
         });
     }
@@ -130,19 +127,15 @@ class GenericMapController extends Controller
 
         // Transform data for the map
         return $cases->map(function ($case) {
+            // Convert case object to an array and exclude the latitude, longitude, and date fields
+            $info = Arr::except($case->toArray(), ['latitude', 'longitude', 'open_dt','checksum']);
+        
             return [
                 'latitude' => $case->latitude,
                 'longitude' => $case->longitude,
                 'date' => $case->open_dt,
                 'type' => '311 Case',
-                'info' => [
-                    'description' => $case->case_title,
-                    'status' => $case->case_status,
-                    'closure_reason' => $case->closure_reason,
-                    'location' => $case->location,
-                    'department' => $case->department,
-                    'subject' => $case->subject,
-                ],
+                'info' => $info,
             ];
         });
     }
@@ -163,23 +156,17 @@ class GenericMapController extends Controller
 
         // Transform data for the map
         return $buildingPermits->map(function ($permit) {
+            // Convert permit object to an array and exclude the latitude, longitude, and date fields
+            $info = Arr::except($permit->toArray(), ['y_latitude', 'x_longitude', 'issued_date', 'applicant']);
+
             return [
                 'latitude' => $permit->y_latitude,
                 'longitude' => $permit->x_longitude,
                 'date' => $permit->issued_date,
                 'type' => 'Building Permit',
-                'info' => [
-                    'permit_number' => $permit->permitnumber,
-                    'work_type' => $permit->worktype,
-                    'description' => $permit->description,
-                    'applicant' => $permit->applicant,
-                    'status' => $permit->status,
-                    'address' => $permit->address,
-                    'city' => $permit->city,
-                    'state' => $permit->state,
-                    'zip' => $permit->zip,
-                ],
+                'info' => $info,
             ];
         });
+
     }
 }

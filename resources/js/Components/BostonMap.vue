@@ -211,4 +211,6 @@ watch(() => props.cancelNewMarker, (cancel) => {
   height: 10px;
   border-radius: 50%;
 }
+
+
 </style>

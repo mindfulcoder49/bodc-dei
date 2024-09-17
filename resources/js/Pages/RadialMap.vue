@@ -127,7 +127,7 @@
         :key="type" 
         @click="toggleFilter(type)"
         :class="{'active': isActive, 'inactive': !isActive, [`${type.toLowerCase().replace(' ', '-').replace(/\d/g, 'a')}-filter-button`]: true}"
-        class="filter-button px-2 py-2 text-white bg-blue-500 rounded-lg shadow-lg disabled:bg-gray-400 hover:bg-blue-600 transition-colors w-1/4"
+        class="filter-button px-2 py-2 rounded-lg shadow-lg disabled:bg-gray-400 transition-colors w-1/4"
       >
         {{ type }}
       </button>
@@ -355,23 +355,6 @@ export default {
   border: 1px solid transparent;
 }
 
-.filter-button.active {
-  background-color: black;
-  color: white;
-}
-
-.building-permit-filter-button.active {
-  background-color: green;
-}
-
-.crime-filter-button.active {
-  background-color: red;
-}
-
-.aaa-case-filter-button.active {
-  background-color: blue;
-}
-
 .center-filter-button {
   display:none;
 }
@@ -384,6 +367,8 @@ export default {
 .filter-button:hover {
   border: 1px solid black;
 }
+
+
 
 .center-control {
   margin-bottom: 15px;
