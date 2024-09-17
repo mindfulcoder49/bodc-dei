@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Https;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class DownloadBostonDataset extends Command
@@ -51,7 +51,7 @@ class DownloadBostonDataset extends Command
         $url = "{$baseUrl}/{$resourceId}?format={$format}";
 
         try {
-            $response = Https::get($url);
+            $response = Http::get($url);
 
             if ($response->ok()) {
                 $filename = $this->generateFilename($name, $format);
