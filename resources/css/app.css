@@ -94,8 +94,8 @@ a {
     color: white;
     border-radius: 50%;
     text-align: center;
-    min-width: 20px;
-    min-height: 20px;
+    min-width: 17px;
+    min-height: 17px;
     position: relative;
     animation: pulse-crime 5s infinite;
   }
@@ -108,8 +108,8 @@ a {
     color: white;
     border-radius: 50%;
     text-align: center;
-    min-width: 20px;
-    min-height: 20px;
+    min-width: 17px;
+    min-height: 17px;
     position: relative;
     animation: pulse-case 5s infinite;
   }
@@ -137,8 +137,8 @@ a {
     border-radius: 50%;
     border: 2px solid black;
     text-align: center;
-    min-width: 20px;
-    min-height: 20px;
+    min-width: 10px;
+    min-height: 10px;
     position: relative;
     animation: pulse-center 1s infinite;
     z-index:1000 !important;
