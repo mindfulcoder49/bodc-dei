@@ -130,7 +130,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* make the button bounce when disabled */
 @keyframes bounce {
   0%, 100% {

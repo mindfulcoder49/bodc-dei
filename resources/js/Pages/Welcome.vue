@@ -48,18 +48,21 @@ defineProps({
         </p>
         </section>
         <section>
-        <h2 class="text-2xl font-semibold mb-3">Featured Project</h2>
-        <p class="mb-2">
-            The featured project is the Boston AI Crime Map. This project is a web application that allows users to explore crime data in Boston. The data is sourced from the Boston Police Department and is updated daily. The application allows users to filter the data by various criteria, such as date, time, and type of crime. The application also features a map view that displays the location of each crime on a map of Boston.
-            <!-- Make the Link the image on bostonmap.png in public -->
-            <Link href="/crime-map">
-              <!--put on a border and center click me text-->
-              <img src="/images/bostonmap.png" alt="Boston Crime Map" class="border border-gray-500 mx-auto" />
-              <p class="text-center">Click the map explore the Boston Crime Map</p>
-      
-            </Link>
-        </p>
+          <h2 class="text-2xl font-semibold mb-3">Featured Project</h2>
+          <p class="mb-2">
+            The featured project is the Boston App, a dynamic web application designed to provide users with an intuitive and interactive way to explore Boston's rich collection of open data. The app visualizes various datasets such as crime reports, 311 cases, and building permits, empowering users to uncover insights, patterns, and trends within the city. Whether you're a resident, researcher, or simply curious about Boston, the app offers a clean, user-friendly interface that makes navigating and interpreting the data easy for everyone. By leveraging modern web technologies, the Boston App ensures that users can filter, search, and engage with data on a highly interactive map.
+          </p>
+          <p class="mb-2">
+            Click below to explore the Boston App and dive into a world of open data!
+          </p>
+          <Link href="/map">
+            <img src="/images/bostonmap.png" alt="Boston Map" class="border border-gray-500 mx-auto" />
+            <p class="text-center text-blue-600 font-bold mt-2 hover:underline">
+              Click the map to explore the Boston App
+            </p>
+          </Link>
         </section>
+
         
     </PageTemplate>
   </template>

@@ -7,79 +7,113 @@ use App\Models\ThreeOneOneCase;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\BuildingPermit;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class GenericMapController extends Controller
 {
     public function index(Request $request)
     {
-        $crimeData = $this->getCrimeData($request);
-        $caseData = $this->getThreeOneOneCaseData($request); // Get 311 case data
-        $buildingPermits = $this->getBuildingPermits($request); // Get building permit data
+        Log::info('Index method accessed.', ['request' => $request->all()]);
+        return redirect()->route('map.radial'); // Redirect to the radial map
+    }
 
-        // Combine all datasets into a single collection
-        $dataPoints = $crimeData->merge($caseData);
-        $dataPoints = $dataPoints->merge($buildingPermits);
+    public function getRadialMap(Request $request)
+    {
+        Log::info('getRadialMap accessed.', ['request' => $request->all()]);
 
-        return Inertia::render('GenericMap', [
+        $defaultLatitude = 42.3601;
+        $defaultLongitude = -71.0589;
+
+        $centralLocation = $request->input('centralLocation', [
+            'latitude' => $defaultLatitude,
+            'longitude' => $defaultLongitude
+        ]);
+
+        Log::info('Central location determined.', ['centralLocation' => $centralLocation]);
+
+        $radius = 0.25;
+
+        $boundingBox = $this->getBoundingBox($centralLocation['latitude'], $centralLocation['longitude'], $radius);
+
+        Log::info('Bounding box calculated.', ['boundingBox' => $boundingBox]);
+
+        // Get the 'days' parameter from the request, default to 7 days if not provided
+        $days = $request->input('days', 7);
+
+        $crimeData = collect($this->getCrimeDataForBoundingBox($boundingBox, $days));
+        Log::info('Crime data fetched.', ['crimeDataCount' => $crimeData->count()]);
+
+        $caseData = collect($this->getThreeOneOneCaseDataForBoundingBox($boundingBox, $days));
+        Log::info('311 case data fetched.', ['caseDataCount' => $caseData->count()]);
+
+        $buildingPermits = collect($this->getBuildingPermitsForBoundingBox($boundingBox, $days));
+        Log::info('Building permits data fetched.', ['buildingPermitsCount' => $buildingPermits->count()]);
+
+        $dataPoints = $crimeData->merge($caseData)->merge($buildingPermits);
+        Log::info('Data points merged.', ['totalDataPointsCount' => $dataPoints->count()]);
+
+        //add central location to data points with type center, todays date, and info about how it's the center
+        $dataPoints->push([
+            'latitude' => $centralLocation['latitude'],
+            'longitude' => $centralLocation['longitude'],
+            'type' => 'Center',
+            'date' => Carbon::now()->toDateString(),
+            'info' => [
+                'description' => 'Center of the map',
+                'radius' => $radius,
+            ],
+        ]);
+
+        return Inertia::render('RadialMap', [
             'dataPoints' => $dataPoints,
+            'centralLocation' => $centralLocation,
         ]);
     }
 
-    public function getCrimeData(Request $request)
+    // Function to calculate a bounding box (latitude and longitude range)
+    private function getBoundingBox($lat, $lon, $radius)
     {
-        $query = CrimeData::query();
-        $filters = $request->input('filters', []);
+        Log::info('Calculating bounding box.', ['latitude' => $lat, 'longitude' => $lon, 'radius' => $radius]);
 
-        // Apply filters based on the request
-        if (!empty($filters)) {
-            // Offense Codes filter
-            if (!empty($filters['offense_codes'])) {
-                $offenseCodes = is_string($filters['offense_codes']) ? explode(',', $filters['offense_codes']) : (array) $filters['offense_codes'];
-                $query->whereIn('offense_code', $offenseCodes);
-            }
+        $earthRadius = 3959; // Radius of Earth in miles
 
-            // Offense Category filter
-            if (!empty($filters['offense_category'])) {
-                $query->whereIn('offense_category', $filters['offense_category']);
-            }
+        $latDelta = rad2deg($radius / $earthRadius);
+        $lonDelta = rad2deg($radius / ($earthRadius * cos(deg2rad($lat))));
 
-            // District filter
-            if (!empty($filters['district'])) {
-                $query->whereIn('district', $filters['district']);
-            }
+        $boundingBox = [
+            'minLat' => $lat - $latDelta,
+            'maxLat' => $lat + $latDelta,
+            'minLon' => $lon - $lonDelta,
+            'maxLon' => $lon + $lonDelta,
+        ];
 
-            // Date Range filter
-            if (!empty($filters['start_date']) && !empty($filters['end_date'])) {
-                $query->whereBetween('occurred_on_date', [$filters['start_date'], $filters['end_date']]);
-            }
+        Log::info('Bounding box calculated.', ['boundingBox' => $boundingBox]);
 
-            // Year filter
-            if (!empty($filters['year'])) {
-                $query->whereIn('year', $filters['year']);
-            }
+        return $boundingBox;
+    }
 
-            // Shooting filter
-            if (isset($filters['shooting'])) {
-                $query->where('shooting', $filters['shooting'] ? 1 : 0);
-            }
+    public function getCrimeDataForBoundingBox($boundingBox, $days)
+    {
+        Log::info('Fetching crime data within bounding box.', ['boundingBox' => $boundingBox, 'days' => $days]);
 
-            // Record limit filter
-            $limit = !empty($filters['limit']) && $filters['limit'] > 0 && $filters['limit'] <= 10000 ? $filters['limit'] : 1500;
-            $query->limit($limit);
-        } else {
-            $query->limit(150);
-        }
+        $startDate = Carbon::now()->subDays($days)->toDateString();
 
-        // Fetch the filtered data
+        $query = CrimeData::whereBetween('lat', [$boundingBox['minLat'], $boundingBox['maxLat']])
+                          ->whereBetween('long', [$boundingBox['minLon'], $boundingBox['maxLon']])
+                          ->where('occurred_on_date', '>=', $startDate);
+
         $crimeData = $query->get();
 
-        // Transform the data to the format needed for the generic map
-        $dataPoints = $crimeData->map(function ($crime) {
+        Log::info('Crime data query executed.', ['rowsFetched' => $crimeData->count()]);
+
+        // Transform data for the map
+        return $crimeData->map(function ($crime) {
             return [
                 'latitude' => $crime->lat,
                 'longitude' => $crime->long,
                 'date' => $crime->occurred_on_date,
-                'type' => 'Crime', // You can set a default or dynamic type
+                'type' => 'Crime',
                 'info' => [
                     'category' => $crime->offense_category,
                     'description' => $crime->offense_description,
@@ -90,37 +124,29 @@ class GenericMapController extends Controller
                 ],
             ];
         });
-
-        return $dataPoints;
     }
 
-    public function getThreeOneOneCaseData(Request $request)
+    public function getThreeOneOneCaseDataForBoundingBox($boundingBox, $days)
     {
-        $query = ThreeOneOneCase::query();
-        $searchTerm = $request->get('searchTerm', '');
+        Log::info('Fetching 311 case data within bounding box.', ['boundingBox' => $boundingBox, 'days' => $days]);
 
-        // Apply search filters
-        if ($searchTerm) {
-            $query->where(function ($q) use ($searchTerm) {
-                foreach (ThreeOneOneCase::SEARCHABLE_COLUMNS as $column) {
-                    $q->orWhere($column, 'LIKE', "%{$searchTerm}%");
-                }
-            });
-        }
+        $startDate = Carbon::now()->subDays($days)->toDateString();
 
-        // Limit the number of records
-        $query->limit(150);
+        $query = ThreeOneOneCase::whereBetween('latitude', [$boundingBox['minLat'], $boundingBox['maxLat']])
+                                ->whereBetween('longitude', [$boundingBox['minLon'], $boundingBox['maxLon']])
+                                ->where('open_dt', '>=', $startDate);
 
-        // Fetch the 311 cases
         $cases = $query->get();
 
-        // Transform the data to the format needed for the generic map
-        $dataPoints = $cases->map(function ($case) {
+        Log::info('311 case data query executed.', ['rowsFetched' => $cases->count()]);
+
+        // Transform data for the map
+        return $cases->map(function ($case) {
             return [
-                'latitude' => $case->latitude, // Use correct model field for latitude
-                'longitude' => $case->longitude, // Use correct model field for longitude
+                'latitude' => $case->latitude,
+                'longitude' => $case->longitude,
                 'date' => $case->open_dt,
-                'type' => '311 Case', // You can set a default or dynamic type
+                'type' => '311 Case',
                 'info' => [
                     'description' => $case->case_title,
                     'status' => $case->case_status,
@@ -131,24 +157,29 @@ class GenericMapController extends Controller
                 ],
             ];
         });
-
-        return $dataPoints;
     }
 
-    public function getBuildingPermits(Request $request)
+    public function getBuildingPermitsForBoundingBox($boundingBox, $days)
     {
-        // Implement the logic to fetch building permit data
-        // This can be similar to the getCrimeData and getThreeOneOneCaseData methods
-        // Return the data in the format needed for the generic map
-        //for now just get the first 150 records
-        $buildingPermits = BuildingPermit::limit(150)->get();
+        Log::info('Fetching building permits within bounding box.', ['boundingBox' => $boundingBox, 'days' => $days]);
 
-        $dataPoints = $buildingPermits->map(function ($permit) {
+        $startDate = Carbon::now()->subDays($days)->toDateString();
+
+        $buildingPermits = BuildingPermit::whereBetween('y_latitude', [$boundingBox['minLat'], $boundingBox['maxLat']])
+                                         ->whereBetween('x_longitude', [$boundingBox['minLon'], $boundingBox['maxLon']])
+                                         ->where('issued_date', '>=', $startDate)
+                                         ->limit(150)
+                                         ->get();
+
+        Log::info('Building permits data query executed.', ['rowsFetched' => $buildingPermits->count()]);
+
+        // Transform data for the map
+        return $buildingPermits->map(function ($permit) {
             return [
                 'latitude' => $permit->y_latitude,
                 'longitude' => $permit->x_longitude,
                 'date' => $permit->issued_date,
-                'type' => 'Building Permit', // You can set a default or dynamic type
+                'type' => 'Building Permit',
                 'info' => [
                     'permit_number' => $permit->permitnumber,
                     'work_type' => $permit->worktype,
@@ -162,8 +193,5 @@ class GenericMapController extends Controller
                 ],
             ];
         });
-
-        return $dataPoints;
-
     }
 }

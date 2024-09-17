@@ -9,6 +9,7 @@ use App\Models\CrimeData;
 use Illuminate\Support\Facades\File;
 use League\Csv\Reader;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CrimeDataSeeder extends Seeder
 {
@@ -16,11 +17,25 @@ class CrimeDataSeeder extends Seeder
 
     public function run()
     {
-        // Ingest each CSV in the crimedata folder one by one
-        $files = File::files(public_path('crimedata'));
+        $name = 'crime-incident-reports';
+        // Get all files from the datasets folder in Storage
+        $files = Storage::disk('local')->files('datasets');
 
-        foreach ($files as $file) {
-            $this->processFile($file);
+        // Filter files to only include those with the specified name in the filename
+        $files = array_filter($files, function ($file) use ($name) {
+            return strpos($file, $name) !== false;
+        });
+
+        // Only proceed if there are any files to process
+        if (!empty($files)) {
+            // Get the most recent file
+            $file = end($files);
+            echo "Processing file: " . $file . "\n";
+
+            // Process the most recent file
+            $this->processFile(Storage::path($file));
+        } else {
+            echo "No files found to process for name: " . $name . "\n";
         }
     }
 

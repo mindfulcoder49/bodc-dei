@@ -15,7 +15,8 @@ use App\Http\Controllers\GenericMapController;
 use App\Http\Controllers\AiAssistantController;
 
 // Route to display the generic map interface
-Route::get('/map', [GenericMapController::class, 'index'])->name('map.index');
+Route::get('/map', [GenericMapController::class, 'getRadialMap'])->name('map.index');
+Route::post('/map', [GenericMapController::class, 'getRadialMap'])->name('map.update');
 
 // Route to fetch data for the map based on filters
 Route::post('/api/map-data', [GenericMapController::class, 'getData'])->name('map.data');

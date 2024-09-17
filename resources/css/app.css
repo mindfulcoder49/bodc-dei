@@ -40,3 +40,99 @@ a {
         font-size: 150%;
     }
 }
+
+.crime-div-icon {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    min-width: 10px;
+    position: relative;
+    animation: pulse-crime 5s infinite;
+  }
+  
+  .case-div-icon {
+    background-color: blue;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    min-width: 10px;
+    position: relative;
+    animation: pulse-case 5s infinite;
+  }
+  
+  .permit-div-icon {
+    background-color: green;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    min-width: 10px;
+    position: relative;
+    animation: pulse-permit 5s infinite;
+  }
+
+  .center-div-icon {
+    background-color: white;
+    color: black;
+    border-radius: 50%;
+    border: 2px solid black;
+    text-align: center;
+    min-width: 10px;
+    position: relative;
+    animation: pulse-center 1s infinite;
+  }
+
+
+  
+  /* Pulse Animations */
+    @keyframes pulse-center {
+        0% {
+        box-shadow: 0 0 0 0 rgba(0,0,0, 0.7);
+        background-color: rgb(161, 161, 161);
+        }
+        70% {
+        box-shadow: 0 0 10px 20px rgba(0,0,0, 0);
+        background-color: white;
+        }
+        100% {
+        box-shadow: 0 0 0 0 rgba(0,0,0, 0);
+        background-color: white;
+        }
+    }
+
+  @keyframes pulse-crime {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 10px 20px rgba(255, 0, 0, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+    }
+  }
+  
+  @keyframes pulse-case {
+    0% {
+      box-shadow: 0 0 0 0 rgba(0, 0, 255, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 10px 20px rgba(0, 0, 255, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(0, 0, 255, 0);
+    }
+  }
+  
+  @keyframes pulse-permit {
+    0% {
+      box-shadow: 0 0 0 0 rgba(0, 128, 0, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 10px 20px rgba(0, 128, 0, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(0, 128, 0, 0);
+    }
+  }
+  
