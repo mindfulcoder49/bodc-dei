@@ -153,4 +153,9 @@ loading.value = false;
 const renderMarkdown = (content) => {
 return md.render(content);
 };
+
+//watch for changes in the context and update the context
+watch(() => props.context, (newContext) => {
+  context.value = newContext;
+});
 </script>
