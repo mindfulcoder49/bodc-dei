@@ -183,6 +183,12 @@ a {
     color: black;
   }
   
+  .leaflet-popup-content {
+    overflow: auto;
+    max-height: 200px;
+    min-width: 400px;
+  }
+
   /* Pulse Animations */
     @keyframes pulse-center {
         0% {

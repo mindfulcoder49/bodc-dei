@@ -17,7 +17,7 @@
           </div>
       </div>
 
-      <div class="suggested-prompts flex flex-row gap-2 mb-4 float-right">
+      <div class="suggested-prompts flex flex-row gap-2 mb-4 float-right flex-wrap">
           <button v-for="(prompt, index) in suggestedPrompts" :key="index" 
                   @click="insertPrompt(prompt)" 
                   class="bg-gradient-to-r from-blue-700 to-blue-800 text-white p-2 rounded-lg cursor-pointer">

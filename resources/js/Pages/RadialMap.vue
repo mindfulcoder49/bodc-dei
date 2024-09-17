@@ -127,9 +127,9 @@
         :key="type" 
         @click="toggleFilter(type)"
         :class="{'active': isActive, 'inactive': !isActive, [`${type.toLowerCase().replace(' ', '-').replace(/\d/g, 'a')}-filter-button`]: true}"
-        class="filter-button px-2 py-2 rounded-lg shadow-lg disabled:bg-gray-400 transition-colors w-1/4"
+        class="filter-button px-2 py-2 rounded-lg shadow-lg disabled:bg-gray-400 transition-colors w-1/4 text-base"
       >
-        {{ type }}
+        <span class="invisible md:visible">{{ type }} </span>
       </button>
             <!-- Reload Button -->
             <button 
@@ -146,11 +146,7 @@
 
       <AiAssistant :context="filteredDataPoints" />
 
-    <GenericDataList :totalData="filteredDataPoints" :itemsPerPage="5">
-      <template v-slot:default="{ item }">
-        <JsonTree :json="item" />
-      </template>
-    </GenericDataList>
+    <GenericDataList :totalData="filteredDataPoints" :itemsPerPage="5" />
   </div>
     <!-- Pass filteredDataPoints as context to AiAssistant -->
     
