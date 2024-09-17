@@ -2,10 +2,10 @@
   <div class="ai-assistant border border-gray-700 rounded-lg shadow-lg p-4 bg-gray-900/25 relative z-2">
       <div ref="chatHistory" class="p-2 bg-transparent chat-history max-h-[69vh] rounded-lg overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-800">
           <div class="assistant-message text-gray-800 bg-gradient-to-r from-gray-200 to-gray-300 p-4 mr-1 rounded-lg inline-block max-w-[95%] float-left mb-2 text-left">
-              <p>Hi! I'm the Boston App AI Assistant, based on OpenAI's GPT-4o-mini model. How can I help you today?</p>
+              <p>Hi! I'm the Boston App AI Assistant, based on OpenAI's GPT-4o-mini model. I can see all the data points in the map and answer questions about them in many languages. How can I help you today?</p>
           </div>
           <div v-for="(message, index) in messages" :key="index" class="message-item mb-2 clear-both">
-              <p v-if="message.role === 'user'" class="user-message text-gray-800 bg-gradient-to-r from-blue-200 to-blue-400 p-4 ml-2 rounded-lg inline-block max-w-[95%] float-right mb-2 text-right">
+              <p v-if="message.role === 'user'" class="user-message text-gray-800 bg-gradient-to-r from-blue-100 to-blue-200 p-4 ml-2 rounded-lg inline-block max-w-[95%] float-right mb-2 text-right">
                   {{ message.content }}
               </p>
               <div v-if="message.role === 'assistant'" class="assistant-message text-gray-800 bg-gradient-to-r from-gray-200 to-gray-300 p-4 mr-1 rounded-lg inline-block max-w-[95%] float-left mb-2 text-left">
@@ -17,10 +17,10 @@
           </div>
       </div>
 
-      <div class="suggested-prompts flex flex-col gap-2 mb-4 float-right">
+      <div class="suggested-prompts flex flex-row gap-2 mb-4 float-right">
           <button v-for="(prompt, index) in suggestedPrompts" :key="index" 
                   @click="insertPrompt(prompt)" 
-                  class="bg-gradient-to-r from-blue-400 to-blue-600 text-white p-2 rounded-lg cursor-pointer">
+                  class="bg-gradient-to-r from-blue-700 to-blue-800 text-white p-2 rounded-lg cursor-pointer">
               {{ prompt }}
           </button>
       </div>
@@ -29,7 +29,7 @@
           <textarea
               v-model="form.message"
               placeholder="Type your message..."
-              class="w-full p-3 rounded-lg border-none bg-gradient-to-r from-blue-200 to-blue-400 text-gray-800 text-lg"
+              class="w-full p-3 rounded-lg border-none bg-gradient-to-r from-blue-100 to-blue-200 text-gray-800 text-lg"
               rows="2"
           ></textarea>
 
@@ -85,10 +85,20 @@ const loading = ref(false);
 const chatHistory = ref(null);
 const context = ref(props.context); // Store context
 
-// Suggested prompts
 const suggestedPrompts = ref([
-"Summarize all the events on this report for me"
+  "Summarize all the events on this report for me",
+  "¿Cómo funciona esto?",               // Spanish
+  "这怎么运作？",                       // Chinese (Simplified)
+  "Kijan sa a fonksyone?",               // Haitian Creole
+  "Cách này hoạt động như thế nào?",     // Vietnamese
+  "Como isso funciona?",                 // Portuguese
+  "Comment ça marche ?",                 // French
+  "كيف يعمل هذا؟",                      // Arabic
+  "Как это работает?",                  // Russian
+  "Come funziona?",                      // Italian
+  "이것은 어떻게 작동합니까?"             // Korean
 ]);
+
 
 const scrollToBottom = () => {
 nextTick(() => {
