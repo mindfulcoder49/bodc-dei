@@ -16,7 +16,7 @@ class CreateDatasetsTables extends Migration
         // Building Permits Table
         Schema::create('building_permits', function (Blueprint $table) {
             $table->id();
-            $table->string('permitnumber')->nullable();
+            $table->string('permitnumber')->nullable()->unique();
             $table->string('worktype')->nullable();
             $table->string('permittypedescr')->nullable();
             $table->text('description')->nullable();

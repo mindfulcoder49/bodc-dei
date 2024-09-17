@@ -55,10 +55,20 @@ class BuildingPermitsSeeder extends Seeder
             foreach ($records as $permit) {
                 $progress++;
                 //echo $date, permit number, etc, on one line
-                echo "Date contains: " . $permit['expiration_date'] . " Permit number: " . $permit['permitnumber'] . "\n";
+                echo "SqFt contains: " . $permit['sq_feet'] . " Permit number: " . $permit['permitnumber'] . "\n";
                 // Check and format datetime fields
                 $issuedDate = $this->formatDate($permit['issued_date']);
                 $expirationDate = $this->formatDate($permit['expiration_date']);
+
+                //check sq_feet and convert to integer if it is a number, otherwise set to 0
+                $sqfeet = is_numeric($permit['sq_feet']) ? (int)$permit['sq_feet'] : 0;
+
+                //set it to a maximum of one billion
+                if ($sqfeet > 1000000000) {
+                    $sqfeet = 1000000000;
+                }
+
+
 
                 //convert empty strings to null
                 foreach ($permit as $key => $value) {
@@ -81,7 +91,7 @@ class BuildingPermitsSeeder extends Seeder
                     'expiration_date' => $expirationDate,
                     'status' => $permit['status'],
                     'occupancytype' => $permit['occupancytype'],
-                    'sq_feet' => $permit['sq_feet'],
+                    'sq_feet' => $sqfeet,
                     'address' => $permit['address'],
                     'city' => $permit['city'],
                     'state' => $permit['state'],
