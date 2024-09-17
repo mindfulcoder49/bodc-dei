@@ -9,10 +9,19 @@
 <p class="text-gray-700 mt-4 mt-8 text-lg leading-relaxed text-center">
   This map displays crime, 311 cases, and building permits located within a half mile from the center point. You can choose a new center point by clicking the "Choose New Center" button and then clicking on the map. Click "Save New Center" to update the map.
 </p>
- <p class="text-gray-700 mt-4 mt-8 text-lg leading-relaxed">
-  Set a new center for the map:
-</p>
+
 <form @submit.prevent="submitNewCenter" class="space-y-4 mb-4">
+  
+
+  <!-- Selected Center Coordinates display -->
+  <div v-if="newCenter" class="p-4 bg-gray-100 rounded-lg shadow text-center">
+    <p class="font-bold text-gray-800">Selected Center Coordinates:</p>
+    <p class="text-gray-700">{{ newCenter.lat }}, {{ newCenter.lng }}</p>
+  </div>
+  <div v-else class="p-4 bg-gray-100 rounded-lg shadow text-center">
+    <p class="font-bold text-gray-800">Current Center Coordinates:</p>
+    <p class="text-gray-700">{{ centralLocation.latitude }}, {{ centralLocation.longitude }}</p>
+  </div>
   <!-- Button container -->
   <div class="flex space-x-4">
     <!-- Choose New Center button -->
@@ -33,36 +42,16 @@
       Save New Center
     </button>
   </div>
-
-  <!-- Selected Center Coordinates display -->
-  <div v-if="newCenter" class="p-4 bg-gray-100 rounded-lg shadow text-center">
-    <p class="font-bold text-gray-800">Selected Center Coordinates:</p>
-    <p class="text-gray-700">{{ newCenter.lat }}, {{ newCenter.lng }}</p>
-  </div>
-  <div v-else class="p-4 bg-gray-100 rounded-lg shadow text-center">
-    <p class="font-bold text-gray-800">Current Center Coordinates:</p>
-    <p class="text-gray-700">{{ centralLocation.latitude }}, {{ centralLocation.longitude }}</p>
-  </div>
 </form>
 
-<p class="text-gray-700 mt-4 mt-8 text-lg leading-relaxed">
-      Filter by data type by clicking the filter buttons:
-    </p>
-    <!-- Filter Buttons -->
-    <div class="filter-container flex space-x-4">
-      <button 
-        v-for="(isActive, type) in filters" 
-        :key="type" 
-        @click="toggleFilter(type)"
-        :class="{'active': isActive, 'inactive': !isActive, [`${type.toLowerCase().replace(' ', '-').replace(/\d/g, 'a')}-filter-button`]: true}"
-        class="filter-button px-2 py-2 text-white bg-blue-500 rounded-lg shadow-lg disabled:bg-gray-400 hover:bg-blue-600 transition-colors w-1/3"
-      >
-        {{ type }}
-      </button>
-    </div>
+
+
+        
+
 
     <!-- Boston Map Component -->
     <BostonMap 
+      v-if="showMap"
       :dataPoints="filteredDataPoints" 
       :center="mapCenter" 
       :centerSelectionActive="centerSelectionActive" 
@@ -70,6 +59,30 @@
       @map-click="setNewCenter" 
     />
     <div>
+  
+    <!-- Filter Buttons -->
+    <div class="filter-container flex space-x-4">
+      <button 
+        v-for="(isActive, type) in filters" 
+        :key="type" 
+        @click="toggleFilter(type)"
+        :class="{'active': isActive, 'inactive': !isActive, [`${type.toLowerCase().replace(' ', '-').replace(/\d/g, 'a')}-filter-button`]: true}"
+        class="filter-button px-2 py-2 text-white bg-blue-500 rounded-lg shadow-lg disabled:bg-gray-400 hover:bg-blue-600 transition-colors w-1/4"
+      >
+        {{ type }}
+      </button>
+            <!-- Reload Button -->
+            <button 
+        @click="reloadMap" 
+        class="px-4 py-2 text-white bg-red-500 rounded-lg shadow-lg hover:bg-red-600 transition-colors w-1/4"
+      >
+        Reload Map
+      </button>
+ 
+    </div>
+    <p class="text-gray-700 mt-4 mb-4 text-lg leading-relaxed">
+      Filter by data type by clicking the filter buttons above
+    </p>
 
       <AiAssistant :context="filteredDataPoints" />
 
@@ -106,14 +119,23 @@ export default {
     const newMarker = ref(null); // Track the new center marker
     const mapCenter = ref([42.3601, -71.0589]); // Initial map center
     const cancelNewMarker = ref(false);
+    const showMap = ref(true);
 
     // Use Inertia form for submitting centralLocation
     const form = useForm({
       centralLocation: {
-        latitude: null,
-        longitude: null,
+        latitude: props.centralLocation.latitude,
+        longitude: props.centralLocation.longitude,
       },
     });
+
+    // Function to reload the map by toggling visibility
+    const reloadMap = () => {
+      showMap.value = false;    // Remove the map from the DOM
+      setTimeout(() => {
+        showMap.value = true;   // Re-add the map after a small delay
+      }, 0);  // Use a 0 ms delay to force the rerender
+    };
 
     // Populate filters with unique types from dataPoints
     props.dataPoints.forEach((dataPoint) => {
@@ -197,6 +219,9 @@ export default {
       form,
       mapCenter,
       cancelNewMarker,
+      newMarker,
+      showMap,
+      reloadMap,
     };
   },
 };
