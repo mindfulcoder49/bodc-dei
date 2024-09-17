@@ -54,14 +54,74 @@
       v-if="showMap"
       :dataPoints="filteredDataPoints" 
       :center="mapCenter" 
+      :centralLocation="centralLocation"
       :centerSelectionActive="centerSelectionActive" 
       :cancelNewMarker="cancelNewMarker"
       @map-click="setNewCenter" 
     />
     <div>
+
+       <!-- Date Slider and Manual Input -->
+<div class="date-filter-container mt-4 mb-4 flex flex-col w-full">
+  <div class="flex items-center w-full space-x-4">
+    <label for="date-range" class="text-m font-bold w-1/5">Filter by Date:</label>
+    <div class=" w-1/5"    >
+    <p class="text-sm p-2 text-left">{{ minDate }}</p>
+  </div>
+
+    <!-- Date Slider -->
+    <input
+      id="date-range"
+      type="range"
+      :min="0"
+      :max="daysBetweenMinAndMax"
+      v-model="dayOffset"
+      :disabled="showAllDates"
+      @input="updateDateFromSlider"
+      class="w-4/5"
+    />
+
+        <div class="w-1/5">
+        <p class="text-sm p-2 text-right ">{{ maxDate }}</p>
+      </div>
+  </div>
+
+  <div class="flex justify-between items-center w-full mt-4 min-[400px]:flex-row flex-col">
+ 
+    <!-- Display Selected Date -->
+    <div class="flex items-center space-x-1 min-[400px]:w-1/3 w-full min-[400px]:justify-end  pr-2">
+      <p class="text-sm text-center w-full min-[400px]:text-right">Selected:</p>
+    </div>
+
+      <!-- Manual Date Input -->
+       <div class="min-[400px]:w-1/3 w-full">
+      <input
+        type="date"
+        v-model="selectedDate"
+        :disabled="showAllDates"
+        @change="updateSliderFromInput"
+        class="border rounded-lg w-full min-[400px]:max-w-[200px] p-2"
+        placeholder="YYYY-MM-DD"
+      />
+    </div>
+
+    <!-- Show All Dates button-->
+    <div class="min-[400px]:w-1/3 w-full">
+      <button
+        @click="showAllDates = !showAllDates"
+        class="px-4 py-2 text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600 transition-colors w-full"
+      >
+        {{ showAllDates ? 'Filter by Date' : 'Show All Dates' }}
+      </button>
+    </div>
+    </div>
+
+
+</div>
+
   
     <!-- Filter Buttons -->
-    <div class="filter-container flex space-x-4">
+    <div class="filter-container flex sm:space-x-4 space-x-0">
       <button 
         v-for="(isActive, type) in filters" 
         :key="type" 
@@ -105,6 +165,7 @@ import PageTemplate from '@/Components/PageTemplate.vue';
 import AiAssistant from '@/Components/AiAssistant.vue';
 import GenericDataList from '@/Components/GenericDataList.vue';
 import JsonTree from '@/Components/JsonTree.vue';
+import { map } from 'leaflet';
 
 export default {
   name: 'RadialMap',
@@ -120,6 +181,53 @@ export default {
     const mapCenter = ref([42.3601, -71.0589]); // Initial map center
     const cancelNewMarker = ref(false);
     const showMap = ref(true);
+
+    const selectedDate = ref('');
+    const minDate = ref('');
+    const maxDate = ref('');
+    const dayOffset = ref(0);
+    const showAllDates = ref(true);
+
+    // Calculate the number of days between the minDate and maxDate
+    const daysBetweenMinAndMax = ref(0);
+    
+    // Initialize date range based on the dataPoints
+    if (props.dataPoints.length > 0) {
+      const dates = props.dataPoints.map(dataPoint => new Date(dataPoint.date));
+      minDate.value = dates.reduce((a, b) => a < b ? a : b).toISOString().split('T')[0];
+      maxDate.value = dates.reduce((a, b) => a > b ? a : b).toISOString().split('T')[0];
+      selectedDate.value = minDate.value;
+
+      // Calculate the number of days between minDate and maxDate
+      const minDateObj = new Date(minDate.value);
+      const maxDateObj = new Date(maxDate.value);
+      daysBetweenMinAndMax.value = Math.ceil((maxDateObj - minDateObj) / (1000 * 60 * 60 * 24));
+    }
+
+    // Update the selectedDate based on the slider's day offset
+    const updateDateFromSlider = () => {
+      const minDateObj = new Date(minDate.value);
+      const newDate = new Date(minDateObj.getTime() + dayOffset.value * (1000 * 60 * 60 * 24));
+      selectedDate.value = newDate.toISOString().split('T')[0];
+    };
+
+    // Update the slider's offset based on the manually inputted date
+    const updateSliderFromInput = () => {
+      const minDateObj = new Date(minDate.value);
+      const selectedDateObj = new Date(selectedDate.value);
+      dayOffset.value = Math.floor((selectedDateObj - minDateObj) / (1000 * 60 * 60 * 24));
+    };
+
+    // Filter dataPoints based on selected date
+    const filteredDataPoints = computed(() => {
+      if (showAllDates.value) {
+        return props.dataPoints.filter(dataPoint => filters.value[dataPoint.type]);
+      }
+      const myDataPoints = props.dataPoints.filter(dataPoint => {
+        return new Date(dataPoint.date).toISOString().split('T')[0] === selectedDate.value;
+      });
+      return myDataPoints.filter(dataPoint => filters.value[dataPoint.type]);
+    });
 
     // Use Inertia form for submitting centralLocation
     const form = useForm({
@@ -144,10 +252,6 @@ export default {
       }
     });
 
-    // Compute filtered dataPoints based on active filters
-    const filteredDataPoints = computed(() => {
-      return props.dataPoints.filter(dataPoint => filters.value[dataPoint.type]);
-    });
 
     // Toggle filter state
     const toggleFilter = (type) => {
@@ -191,6 +295,7 @@ export default {
         // Emit the new marker position to BostonMap component
         // This ensures the new marker is updated correctly
         newMarker.value = latlng;
+        mapCenter.value = [latlng.lat, latlng.lng];
       }
     };
 
@@ -222,6 +327,14 @@ export default {
       newMarker,
       showMap,
       reloadMap,
+      selectedDate,
+      minDate,
+      maxDate,
+      daysBetweenMinAndMax,
+      updateDateFromSlider,
+      updateSliderFromInput,
+      dayOffset,
+      showAllDates,
     };
   },
 };

@@ -44,8 +44,12 @@ const props = defineProps({
     required: true,
     default: () => [],
   },
-  center: {
-    type: Array,
+  center: {  
+    type: Array, //used for the centerview of the map
+    required: true,
+  },
+  centralLocation: { 
+    type: Object, //used for the central point so it can be set independent of the centerview
     required: true,
   },
   centerSelectionActive: {
@@ -89,6 +93,11 @@ onMounted(() => {
         }).addTo(initialMap.value);
       }
     });
+
+    // Add the center marker
+    markerCenter.value = L.marker(props.center, {
+      icon: getDivIcon('Center'),
+    }).addTo(initialMap.value); 
 
     // Initialize the markers for the dataPoints
     updateMarkers(props.dataPoints);
@@ -135,18 +144,22 @@ watch(() => props.dataPoints, updateMarkers, { deep: true });
 // Watch for changes in the center and update the map center and center marker
 watch(() => props.center, (newCenter) => {
   if (initialMap.value) {
-    initialMap.value.setView(newCenter, 16);
+    initialMap.value.setView(newCenter);
 
+
+  }
+});
+
+watch(() => props.centralLocation, (centralLocation) => {
     // Remove old center marker
     if (markerCenter.value) {
       initialMap.value.removeLayer(markerCenter.value);
     }
 
-    // Add new center marker with a different style or icon for "Center"
-    markerCenter.value = L.marker(newCenter, {
+    // Add new center marker
+    markerCenter.value = L.marker([centralLocation.latitude, centralLocation.longitude], {
       icon: getDivIcon('Center'),
     }).addTo(initialMap.value);
-  }
 });
 
 

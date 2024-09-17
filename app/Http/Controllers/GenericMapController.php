@@ -53,18 +53,6 @@ class GenericMapController extends Controller
         $dataPoints = $crimeData->merge($caseData)->merge($buildingPermits);
         Log::info('Data points merged.', ['totalDataPointsCount' => $dataPoints->count()]);
 
-        //add central location to data points with type center, todays date, and info about how it's the center
-        $dataPoints->push([
-            'latitude' => $centralLocation['latitude'],
-            'longitude' => $centralLocation['longitude'],
-            'type' => 'Center',
-            'date' => Carbon::now()->toDateString(),
-            'info' => [
-                'description' => 'Center of the map',
-                'radius' => $radius,
-            ],
-        ]);
-
         return Inertia::render('RadialMap', [
             'dataPoints' => $dataPoints,
             'centralLocation' => $centralLocation,
