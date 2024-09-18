@@ -186,7 +186,7 @@ a {
   .leaflet-popup-content {
     overflow: auto;
     max-height: 200px;
-    min-width: 300px;
+    min-width: 200px;
   }
 
   /* Pulse Animations */
