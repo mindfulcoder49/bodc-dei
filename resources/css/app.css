@@ -97,7 +97,7 @@ a {
     min-width: 17px;
     min-height: 17px;
     position: relative;
-    animation: pulse-crime 5s infinite;
+    /* animation: pulse-crime 5s infinite; */
   }
 
   .case-div-icon {
@@ -111,7 +111,7 @@ a {
     min-width: 17px;
     min-height: 17px;
     position: relative;
-    animation: pulse-case 5s infinite;
+    /* animation: pulse-case 5s infinite; */
   }
   
   .permit-div-icon {
@@ -125,7 +125,7 @@ a {
     min-width: 20px;
     min-height: 20px;
     position: relative;
-    animation: pulse-permit 5s infinite;
+    /* animation: pulse-permit 5s infinite; */
   }
   
   .center-div-icon {
@@ -186,7 +186,7 @@ a {
   .leaflet-popup-content {
     overflow: auto;
     max-height: 200px;
-    min-width: 400px;
+    min-width: 300px;
   }
 
   /* Pulse Animations */
