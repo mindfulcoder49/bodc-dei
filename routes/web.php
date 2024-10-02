@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\GenericMapController;
 use App\Http\Controllers\AiAssistantController;
+use App\Http\Controllers\TrashScheduleByAddressController;
+
+Route::get('/search-address', [TrashScheduleByAddressController::class, 'search']);
+
 
 // Route to display the generic map interface
 Route::get('/map', [GenericMapController::class, 'getRadialMap'])->name('map.index');

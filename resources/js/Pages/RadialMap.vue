@@ -10,6 +10,8 @@
   This map displays crime, 311 cases, and building permits located within a half mile from the center point. You can choose a new center point by clicking the "Choose New Center" button and then clicking on the map. Click "Save New Center" to update the map.
 </p>
 
+<AddressSearch @address-selected="updateCenterCoordinates" />
+
 <form @submit.prevent="submitNewCenter" class="space-y-4 mb-4">
   
 
@@ -162,10 +164,11 @@ import AiAssistant from '@/Components/AiAssistant.vue';
 import GenericDataList from '@/Components/GenericDataList.vue';
 import JsonTree from '@/Components/JsonTree.vue';
 import { map } from 'leaflet';
+import AddressSearch from '@/Components/AddressSearch.vue'; // Import the new component
 
 export default {
   name: 'RadialMap',
-  components: { BostonMap, PageTemplate, AiAssistant, GenericDataList, JsonTree },
+  components: { BostonMap, PageTemplate, AiAssistant, GenericDataList, JsonTree, AddressSearch },
   props: ['dataPoints', 'centralLocation'],
   
   setup(props) {
@@ -307,6 +310,18 @@ export default {
       });
     };
 
+    const updateCenterCoordinates = (coords) => {
+      // Use the existing setNewCenter function to update the map center
+      const latlng = { lat: coords.lat, lng: coords.lng };
+      console.log('Updating center coordinates:', latlng);
+      centerSelectionActive.value = true;
+      setNewCenter(latlng); 
+
+      // Automatically submit the new center after it's set
+      submitNewCenter(); 
+    };
+
+
     return {
       filters,
       filteredDataPoints,
@@ -331,6 +346,7 @@ export default {
       updateSliderFromInput,
       dayOffset,
       showAllDates,
+      updateCenterCoordinates,
     };
   },
 };

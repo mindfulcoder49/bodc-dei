@@ -19,12 +19,24 @@ class TrashSchedulesByAddressSeeder extends Seeder
     {
 
         $name = 'trash-schedules-by-address';
-        // get most recent file from Storage::disk('local'), filename is name with date appended
-        $files = Storage::disk('local')->files($name);
-        $file = end($files);
+        // Get all files from the datasets folder in Storage
+        $files = Storage::disk('local')->files('datasets');
 
-        foreach ($files as $file) {
-            $this->processFile($file);
+        // Filter files to only include those with the specified name in the filename
+        $files = array_filter($files, function ($file) use ($name) {
+            return strpos($file, $name) !== false;
+        });
+
+        // Only proceed if there are any files to process
+        if (!empty($files)) {
+            // Get the most recent file
+            $file = end($files);
+            echo "Processing file: " . $file . "\n";
+
+            // Process the most recent file
+            $this->processFile(Storage::path($file));
+        } else {
+            echo "No files found to process for name: " . $name . "\n";
         }
     }
 
@@ -43,6 +55,8 @@ class TrashSchedulesByAddressSeeder extends Seeder
 
         foreach ($records as $trashSchedule) {
             $progress++;
+
+            print_r("Processing record: " . $progress . " of " . $fileCount . "\n");
 
             // Add data to batch array
             $dataBatch[] = [
