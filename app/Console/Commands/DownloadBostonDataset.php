@@ -3,28 +3,13 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class DownloadBostonDataset extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'app:download-boston-dataset';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Downloads datasets from Boston Open Data';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         // Load the configuration from the config file
@@ -39,39 +24,44 @@ class DownloadBostonDataset extends Command
         $this->info('Datasets downloaded successfully.');
     }
 
-    /**
-     * Download the dataset from the given URL.
-     *
-     * @param string $baseUrl
-     * @param string $resourceId
-     * @param string $format
-     */
     protected function downloadDataset($baseUrl, $resourceId, $format, $name)
     {
         $url = "{$baseUrl}/{$resourceId}?format={$format}";
+        $filename = $this->generateFilename($name, $format);
+        $destination = storage_path("app/{$filename}");
 
-        try {
-            $response = Http::get($url);
+        $this->info("Attempting to download dataset: {$name} from {$url}...");
 
-            if ($response->ok()) {
-                $filename = $this->generateFilename($name, $format);
-                Storage::disk('local')->put($filename, $response->body());
-                $this->info("Downloaded {$filename}");
-            } else {
-                $this->error("Failed to download dataset: {$resourceId}");
-            }
-        } catch (\Exception $e) {
-            $this->error("Error downloading dataset: {$resourceId} - " . $e->getMessage());
+        // Download the dataset file
+        if ($this->downloadFile($url, $destination)) {
+            $this->info("Downloaded {$filename}");
+        } else {
+            $this->error("Failed to download dataset: {$resourceId}");
         }
     }
 
     /**
-     * Generate a filename for the downloaded dataset.
-     *
-     * @param string $name
-     * @param string $format
-     * @return string
+     * Download the file from the URL.
+     * 
+     * @param string $url
+     * @param string $destination
+     * @return bool
      */
+    private function downloadFile(string $url, string $destination): bool
+    {
+        try {
+            $fileContents = file_get_contents($url);
+            if ($fileContents === false) {
+                return false;
+            }
+            file_put_contents($destination, $fileContents);
+            return true;
+        } catch (\Exception $e) {
+            $this->error("Error downloading the file: " . $e->getMessage());
+            return false;
+        }
+    }
+
     protected function generateFilename($name, $format)
     {
         $timestamp = now()->format('Ymd_His');
