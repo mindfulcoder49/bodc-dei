@@ -54,13 +54,35 @@ class DownloadBostonDataset extends Command
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($ch, CURLOPT_USERAGENT, 'MyUserAgent/1.0'); // Set User-Agent
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Set a timeout for the request
     
             $fileContents = curl_exec($ch);
+    
+            // Check for curl errors
             if (curl_errno($ch)) {
                 $this->error("cURL error: " . curl_error($ch));
+                curl_close($ch);
                 return false;
             }
     
+            // Get HTTP status code
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    
+            // Ensure we got a 200 OK response
+            if ($httpCode !== 200) {
+                $this->error("HTTP request failed with status code: " . $httpCode);
+                curl_close($ch);
+                return false;
+            }
+    
+            // Check if content is valid
+            if (empty($fileContents)) {
+                $this->error("Downloaded file is empty.");
+                curl_close($ch);
+                return false;
+            }
+    
+            // Save file contents to destination
             file_put_contents($destination, $fileContents);
             curl_close($ch);
             return true;
@@ -69,6 +91,7 @@ class DownloadBostonDataset extends Command
             return false;
         }
     }
+    
     
 
     protected function generateFilename($name, $format)
