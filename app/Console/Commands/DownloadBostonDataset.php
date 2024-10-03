@@ -21,7 +21,7 @@ class DownloadBostonDataset extends Command
             $this->downloadDataset($baseUrl, $dataset['resource_id'], $dataset['format'], $dataset['name']);
         }
 
-        $this->info('Datasets downloaded successfully.');
+        $this->info('Datasets download attempted.');
     }
 
     protected function downloadDataset($baseUrl, $resourceId, $format, $name)
@@ -50,17 +50,26 @@ class DownloadBostonDataset extends Command
     private function downloadFile(string $url, string $destination): bool
     {
         try {
-            $fileContents = file_get_contents($url);
-            if ($fileContents === false) {
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'MyUserAgent/1.0'); // Set User-Agent
+    
+            $fileContents = curl_exec($ch);
+            if (curl_errno($ch)) {
+                $this->error("cURL error: " . curl_error($ch));
                 return false;
             }
+    
             file_put_contents($destination, $fileContents);
+            curl_close($ch);
             return true;
         } catch (\Exception $e) {
             $this->error("Error downloading the file: " . $e->getMessage());
             return false;
         }
     }
+    
 
     protected function generateFilename($name, $format)
     {
