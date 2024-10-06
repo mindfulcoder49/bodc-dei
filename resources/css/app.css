@@ -88,7 +88,7 @@ a {
 
   .crime-div-icon {
     background-color: rgb(255, 78, 78); /* Remove background color */
-    background-image: url("/images/crimicon.svg");
+    background-image: url("/images/crimeicon.svg");
     background-size: cover; /* Scale the SVG icon */
     background-position: center;
     color: white;
@@ -155,7 +155,7 @@ a {
   }
   
   .crime-filter-button {
-    background-image: url("/images/crimicon.svg");
+    background-image: url("/images/crimeicon.svg");
     background-position: left;
     background-size: contain;
     background-repeat: no-repeat;
