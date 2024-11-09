@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities; 
+
+
+
+:root {
+    --primary-color: #222;
+    --secondary-color: #007bff;
+    --section-color: #fafafa;
+}
+
+/* style all main, section, heading, and paragraph elements in separate but similar ways */
+main, section {
+    background-color: var(--section-color);
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 0.25rem;
+}
+
+
+p {
+    color: var(--primary-color);
+}
+
+a {
+    color: var(--secondary-color);
+}
+
+/* make all text bigger on large screens */
+@media (min-width: 768px) {
+    html {
+        font-size: 125%;
+    }
+}
+
+/* make all text bigger on large screens */
+@media (min-width: 1024px) {
+    html {
+        font-size: 150%;
+    }
+}
+
