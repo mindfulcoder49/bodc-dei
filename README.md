@@ -4,9 +4,9 @@
 
 # BODC-DEI Repository
 
-Welcome to the Boston Open Data Collaboration for Diversity, Equity, and Inclusion (BODC-DEI) project! This project is an initiative to foster the adoption of open data and open-source solutions to champion diversity, equity, and inclusion within Boston's vibrant AI and ML landscape. The BODC-DEI repository contains the code and documentation for our web application, which includes several components and features aimed at empowering communities through technology.
+Welcome to the  project! This project is an initiative to foster the adoption of open data and open-source solutions within Boston's vibrant AI and ML landscape. The repository contains the code and documentation for our web application, which includes several components and features aimed at empowering communities through technology.
 
-Sponsored by [AlcivarTech](https://alcivartech.com). Visit [BODC-DEI](https://bodc-dei.org) for more information.
+Sponsored by [AlcivarTech](https://alcivartech.com). Visit [BODC-DEI](https://boston-ai-project.alcivartech.com) for more information.
 
 ## Features
 
