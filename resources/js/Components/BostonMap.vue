@@ -118,11 +118,12 @@ const updateMarkers = (dataPoints) => {
   dataPoints.forEach((dataPoint) => {
     if (dataPoint.latitude && dataPoint.longitude) {
       const popupContent = `
-        <div>
-          <strong>Date:</strong> ${new Date(dataPoint.date).toLocaleString()}<br>
-          <strong>Type:</strong> ${dataPoint.type}<br>
-          <strong>Info:</strong> ${Object.entries(dataPoint.info).map(([key, value]) => `<br>${key}: ${value}`).join('')}
-        </div>
+
+         <div><strong>Date:</strong> ${new Date(dataPoint.date).toLocaleString()}<br></div>
+        <div><strong>Type:</strong> ${dataPoint.type}<br></div>
+        ${Object.entries(dataPoint.info).map(([key, value]) => `<div><div class="infoname">${key}:</div><div class="infovalue">${value}</div></div>`).join('')}
+
+
       `;
 
       const marker = L.marker([dataPoint.latitude, dataPoint.longitude], {

@@ -1,0 +1,1 @@
+@keyframes bounce-10303ea2{0%,to{transform:translateY(0)}50%{transform:translateY(-5px)}}i.fas.fa-spinner[data-v-10303ea2]{animation:spin 2s linear infinite}button[disabled][data-v-10303ea2]{animation:bounce-10303ea2 .5s infinite;background-color:#999;cursor:not-allowed}button[disabled]{background-color:#999;cursor:not-allowed}
