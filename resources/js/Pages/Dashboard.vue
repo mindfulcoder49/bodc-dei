@@ -31,7 +31,6 @@ const submitPrompt = () => {
 <template>
   <Head title="Dashboard" />
   <PageTemplate>
-          <GithubAnalysis />
-          <CrimeReport />
+          <!-- <CrimeReport /> -->
   </PageTemplate>
 </template>
